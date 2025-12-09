@@ -1,0 +1,195 @@
+{%- comment -%}
+  Renders cart subtotal, checkout buttons, notes and shipping notice (page version).
+
+	Accepts: 
+	- type: {String} 'page' or 'sidebar'.
+
+  Usage:
+  {% render 'cart-subtotal', type: 'page' %}
+{%- endcomment -%}
+
+<div id="AjaxCartSubtotal">
+	
+  {%- liquid
+    if settings.show_currency_codes
+      assign iso_code = localization.country.currency.iso_code | prepend: ' ' 
+    endif
+	assign has_wine = false
+	assign has_christmas_platter = false
+    assign christmas_platter_count = 0
+    assign other_items_count = 0
+    for item in cart.items
+      assign product_title_lower = item.product.title | downcase
+      assign product_type_lower = item.product.type | downcase
+      assign product_tags_lower = item.product.tags | join: ',' | downcase
+      
+      if product_title_lower contains 'wine' or product_type_lower contains 'wine' or product_tags_lower contains 'wine'
+        assign has_wine = true
+        break
+      endif
+	  if item.product.tags contains '2025 JP Christmas Platter'
+        assign has_christmas_platter = true
+        assign christmas_platter_count = christmas_platter_count | plus: item.quantity
+      else
+        assign other_items_count = other_items_count | plus: item.quantity
+      endif
+    endfor
+	assign has_other_items = false
+    if other_items_count > 0
+      assign has_other_items = true
+    endif
+  -%}
+
+	{%- if type == 'page' and settings.cart_free_shipping -%}
+		<shipping-notice
+			data-free-shipping="{{ settings.cart_free_shipping_amount | times: 100 }}"
+			data-cart-total-amount="{{ cart.total_price }}"
+			data-show-alert
+		></shipping-notice>
+		<script src="{{ 'component-shipping-notice.js' | asset_url }}" defer></script>
+	{%- endif - %}
+
+	<div class="cart__details 
+		{% if type == 'page' %} cart__subtotal-widget element--has-border--body element--border-radius {% endif %}
+		{% if cart.item_count == 0 %} cart--empty {% endif %}
+	">
+			    
+		{%- if cart.cart_level_discount_applications != blank -%} 
+			<div class="cart__subtotal">
+				<span>{{ 'cart.subtotal' | t }}</span>
+				<strong class="text-size--xlarge">{{ cart.items_subtotal_price | money | append: iso_code }}</strong>
+			</div>
+			<div class="cart__discounts">
+				<span>{{ 'cart.discounts' | t }}</span>
+				{%- for discount_application in cart.cart_level_discount_applications -%}
+					<strong class="text-size--large">{{ discount_application.title }} ( -{{ discount_application.total_allocated_amount | money | append: iso_code }} )</strong>
+				{%- endfor -%}
+			</div>
+		{%- endif -%}
+
+		<div class="cart__total">
+			<span>{{ 'cart.total' | t }}</span> 
+			<strong class="text-size--heading">{{ cart.total_price | money | append: iso_code }}</strong>
+		</div>
+
+		{%- if settings.cart_notes_enable and type == 'page' -%}
+			<div class="cart__instructions">
+				<div class="form-field">
+					<cart-note>
+						<label for="CartPage-Note">{{ 'cart.note' | t }}</label>
+						<textarea id="CartPage-Note" name="note">{{ cart.note }}</textarea>
+					</cart-note> 
+				</div>
+			</div>
+		{%- endif -%}
+
+		<div class="cart__shipping text-color--opacity text-size--small">
+			{%- liquid
+				if cart.taxes_included and shop.shipping_policy.body != blank
+					echo 'cart.policies.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url
+				elsif cart.taxes_included
+					echo 'cart.policies.taxes_included_but_shipping_at_checkout' | t
+				elsif shop.shipping_policy.body != blank
+					echo 'cart.policies.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url
+				else
+					echo 'cart.policies.taxes_and_shipping_at_checkout' | t
+				endif
+			-%}
+		</div>
+		{%- if settings.cart_terms_checkbox -%}
+			<terms-checkbox>
+				<div class="agree-to-terms gutter-top--small">
+					<input type="checkbox" id="AgreeToTos" checked/>
+					<label for="AgreeToTos" class="text-size--small">
+						{{ settings.cart_terms_text }}
+					</label>
+				</div>
+			</terms-checkbox>
+			<script src="{{ 'component-terms-checkbox.js' | asset_url }}" defer></script>
+		{%- endif -%}
+		{%- if has_wine and type == 'page' -%}
+			{%- liquid
+				if section.settings.wine_warning_enable != nil
+					assign wine_warning_enable = section.settings.wine_warning_enable
+				else
+					assign wine_warning_enable = true
+				endif
+				
+				if section.settings.wine_warning_title != blank
+					assign wine_warning_title = section.settings.wine_warning_title
+				else
+					assign wine_warning_title = 'Legal Drinking Age Notice'
+				endif
+				
+				if section.settings.wine_warning_text != blank
+					assign wine_warning_text = section.settings.wine_warning_text
+				else
+					assign wine_warning_text = 'You must be of legal drinking age in your jurisdiction to purchase alcohol. By proceeding with checkout, you confirm that you are of legal drinking age.'
+				endif
+				
+				if section.settings.wine_gift_enable != nil
+					assign wine_gift_enable = section.settings.wine_gift_enable
+				else
+					assign wine_gift_enable = true
+				endif
+				
+				if section.settings.wine_gift_text != blank
+					assign wine_gift_text = section.settings.wine_gift_text
+				else
+					assign wine_gift_text = 'This is a gift'
+				endif
+			-%}
+			
+			{%- if wine_warning_enable -%}
+				<div class="cart-wine-warning gutter-top--small">
+					<p class="text-size--small">
+						<strong>{{ wine_warning_title }}</strong><br>
+						{{ wine_warning_text }}
+					</p>
+				</div>
+			{%- endif -%}
+
+			{%- if wine_gift_enable -%}
+				<wine-gift-option>
+					<div class="cart-wine-gift gutter-top--small">
+						<input type="checkbox" id="WineGiftOption" name="attributes[Gift Option]" value="Yes" {% if cart.attributes['Gift Option'] == 'Yes' %}checked{% endif %}/>
+						<label for="WineGiftOption" class="text-size--small">
+							{{ wine_gift_text }}
+						</label>
+					</div>
+				</wine-gift-option>
+			{%- endif -%}
+		{%- endif -%}
+		{%- if has_christmas_platter -%}
+			<div class="cart-christmas-platter-warning gutter-top--small" data-christmas-platter-warning>
+				<p class="text-size--small">
+					<strong>Christmas Platter Notice</strong><br>
+					Holiday platters are available for pre-order and will require a 3-day lead time. They may not be combined with orders scheduled for same-day pickup.
+				</p>
+			</div>
+		{%- endif -%}
+		<div {% unless template contains 'cart' %} class="flex-buttons" {% endunless %}>
+			{%- unless type == 'page' -%}
+				{%- if settings.cart_drawer_actions contains 'show-view' -%}
+					<a id="ViewCart" href="{{ routes.cart_url }}" class="button button--regular button--outline">{{ 'cart.view_cart' | t }}</a>
+				{%- endif -%}
+			{%- endunless -%}
+			{%- if settings.cart_drawer_actions contains 'show-checkout' or type == 'page' -%}
+				<button id="CheckOut" class="button button--regular {% if type == 'page' %} button--regular-mobile {% endif %} button--solid" type="submit" name="checkout" form="cart" {%- if settings.cart_terms_checkbox -%} disabled {%- endif -%}>
+					{{ 'cart.checkout' | t }}
+				</button>
+			{%- endif -%}
+		</div>
+
+		{%- unless template contains 'order' -%}  
+			{%- if settings.cart_drawer_actions contains 'show-checkout' or type == 'page' -%}
+				{%- if additional_checkout_buttons and settings.cart_additional_buttons -%}
+					<div class="additional-checkout-buttons additional-checkout-buttons--vertical">{{ content_for_additional_checkout_buttons }}</div>
+				{%- endif -%}
+			{%- endif -%}
+		{%- endunless -%}
+
+	</div>
+
+</div>
+

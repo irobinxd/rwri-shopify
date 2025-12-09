@@ -1,0 +1,46 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "center": false
+      }
+    },
+    "newsletter_HwWJpw": {
+      "type": "newsletter",
+      "custom_css": [
+        "a {text-decoration: underline;}"
+      ],
+      "name": "t:sections.newsletter.name",
+      "settings": {
+        "show_icon": true,
+        "title": "Joel's Place Straight to Your Inbox",
+        "text": "<p>Discover the latest culinary trends, exclusive dining experiences, store events, and must-have gourmet products at Joel's Place.</p><p>Read our Privacy Policy <a href=\"https://joelsplace.com/pages/your-privacy\" title=\"Your Privacy\">here</a>.</p>",
+        "color_background_main": "#1d1d1d",
+        "color_text_main": "#ffffff",
+        "color_borders_main": "rgba(0,0,0,0)",
+        "color_shadow_main": "rgba(0,0,0,0)",
+        "color_hide_borders": false,
+        "color_hide_shadow": false,
+        "section_background_color": "rgba(0,0,0,0)",
+        "section_background_gradient": "",
+        "remove_margin": false,
+        "seo_h_tag": "h2"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "newsletter_HwWJpw"
+  ]
+}

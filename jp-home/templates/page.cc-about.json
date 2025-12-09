@@ -1,0 +1,344 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "media_with_text_overlay_PtDytU": {
+      "type": "media-with-text-overlay",
+      "blocks": {
+        "image_66BFqD": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Homepage-FeaturedCollection_Everyday-Comfort.jpg",
+            "caption": "",
+            "title": "Click and Collect",
+            "subtitle": "",
+            "link": "shopify://collections/click-and-collect",
+            "open_in_new_window": false,
+            "button_label": "Shop Now",
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "#ffffff",
+            "color_hide_borders": false,
+            "color_hide_shadow": false,
+            "seo_h_tag": "h3"
+          }
+        }
+      },
+      "block_order": [
+        "image_66BFqD"
+      ],
+      "name": "t:sections.local-extra-words.sections.media-with-text-overlay.name",
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "section_heading_layout": "section-heading--left",
+        "layout": "grid-1",
+        "height": "regular",
+        "alignment": "horizontal-left align-content--vertical-bottom",
+        "width": "60%",
+        "caption_size": "regular",
+        "title_size": "h3",
+        "subtitle_size": "regular",
+        "button_size": "large",
+        "button_style": "solid",
+        "section_background_color": "rgba(0,0,0,0)",
+        "section_background_gradient": "",
+        "section_heading_color": "rgba(0,0,0,0)",
+        "remove_margin": false,
+        "seo_h_tag": "h2"
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "center": false
+      }
+    },
+    "rich_text_4VqQMY": {
+      "type": "rich-text",
+      "blocks": {
+        "title_ThWLH8": {
+          "type": "title",
+          "settings": {
+            "title": "Collect In-Store or Curbside",
+            "title_size": "h2",
+            "seo_h_tag": "h2"
+          }
+        },
+        "text_zEqUBj": {
+          "type": "text",
+          "settings": {
+            "text": "<p>You may choose between in-person or curbside pickup from our Glorietta 4 store.</p>",
+            "text_size": "regular"
+          }
+        },
+        "button_AzP4YY": {
+          "type": "button",
+          "settings": {
+            "button_label": "Store Locator",
+            "link": "shopify://pages/store-locator",
+            "open_in_new_window": false,
+            "button_size": "large",
+            "button_style": "solid"
+          }
+        }
+      },
+      "block_order": [
+        "title_ThWLH8",
+        "text_zEqUBj",
+        "button_AzP4YY"
+      ],
+      "name": "t:sections.rich-text.name",
+      "settings": {
+        "height": "large",
+        "image": "shopify://shop_images/Joel_s_Place_Click_Collect_Curbside_Pick_up_Location.jpg",
+        "image_position": "left",
+        "image_crop": true,
+        "width": "100",
+        "text_alignment": "horizontal-left",
+        "text_alignment_vertical": "middle",
+        "spacing": "xxlarge",
+        "is_fullwidth": false,
+        "section_background_color": "rgba(0,0,0,0)",
+        "section_background_gradient": "",
+        "remove_margin": false,
+        "color_background_main": "rgba(0,0,0,0)",
+        "color_text_main": "rgba(0,0,0,0)",
+        "color_accent_main": "rgba(0,0,0,0)",
+        "color_borders_main": "rgba(0,0,0,0)",
+        "color_shadow_main": "rgba(0,0,0,0)",
+        "color_hide_borders": false,
+        "color_hide_shadow": false
+      }
+    },
+    "text_columns_images_qYyxzF": {
+      "type": "text-columns-images",
+      "blocks": {
+        "image_LrFeAB": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Click-collect-shop-online.jpg",
+            "title": "Order Online",
+            "caption": "Browse and shop from our wide selection of meals, snacks, and treats.",
+            "link": "",
+            "open_in_new_window": false,
+            "seo_h_tag": "h3"
+          }
+        },
+        "image_LxDQLq": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Click-collect-choose-order-method.jpg",
+            "title": "Select Your Pickup Method",
+            "caption": "Choose in-store or curbside pickup at our Glorietta 4 store. You may also book your own rider.",
+            "link": "",
+            "open_in_new_window": false,
+            "seo_h_tag": "h3"
+          }
+        },
+        "image_aWM8E3": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Click-collect-email-notification.jpg",
+            "title": "Receive Pickup Notice",
+            "caption": "We’ll send you an email when your order is ready for pickup.",
+            "link": "",
+            "open_in_new_window": false,
+            "seo_h_tag": "h3"
+          }
+        },
+        "image_Dwmiz8": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Click-collect-order.jpg",
+            "title": "Collect Your Order",
+            "caption": "Present your order number to collect in-store or curbside,or via courier.",
+            "link": "",
+            "open_in_new_window": false,
+            "seo_h_tag": "h3"
+          }
+        }
+      },
+      "block_order": [
+        "image_LrFeAB",
+        "image_LxDQLq",
+        "image_aWM8E3",
+        "image_Dwmiz8"
+      ],
+      "name": "t:sections.text-columns-with-images.name",
+      "settings": {
+        "heading": "How It Works",
+        "subheading": "",
+        "section_heading_layout": "section-heading--left",
+        "style": "slider",
+        "layout": "grid-4 grid-portable-3 grid-lap-2",
+        "border_radius": 200,
+        "section_background_color": "#e9e8e8",
+        "section_background_gradient": "",
+        "section_heading_color": "rgba(0,0,0,0)",
+        "remove_margin": false,
+        "seo_h_tag": "h2"
+      }
+    },
+    "content_toggles_cPy6dX": {
+      "type": "content-toggles",
+      "blocks": {
+        "text_PqXB9N": {
+          "type": "text",
+          "settings": {
+            "title": "Is Click and Collect a free service?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>Yes! Our Click and Collect service is free for all orders, with no minimum purchase required.</p>",
+            "hide_block_if": false
+          }
+        },
+        "text_a7UynP": {
+          "type": "text",
+          "settings": {
+            "title": "Are all items in the store available for Click and Collect?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>Only select items are available for Click and Collect at the moment. We’ll be expanding our selection soon to include more grocery and gourmet items—stay tuned!</p>",
+            "hide_block_if": false
+          }
+        },
+        "text_hNBU4t": {
+          "type": "text",
+          "settings": {
+            "title": "How long does it take to prepare my order?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>To ensure your meals are freshly prepared, please allow for 30 to 45 minutes preparation time after an order is placed.</p>",
+            "hide_block_if": false
+          }
+        },
+        "text_z83xRN": {
+          "type": "text",
+          "settings": {
+            "title": "How will I know when my order is ready for pick up?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>You'll receive a notification via email once your order is ready. Please wait for the email notification before heading to the store.</p>",
+            "hide_block_if": false
+          }
+        },
+        "text_YFAKAf": {
+          "type": "text",
+          "settings": {
+            "title": "Where do I collect my order?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>For <strong>In-store pickup, </strong>head to the Click & Collect counter inside our Glorietta 4 store. Show your confirmation email with the order number and our friendly staff will be happy to assist you.</p><p>For <strong>Curbside pickup, </strong>call the store at <strong>+63968 852 8766</strong> to let us know you've arrived at the pickup location; one of our team members will bring your order directly to your car.</p><p>For <strong>Courier pickup</strong>, book your own rider once you receive your pickup notice. Relay your name and order number to your rider, which they will use to claim your order from our staff.</p>",
+            "hide_block_if": false
+          }
+        },
+        "text_aAAWKF": {
+          "type": "text",
+          "settings": {
+            "title": "Where is the Curbside pickup location?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>Our designated Curbside pickup area is located at <strong>Joel's Place Glorietta 4 North St.,</strong> directly in front of Rustan's Makati. For exact directions, please refer to the map provided on our checkout page.</p>",
+            "hide_block_if": false
+          }
+        },
+        "text_kV6MTx": {
+          "type": "text",
+          "settings": {
+            "title": "Can I cancel or change my order?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>Orders cannot be changed or canceled once placed, except for out of stock items.</p>",
+            "hide_block_if": false
+          }
+        },
+        "text_KWW3dw": {
+          "type": "text",
+          "settings": {
+            "title": "Can someone else collect my order?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>Yes. If someone else is picking up your order on your behalf, they’ll simply need to present the order confirmation email, order number, and the name under which the order was placed.</p>",
+            "hide_block_if": false
+          }
+        },
+        "text_eKJeDF": {
+          "type": "text",
+          "settings": {
+            "title": "What are the store hours for Click and Collect?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>You may place your Click and Collect order anytime, up to one day in advance. To qualify for same-day pickup, please place your order by 6:30 p.m. for pickup by 8:00 p.m.</p>",
+            "hide_block_if": false
+          }
+        },
+        "text_R4zgr4": {
+          "type": "text",
+          "settings": {
+            "title": "Can I place an order over the phone and pick up in-store?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>Yes, you may also place an order via phone for in-store pick up. Simply call our <a href=\"/pages/store-locator\" title=\"Store Locator\"><span style=\"text-decoration:underline\">Glorietta 4 store</span></a> at <strong>+63968 852 8766</strong> to place your order.</p>",
+            "hide_block_if": false
+          }
+        }
+      },
+      "block_order": [
+        "text_PqXB9N",
+        "text_a7UynP",
+        "text_hNBU4t",
+        "text_z83xRN",
+        "text_YFAKAf",
+        "text_aAAWKF",
+        "text_kV6MTx",
+        "text_KWW3dw",
+        "text_eKJeDF",
+        "text_R4zgr4"
+      ],
+      "name": "t:sections.local-extra-words.sections.content-toggles.name",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "subheading": "",
+        "section_heading_layout": "section-heading--left",
+        "open_first": false,
+        "form_enable": false,
+        "form_title": "Contact form",
+        "seo_h_tag": "h2"
+      }
+    }
+  },
+  "order": [
+    "media_with_text_overlay_PtDytU",
+    "main",
+    "rich_text_4VqQMY",
+    "text_columns_images_qYyxzF",
+    "content_toggles_cPy6dX"
+  ]
+}

@@ -1,0 +1,225 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "center": false
+      }
+    },
+    "content_toggles_KGp66d": {
+      "type": "content-toggles",
+      "blocks": {
+        "text_rJhw6G": {
+          "type": "text",
+          "settings": {
+            "title": "What are your store hours and locations?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>We currently have two stores:</p><h4><strong>Joel’s Place Rockwell</strong></h4><p>Ground Floor, The Proscenium<br/>Retail Row at The Proscenium Residences on Estrella Street, Rockwell Center,<br/>Makati City</p><p>Mobile: +63939 989 2745 / Landline: +632 8899 7034</p><p>Open Monday-Thursday 9 a.m. to 9 p.m.</p><p>Open Friday- Sunday 9 a.m. to 10 p.m.</p><h4><strong>Joel’s Place Makati</strong></h4><p>Ground Floor, Glorietta 4,<br/>Rustan’s Expansion, Ayala Center, Courtyard Drive, Makati City</p><p>Mobile: +63968 852 8766 / Landline: +632 8567 1150</p><p>Open Monday-Thursday 9 a.m. to 9 p.m.</p><p>Open Friday- Sunday 9 a.m. to 10 p.m.</p><p>Find directions and store hours at the <a href=\"/pages/store-locator\" title=\"Store Locator\">Store Locator</a> page. You can also connect with us on <a href=\"https://facebook.com/joelsplaceph\">Facebook </a>or <a href=\"https://instagram.com/joelsplaceph\">Instagram</a> to keep an eye out for more store openings and the latest events.</p>",
+            "hide_block_if": false
+          }
+        },
+        "text_kwN8iJ": {
+          "type": "text",
+          "settings": {
+            "title": "What types of payment do you accept?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>We accept Visa, Mastercard, American Express, GCash, Maya, and cash.</p>",
+            "hide_block_if": false
+          }
+        },
+        "text_9XKn8e": {
+          "type": "text",
+          "settings": {
+            "title": "Do you take reservations?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>Yes, to make a reservation at <strong>Joel’s Place Rockwell or Glorietta 4 Makati, </strong>just call our stores:<br/><br/><span style=\"text-decoration:underline\">Call Joel's Place Rockwell </span> +632 8899 7034 / +63939 989 2745</p><p><span style=\"text-decoration:underline\">Call Joel's Place Glorietta 4 Makati</span> +632 8567 1150 / +63968 852 8766<br/></p><p><span style=\"text-decoration:underline\"><strong>Please note:</strong></span> We can hold your reservation for up to 15 minutes.  Tables can be occupied for up to 2.5 hours. A corkage fee will be charged for bringing in outside food and beverage.</p><p></p>",
+            "hide_block_if": false
+          }
+        },
+        "text_dc9wyg": {
+          "type": "text",
+          "settings": {
+            "title": "Are pets allowed inside Joel's Place?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>We love pets but unfortunately, pets must remain outside Joel's Place. You may make use of our outdoor tables if available.</p>",
+            "hide_block_if": false
+          }
+        },
+        "text_R8EKyX": {
+          "type": "text",
+          "settings": {
+            "title": "How may I know what's on the menu or available in-store?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>You may visit our <a href=\"/pages/menus\" title=\"Menus\"><span style=\"text-decoration:underline\">Menus</span></a> page for seasonal updates on what's on offer. Alternatively, you may call our stores and our team will be happy to help you.<br/><br/><span style=\"text-decoration:underline\">Call Joel's Place Rockwell </span>+632 8899 7034 / +63939 989 2745</p><p><span style=\"text-decoration:underline\">Call Joel's Place Glorietta 4 Makati</span> +632 8567 1150 / +63968 852 8766</p>",
+            "hide_block_if": false
+          }
+        },
+        "text_p7ijGJ": {
+          "type": "text",
+          "settings": {
+            "title": "Do you have Joel's Place Gift Cards?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>Yes, you can purchase physical <a href=\"/products/joels-place-gift-card\" target=\"_blank\" title=\"Joel's Place Gift Card\"><span style=\"text-decoration:underline\">Gift Cards online</span></a><span style=\"text-decoration:underline\">.</span></p>",
+            "hide_block_if": false
+          }
+        },
+        "text_wcicQF": {
+          "type": "text",
+          "settings": {
+            "title": "Do you offer gift wrapping?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>Yes, we offer gift boxing in-store. Approach any of our staff at the Gift Bar to see the sizing options of Joel's Place gift boxes. To reduce waste, we do not offer paper gift wrapping.</p>",
+            "hide_block_if": false
+          }
+        },
+        "text_MPybGN": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "title": "Do you offer pickup or delivery services?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>From October 2024, our Christmas Hampers will be offered online each season. <br/><br/>We are pleased to offer online shopping and delivery, or Click + Collect, for selected premium gift boxes and baskets. We look forward to adding more grocery and gourmet products in the future.</p><p>Visit our <a href=\"/pages/shipping-rates-policies\" title=\"Shipping Rates + Policies\"><span style=\"text-decoration:underline\">Shipping Rates + Policies</span></a> page for more information.</p>",
+            "hide_block_if": false
+          }
+        },
+        "text_pmFNJt": {
+          "type": "text",
+          "settings": {
+            "title": "Do you sell Joel's Place products online?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>Yes, we’re pleased to offer select items for <a href=\"/pages/click-and-collect\" target=\"_blank\" title=\"Order Online, Collect In-Store\"><span style=\"text-decoration:underline\">Click and Collect</span></a>. You may choose between two convenient pickup options: In-store or Curbside. We’re working to expand our product selection, so stay tuned for more items coming soon!</p>",
+            "hide_block_if": false
+          }
+        },
+        "text_PAx8U7": {
+          "type": "text",
+          "settings": {
+            "title": "Can I earn Rustan’s FSP Points when purchasing on the website?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>Yes, just enter your 16-digit FSP Card Number in the FSP section at checkout to earn points. These will be credited to your account within 48 hours. <em>Rustan’s FSP Terms & Conditions apply.</em></p>",
+            "hide_block_if": false
+          }
+        },
+        "text_784JNy": {
+          "type": "text",
+          "settings": {
+            "title": "What is your exchange and return policy?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>For grocery items: please contact our store in person or by phone as soon as the item is received and you notice a problem, or up to 2 days after your purchase. Our team will be happy to assist you with an exchange or replacement if required. If an item is not available for replacement, a store credit or refund may be offered.</p><p>J<strong>oel’s Place Rockwell</strong> +632 8899 7034</p><p><strong>Joel’s Place Makati </strong>+632 8567 1150</p><p>For food service items: if you detect a problem with your meal, please let our staff know and they'll be happy to address your needs in the store. Unfortunately, we are unable to offer refunds on food service items including ready-to-go meals and takeaway.<br/><br/>For online purchases and seasonal products such as Hampers, we do not offer refunds. You may exchange at a physical store within 7 days of receiving your order. Please present your online order confirmation.</p>",
+            "hide_block_if": false
+          }
+        },
+        "text_3KmRJa": {
+          "type": "text",
+          "settings": {
+            "title": "How do I stay updated about Joel's Place?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>Subscribe to our newsletter, <a href=\"/pages/join-the-list\" title=\"Join The List\"><span style=\"text-decoration:underline\">The List</span></a>, and follow us on <a href=\"https://facebook.com/joelsplaceph\" title=\"https://facebook.com/joelsplaceph\"><span style=\"text-decoration:underline\">Facebook,</span></a> and<span style=\"text-decoration:underline\"> </span><a href=\"https://instagram.com/joelsplaceph\" title=\"https://instagram.com/joelsplaceph\"><span style=\"text-decoration:underline\">Instagram</span></a> to be the first to know about new developments, events, VIP offers, and more. </p>",
+            "hide_block_if": false
+          }
+        },
+        "text_nMRPDf": {
+          "type": "text",
+          "settings": {
+            "title": "How do I get in touch?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>For any concerns, you may send a message to our customer service support through the chat box at the bottom right of the screen or send us an email at hello(at)joelsplace.com. We'll get back to you as soon as we can. </p><p>You may also call our stores by phone.</p><p>J<strong>oel’s Place Rockwell</strong> +632 8899 7034</p><p><strong>Joel’s Place Makati </strong>+632 8567 1150</p>",
+            "hide_block_if": false
+          }
+        },
+        "text_tNR9jP": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "title": "Question title",
+            "subtitle": "Question subtitle",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>Write a complete answer to the most frequent questions that your customers might have, such as important product information, shipping policies, payment issues or returns.</p>",
+            "hide_block_if": false
+          }
+        }
+      },
+      "block_order": [
+        "text_rJhw6G",
+        "text_kwN8iJ",
+        "text_9XKn8e",
+        "text_dc9wyg",
+        "text_R8EKyX",
+        "text_p7ijGJ",
+        "text_wcicQF",
+        "text_MPybGN",
+        "text_pmFNJt",
+        "text_PAx8U7",
+        "text_784JNy",
+        "text_3KmRJa",
+        "text_nMRPDf",
+        "text_tNR9jP"
+      ],
+      "name": "t:sections.local-extra-words.sections.content-toggles.name",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "subheading": "",
+        "section_heading_layout": "section-heading--left",
+        "open_first": false,
+        "form_enable": false,
+        "form_title": "Contact form",
+        "seo_h_tag": "h2"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "content_toggles_KGp66d"
+  ]
+}

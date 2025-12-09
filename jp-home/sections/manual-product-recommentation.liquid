@@ -1,0 +1,49 @@
+{% schema %}
+{
+  "name": "Manual Recommendations",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "You May Also Like"
+    },
+    {
+      "type": "product_list",
+      "id": "products",
+      "label": "Recommended Products",
+      "limit": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "Manual Recommendations"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="manual-product-recommendations" id="manual-product-recommendations-{{ section.id }}">
+  <h2 class="manual-product-recommendations__title">
+    {{ section.settings.title }}
+  </h2>
+  <div class="manual-product-recommendations__products">
+    {% for product in section.settings.products %}
+      <div class="manual-product-recommendations__product" id="mpr-product-{{ product.id }}">
+        <a href="{{ product.url }}" class="manual-product-recommendations__link">
+          <img src="{{ product.featured_image | img_url: '360x360' }}" alt="{{ product.title }}" class="manual-product-recommendations__image" />
+          <div class="manual-product-recommendations__info">
+            <span class="manual-product-recommendations__name">{{ product.title }}</span>
+            <span class="manual-product-recommendations__price">{{ product.price | money }}</span>
+          </div>
+        </a>
+        <button class="manual-product-recommendations__quickbuy-btn"
+          data-product-id="{{ product.id }}"
+          data-variant-id="{{ product.selected_or_first_available_variant.id }}">
+          Add to Cart
+        </button>
+      </div>
+    {% endfor %}
+  </div>
+</div>

@@ -1,0 +1,359 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "custom_css": [
+        ".title.h2 {display: none;}"
+      ],
+      "settings": {
+        "center": false
+      }
+    },
+    "rich_text_p3RxVp": {
+      "type": "rich-text",
+      "blocks": {
+        "title_NhUfja": {
+          "type": "title",
+          "disabled": true,
+          "settings": {
+            "title": "Store Locator",
+            "title_size": "h2",
+            "seo_h_tag": "h2"
+          }
+        },
+        "text_htekJL": {
+          "type": "text",
+          "settings": {
+            "text": "<h3>Joel's Place Proscenium</h3><p>Ground Floor, The Proscenium Retail Row, The Proscenium Residences on Estrella Street, Rockwell Center, Makati City 1211 Metro Manila, Philippines</p><h5>Contact Details</h5><p>Mobile: + 63939 989 2745<br/>Landline: +632 8899 7034</p><h5>Store Hours</h5><p>Monday-Thursday 9 a.m. to 9 p.m.</p><p>Friday-Sunday 9 a.m. to 10 p.m.</p><h5>Bakery Window</h5><p>7 a.m. to 9 a.m. daily</p><h5>Reservations</h5><p>Call our Proscenium store at +632 8899 7034. We can hold your reservation for up to 15 minutes. Tables may be occupied for up to 2.5 hours. A corkage fee will be charged for bringing in outside food and beverages.</p>",
+            "text_size": "regular"
+          }
+        },
+        "button_Fw9CRn": {
+          "type": "button",
+          "settings": {
+            "button_label": "Map Directions",
+            "link": "https://maps.app.goo.gl/QtH3t5Qr2PUEaCPF9",
+            "open_in_new_window": true,
+            "button_size": "large",
+            "button_style": "solid"
+          }
+        }
+      },
+      "block_order": [
+        "title_NhUfja",
+        "text_htekJL",
+        "button_Fw9CRn"
+      ],
+      "custom_css": [
+        ".card .button--solid {background-color: #70a062; border-color: #70a062;}"
+      ],
+      "name": "t:sections.rich-text.name",
+      "settings": {
+        "height": "regular",
+        "image": "shopify://shop_images/TZPxJPL-STORE-0097_web_a777b527-55ba-4cc0-806d-7ed59bfdeb46.jpg",
+        "image_position": "right",
+        "image_crop": false,
+        "width": "100",
+        "text_alignment": "horizontal-left",
+        "text_alignment_vertical": "middle",
+        "spacing": "large",
+        "is_fullwidth": false,
+        "section_background_color": "rgba(0,0,0,0)",
+        "section_background_gradient": "",
+        "remove_margin": false,
+        "color_background_main": "rgba(0,0,0,0)",
+        "color_text_main": "rgba(0,0,0,0)",
+        "color_accent_main": "rgba(0,0,0,0)",
+        "color_borders_main": "rgba(0,0,0,0)",
+        "color_shadow_main": "rgba(0,0,0,0)",
+        "color_hide_borders": false,
+        "color_hide_shadow": false
+      }
+    },
+    "rich_text_jzLBBN": {
+      "type": "rich-text",
+      "blocks": {
+        "title_UWkRBU": {
+          "type": "title",
+          "disabled": true,
+          "settings": {
+            "title": "Store Locator",
+            "title_size": "h2",
+            "seo_h_tag": "h2"
+          }
+        },
+        "text_geEDNe": {
+          "type": "text",
+          "settings": {
+            "text": "<h3>Joel's Place Glorietta 4</h3><p>Ground Floor, Glorietta 4, Rustan’s Expansion, Ayala Center, Courtyard Drive, Makati City 1200 Metro Manila, Philippines</p><h5>Contact Details</h5><p>Mobile: +63968 852 8766<br/>Landline: +632 8567 1150</p><h5>Store Hours</h5><p>Monday-Thursday 9 a.m. to 9 p.m.</p><p>Friday-Sunday 9 a.m. to 10 p.m.</p><h5>Bakery Window</h5><p>7 a.m. to 9 a.m. daily</p><h5>Reservations</h5><p>Call our Glorietta 4 store at +632 8567 1150. We can hold your reservation for up to 15 minutes. Tables may be occupied for up to 2.5 hours. A corkage fee will be charged for bringing in outside food and beverages.</p>",
+            "text_size": "regular"
+          }
+        },
+        "button_wBGQGb": {
+          "type": "button",
+          "settings": {
+            "button_label": "Map Directions",
+            "link": "https://www.google.com/maps/place/Joel's+Place+Glorietta+4,+Ayala+Makati/@14.5517444,121.0238896,972m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3397c954220e7e2d:0xc5170054f6b3d4e5!8m2!3d14.5517444!4d121.0264645!16s%2Fg%2F11vdqz2nqr?entry=ttu&g_ep=EgoyMDI1MDMyNC4wIKXMDSoASAFQAw%3D%3D",
+            "open_in_new_window": true,
+            "button_size": "large",
+            "button_style": "solid"
+          }
+        }
+      },
+      "block_order": [
+        "title_UWkRBU",
+        "text_geEDNe",
+        "button_wBGQGb"
+      ],
+      "custom_css": [
+        ".card .button--solid {background-color: #70a062; border-color: #70a062;}"
+      ],
+      "name": "t:sections.rich-text.name",
+      "settings": {
+        "height": "regular",
+        "image": "shopify://shop_images/joels-place-glorietta-4-now-open.jpg",
+        "image_position": "right",
+        "image_crop": false,
+        "width": "100",
+        "text_alignment": "horizontal-left",
+        "text_alignment_vertical": "middle",
+        "spacing": "large",
+        "is_fullwidth": false,
+        "section_background_color": "rgba(0,0,0,0)",
+        "section_background_gradient": "",
+        "remove_margin": false,
+        "color_background_main": "rgba(0,0,0,0)",
+        "color_text_main": "rgba(0,0,0,0)",
+        "color_accent_main": "rgba(0,0,0,0)",
+        "color_borders_main": "rgba(0,0,0,0)",
+        "color_shadow_main": "rgba(0,0,0,0)",
+        "color_hide_borders": false,
+        "color_hide_shadow": false
+      }
+    },
+    "flex_slideshow_zVRXzP": {
+      "type": "flex-slideshow",
+      "blocks": {
+        "slide_image_PKr6b4": {
+          "type": "_slide-image",
+          "settings": {
+            "image": "shopify://shop_images/joels-place-rockwell-grocery-lifestyle.jpg",
+            "mobile_image": "shopify://shop_images/joels-place-rockwell-grocery-lifestyle.jpg",
+            "link": "",
+            "open_in_new_window": false,
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)"
+          },
+          "blocks": {}
+        },
+        "slide_image_j9W9Ng": {
+          "type": "_slide-image",
+          "name": "t:sections.local-extra-words.sections.slideshow.block.name",
+          "settings": {
+            "image": "shopify://shop_images/TZPxJPL-STORE-0252_web.jpg",
+            "mobile_image": "shopify://shop_images/TZPxJPL-STORE-0252_web.jpg",
+            "link": "",
+            "open_in_new_window": false,
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)"
+          },
+          "blocks": {}
+        },
+        "slide_image_BXP7PJ": {
+          "type": "_slide-image",
+          "settings": {
+            "image": "shopify://shop_images/joels-place-rockwell-the-sommelier.jpg",
+            "mobile_image": "shopify://shop_images/joels-place-rockwell-the-sommelier.jpg",
+            "link": "",
+            "open_in_new_window": false,
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)"
+          },
+          "blocks": {}
+        },
+        "slide_image_dwATYy": {
+          "type": "_slide-image",
+          "name": "t:sections.local-extra-words.sections.slideshow.block.name",
+          "settings": {
+            "image": "shopify://shop_images/TZPxJPL-STORE-0306_web.jpg",
+            "mobile_image": "shopify://shop_images/TZPxJPL-STORE-0306_web.jpg",
+            "link": "",
+            "open_in_new_window": false,
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)"
+          },
+          "blocks": {}
+        },
+        "slide_image_DABMwB": {
+          "type": "_slide-image",
+          "name": "t:sections.local-extra-words.sections.slideshow.block.name",
+          "settings": {
+            "image": "shopify://shop_images/joels-place-rockwell-the-deli-and-the-fishmonger.jpg",
+            "mobile_image": "shopify://shop_images/joels-place-rockwell-the-deli-and-the-fishmonger.jpg",
+            "link": "",
+            "open_in_new_window": false,
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "slide_image_PKr6b4",
+        "slide_image_j9W9Ng",
+        "slide_image_BXP7PJ",
+        "slide_image_dwATYy",
+        "slide_image_DABMwB"
+      ],
+      "name": "t:theme_blocks.sections.flex-slideshow.name",
+      "settings": {
+        "desktop_height": "60vh",
+        "mobile_height": "60vh",
+        "is_auto_height": false,
+        "autorotate_enable": true,
+        "autorotate_interval": 5,
+        "alignment": "horizontal-left align-content--vertical-bottom",
+        "width": "100",
+        "spacing": "large",
+        "is_fullwidth": false,
+        "section_background_color": "rgba(0,0,0,0)",
+        "section_background_gradient": "",
+        "section_heading_color": "rgba(0,0,0,0)",
+        "remove_margin": false,
+        "color_hide_borders": true,
+        "color_hide_shadow": true,
+        "disable_parallax": false
+      }
+    },
+    "flex_slideshow_FYhjMD": {
+      "type": "flex-slideshow",
+      "blocks": {
+        "slide_image_n8wfHV": {
+          "type": "_slide-image",
+          "settings": {
+            "image": "shopify://shop_images/Makati-Store-Locator-1_d3e79d4f-8f15-4a91-9cfa-575eed7ad02f.jpg",
+            "mobile_image": "shopify://shop_images/Makati-Store-Locator-1_d3e79d4f-8f15-4a91-9cfa-575eed7ad02f.jpg",
+            "link": "",
+            "open_in_new_window": false,
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)"
+          },
+          "blocks": {}
+        },
+        "slide_image_UaBbF8": {
+          "type": "_slide-image",
+          "settings": {
+            "image": "shopify://shop_images/Makati-Store-Locator-6.jpg",
+            "mobile_image": "shopify://shop_images/Makati-Store-Locator-6.jpg",
+            "link": "",
+            "open_in_new_window": false,
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)"
+          },
+          "blocks": {}
+        },
+        "slide_image_DNRUCH": {
+          "type": "_slide-image",
+          "name": "t:sections.local-extra-words.sections.slideshow.block.name",
+          "settings": {
+            "image": "shopify://shop_images/Makati-Store-Locator-4.jpg",
+            "mobile_image": "shopify://shop_images/Makati-Store-Locator-4.jpg",
+            "link": "",
+            "open_in_new_window": false,
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)"
+          },
+          "blocks": {}
+        },
+        "slide_image_AMFJB3": {
+          "type": "_slide-image",
+          "name": "t:sections.local-extra-words.sections.slideshow.block.name",
+          "settings": {
+            "image": "shopify://shop_images/Makati-Store-Locator-5.jpg",
+            "mobile_image": "shopify://shop_images/Makati-Store-Locator-5.jpg",
+            "link": "",
+            "open_in_new_window": false,
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)"
+          },
+          "blocks": {}
+        },
+        "slide_image_qcdJqU": {
+          "type": "_slide-image",
+          "name": "t:sections.local-extra-words.sections.slideshow.block.name",
+          "settings": {
+            "image": "shopify://shop_images/Makati-Store-Locator-3.jpg",
+            "mobile_image": "shopify://shop_images/Makati-Store-Locator-3.jpg",
+            "link": "",
+            "open_in_new_window": false,
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "slide_image_n8wfHV",
+        "slide_image_UaBbF8",
+        "slide_image_DNRUCH",
+        "slide_image_AMFJB3",
+        "slide_image_qcdJqU"
+      ],
+      "name": "t:theme_blocks.sections.flex-slideshow.name",
+      "settings": {
+        "desktop_height": "60vh",
+        "mobile_height": "60vh",
+        "is_auto_height": false,
+        "autorotate_enable": true,
+        "autorotate_interval": 5,
+        "alignment": "horizontal-left align-content--vertical-bottom",
+        "width": "100",
+        "spacing": "large",
+        "is_fullwidth": false,
+        "section_background_color": "rgba(0,0,0,0)",
+        "section_background_gradient": "",
+        "section_heading_color": "rgba(0,0,0,0)",
+        "remove_margin": false,
+        "color_hide_borders": true,
+        "color_hide_shadow": true,
+        "disable_parallax": false
+      }
+    },
+    "newsletter_4nFmVL": {
+      "type": "newsletter",
+      "name": "t:sections.newsletter.name",
+      "settings": {
+        "show_icon": true,
+        "title": "Joel's Place Straight to your Inbox",
+        "text": "<p>Discover the latest culinary trends, exclusive dining experiences, store events, and must-have gourmet products at Joel's Place.</p><p>Read our Privacy Policy <a href=\"https://joelsplace.com/pages/your-privacy\" title=\"Your Privacy\">here</a>.</p>",
+        "color_background_main": "#1d1d1d",
+        "color_text_main": "#ffffff",
+        "color_borders_main": "rgba(0,0,0,0)",
+        "color_shadow_main": "rgba(0,0,0,0)",
+        "color_hide_borders": false,
+        "color_hide_shadow": false,
+        "section_background_color": "rgba(0,0,0,0)",
+        "section_background_gradient": "",
+        "remove_margin": false,
+        "seo_h_tag": "h2"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rich_text_p3RxVp",
+    "rich_text_jzLBBN",
+    "flex_slideshow_zVRXzP",
+    "flex_slideshow_FYhjMD",
+    "newsletter_4nFmVL"
+  ]
+}

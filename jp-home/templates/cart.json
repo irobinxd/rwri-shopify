@@ -1,0 +1,39 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main-cart": {
+      "type": "main-cart",
+      "blocks": {
+        "cart-items": {
+          "type": "cart-items",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "cart-items"
+      ],
+      "custom_css": [
+        ".cart__shipping {display: none;}",
+        ".button--solid {background-color: #70a062; border-color: #70a062;}"
+      ],
+      "settings": {
+        "wine_warning_enable": true,
+        "wine_warning_title": "Legal Drinking Age Notice",
+        "wine_warning_text": "By purchasing this product, you affirm that you are over the age of 18.",
+        "wine_gift_enable": true,
+        "wine_gift_text": "Add wine bag and gift tag"
+      }
+    }
+  },
+  "order": [
+    "main-cart"
+  ]
+}

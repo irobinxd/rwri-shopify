@@ -1,0 +1,192 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "text_tczHBc": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>By purchasing this product, you affirm that you are over the age of 18. Wines are available for Click and Collect at our Glorietta 4 store.</strong></p>",
+            "text_size": "text-size--regular",
+            "text_color": "#6a6a6a",
+            "text_transform": false
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "variants_style": "radio",
+            "show_quantities": "no",
+            "inventory_color_low": "rgba(0,0,0,0)",
+            "inventory_color_enough": "rgba(0,0,0,0)",
+            "inventory_color_out": "rgba(0,0,0,0)"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_price": true,
+            "show_quantity_selector": true,
+            "show_preorder": false,
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": false,
+            "show_gift_purchase_checkbox": false,
+            "gift_purchase_checkbox_label": "Add a wine bag with gift tag",
+            "gift_purchase_checkbox_value": "Added a wine bag with gift tag",
+            "gift_purchase_required": false,
+            "color_text_buttons": "rgba(0,0,0,0)",
+            "color_accent_buttons": "rgba(0,0,0,0)",
+            "style_buttons": "solid"
+          }
+        },
+        "empty_space_2": {
+          "type": "space",
+          "settings": {}
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "empty_space_3": {
+          "type": "space",
+          "settings": {}
+        },
+        "text_4Qp9kH": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<h4><strong>Important Note: </strong></h4><p><strong>Cut-off date for Christmas orders is X a.m. December XX, 2025.</strong></p>",
+            "text_size": "text-size--regular",
+            "text_color": "#6a6a6a",
+            "text_transform": false
+          }
+        },
+        "space_TjFC6E": {
+          "type": "space",
+          "settings": {}
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "title": "Share",
+            "subtitle": "",
+            "tooltip_info": "",
+            "share_on_facebook": true,
+            "share_on_x": true,
+            "share_on_pinterest": true,
+            "custom_share_link": false,
+            "collapsible": false,
+            "opened_by_default": false,
+            "layout": "compact",
+            "text_color": "rgba(0,0,0,0)",
+            "bg_color": "rgba(0,0,0,0)",
+            "darken_header": true
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "text_tczHBc",
+        "variant_picker",
+        "buy_buttons",
+        "empty_space_2",
+        "description",
+        "empty_space_3",
+        "text_4Qp9kH",
+        "space_TjFC6E",
+        "share"
+      ],
+      "custom_css": [
+        ".rte ul {list-style: inside;}",
+        ".product__subtitle.text-size--regular {margin-top: -0.8rem; font-size: 16px;}",
+        ".button {border-radius: 50px;}",
+        ".product-quantity {--border-radius-buttons: 100px;}",
+        ".product__subtitle.text-size--regular {font-family: \"Brandon Grotesque\", sans-serif; font-size: 16px;}",
+        ".button--product {background-color: #70a062; border-color: #70a062 !important;}",
+        ".product__subtitle.rte {font-family: \"Brandon Grotesque\", sans-serif; font-size: 14px !important;}"
+      ],
+      "settings": {
+        "gallery_style": "slider",
+        "gallery_ratio": "natural",
+        "other_media_ratio": "fit",
+        "video_fit": true,
+        "gallery_fit": false,
+        "show_border": false,
+        "gallery_card_design": false,
+        "gallery_padding": 0,
+        "gallery_pagination": "dots",
+        "enable_zoom": true,
+        "enable_video_looping": false,
+        "enable_video_autoplay": false,
+        "default_to_first_variant": true,
+        "sticky_add_to_cart": false,
+        "sticky_atc_variants": false,
+        "sticky_atc_style": "wide",
+        "sticky_bar_bgcolor": "#ffffff",
+        "sticky_bar_txtcolor": "#111111",
+        "sticky_bar_blur": true
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "blocks": {
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "quick_buy": {
+          "type": "quick_buy",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "price",
+        "title",
+        "quick_buy"
+      ],
+      "custom_css": [
+        ".card .button--solid {background-color: #70a062; border-color: #70a062;}"
+      ],
+      "settings": {
+        "heading": "You may also like",
+        "subheading": "",
+        "section_heading_layout": "section-heading--left",
+        "layout": "grid-4 grid-portable-3 grid-lap-2 grid-tiny-1",
+        "layout_mobile": "grid-palm-1",
+        "products_number": 4,
+        "color_background_main": "rgba(0,0,0,0)",
+        "color_text_main": "rgba(0,0,0,0)",
+        "color_button_main": "rgba(0,0,0,0)",
+        "color_borders_main": "rgba(0,0,0,0)",
+        "color_shadow_main": "rgba(0,0,0,0)",
+        "color_hide_borders": false,
+        "color_hide_shadow": false,
+        "section_background_color": "rgba(0,0,0,0)",
+        "section_background_gradient": "",
+        "section_heading_color": "rgba(0,0,0,0)",
+        "remove_margin": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "product-recommendations"
+  ]
+}
