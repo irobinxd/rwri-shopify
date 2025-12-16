@@ -1,0 +1,84 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "product-quick-view",
+      "blocks": {
+        "vendor": {
+          "type": "vendor",
+          "disabled": true,
+          "settings": {
+            "text_size": "text-size--regular"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "variants_style": "radio",
+            "show_quantities": "no",
+            "inventory_color_low": "rgba(0,0,0,0)",
+            "inventory_color_enough": "rgba(0,0,0,0)",
+            "inventory_color_out": "rgba(0,0,0,0)"
+          }
+        },
+        "empty_space": {
+          "type": "space",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_quantity_selector": true,
+            "show_price": true,
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": false,
+            "color_text_buttons": "rgba(0,0,0,0)",
+            "color_accent_buttons": "rgba(0,0,0,0)",
+            "style_buttons": "solid"
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "price",
+        "variant_picker",
+        "empty_space",
+        "buy_buttons"
+      ],
+      "settings": {
+        "gallery_ratio": "natural",
+        "other_media_ratio": "natural",
+        "video_fit": true,
+        "gallery_fit": false,
+        "show_border": false,
+        "gallery_card_design": false,
+        "gallery_padding": 0,
+        "gallery_pagination": "dots",
+        "enable_video_looping": false,
+        "enable_video_autoplay": false,
+        "default_to_first_variant": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ],
+  "layout": "popup"
+}

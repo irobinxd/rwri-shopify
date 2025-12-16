@@ -1,0 +1,66 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "settings": {
+        "show_collection_description": true,
+        "show_collection_image": true,
+        "alignment": "horizontal-left align-content--vertical-bottom",
+        "color_background_main": "rgba(0,0,0,0)",
+        "color_text_main": "#ffffff",
+        "is_fullwidth": false,
+        "remove_bottom_margin": false
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "quick_buy": {
+          "type": "quick_buy",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "quick_buy"
+      ],
+      "custom_css": [
+        ".button--solid {background-color: #70a062; border-color: #70a062 !important;}",
+        ".element--is-sticky {max-height: 90vh; overflow-y: scroll; padding-right: 15px;}"
+      ],
+      "settings": {
+        "products_number": 50,
+        "enable_filtering": true,
+        "enable_sorting": true,
+        "filters_position": "sidebar",
+        "expand_filters_bydefault": true,
+        "stick_sidebar_to_top": true,
+        "image_filter_layout": "onecolumn",
+        "layout_desktop": "four-columns",
+        "layout_mobile": "grid-palm-2"
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "product-grid"
+  ]
+}

@@ -336,6 +336,24 @@
   font-weight: var(--font-weight-body-bold, 600);
 }
 
+/* Platter Notice Styles */
+.cart-platter-notice {
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  border-radius: var(--global-radius, 0.5rem);
+  background-color: rgba(255, 200, 200, 0.5);
+}
+
+.cart-platter-notice p {
+  margin: 0;
+}
+
+.cart-platter-notice strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: var(--font-weight-body-bold, 600);
+}
+
 /* Modal Styles for Christmas Platter Warning */
 #modal-christmas-platter-warning .modal-body {
   margin: 1.5rem 0;
@@ -486,4 +504,126 @@ datetime-slot-picker .datetime-slot-picker__field select option {
   align-items: center;
   justify-content: space-between;
   gap: var(--gutter-regular);
+}
+
+/* Custom additions for compact datetime picker */
+datetime-slot-picker.datetime-slot-picker--inline {
+  flex-shrink: 0;
+  width: auto;
+}
+
+datetime-slot-picker.datetime-slot-picker--inline .datetime-slot-picker__fields {
+  grid-template-columns: auto auto;
+  width: auto;
+  max-width: fit-content;
+}
+
+@media screen and (max-width: 767px) {
+  datetime-slot-picker.datetime-slot-picker--inline .datetime-slot-picker__fields {
+    grid-template-columns: auto auto;
+    max-width: 100%;
+  }
+}
+
+datetime-slot-picker.datetime-slot-picker--inline .datetime-slot-picker__field {
+  width: auto;
+  flex: 0 0 auto;
+}
+
+datetime-slot-picker.datetime-slot-picker--inline .datetime-slot-picker__field input[type="date"] {
+  width: auto !important;
+  min-width: 140px;
+  max-width: 160px;
+}
+
+datetime-slot-picker.datetime-slot-picker--inline .datetime-slot-picker__field select {
+  width: auto !important;
+  min-width: 180px;
+  max-width: 220px;
+}
+
+.cart-items-group__header > span {
+  flex: 0 0 auto;
+}
+
+.cart-items-group__header datetime-slot-picker {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+/* Wine Warning Styles */
+.cart-wine-warning {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-borders-main);
+  border-radius: var(--global-radius, 0.5rem);
+  background-color: var(--color-background-accent, rgba(197, 191, 191, 0.20));
+}
+
+.cart-wine-warning p {
+  margin: 0;
+}
+
+.cart-wine-warning strong {
+  display: block;
+  margin-bottom: -0.3rem;
+  font-weight: var(--font-weight-body-bold, 600);
+}
+
+/* Wine Gift Option Styles */
+.cart-wine-gift {
+  display: flex;
+  align-items: center;
+}
+
+.cart-wine-gift input[type="checkbox"] {
+  flex-shrink: 0;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin: 0;
+  cursor: pointer;
+}
+
+.cart-wine-gift label {
+  margin-inline-start: 0.5rem;
+  cursor: pointer;
+  line-height: 1.5;
+}
+/* Christmas Platter Warning Styles */
+.cart-christmas-platter-warning {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-borders-main);
+  border-radius: var(--global-radius, 0.5rem);
+  background-color: var(--color-background-accent, rgba(255, 3, 3, 0.20));
+}
+
+.cart-christmas-platter-warning p {
+  margin: 0;
+}
+
+.cart-christmas-platter-warning strong {
+  display: block;
+  margin-bottom: -0.3rem;
+  font-weight: var(--font-weight-body-bold, 600);
+}
+
+/* Modal Styles for Christmas Platter Warning */
+#modal-christmas-platter-warning .modal-body {
+  margin: 1.5rem 0;
+}
+
+#modal-christmas-platter-warning .modal-body p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+#modal-christmas-platter-warning .modal-body p:last-child {
+  margin-bottom: 0;
+}
+
+#modal-christmas-platter-warning .modal-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
 }

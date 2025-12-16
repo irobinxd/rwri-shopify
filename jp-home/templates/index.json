@@ -16,8 +16,8 @@
           "type": "_slide-image",
           "name": "t:sections.local-extra-words.sections.slideshow.block.name",
           "settings": {
-            "image": "shopify://shop_images/joels-place-christmas-hamper-2025-cover.jpg",
-            "mobile_image": "shopify://shop_images/joels-place-christmas-hamper-2025-cover.jpg",
+            "image": "shopify://shop_images/2025-christmas-platters-in-store-article-cover.jpg",
+            "mobile_image": "shopify://shop_images/2025-christmas-platters-in-store-article-cover.jpg",
             "link": "https://joelsplace.com/blogs/in-store-now/joels-place-christmas-catalog-2025",
             "open_in_new_window": true,
             "color_background_main": "#3b3b3b",
@@ -68,8 +68,8 @@
                 "button_jAdwRc": {
                   "type": "button",
                   "settings": {
-                    "button_label": "Browse Our Catalog",
-                    "link": "https://joelsplace.com/blogs/in-store-now/joels-place-christmas-catalog-2025",
+                    "button_label": "Ways to Collect Your Order",
+                    "link": "shopify://blogs/in-store-now/how-to-pick-up-your-click-and-collect-order-at-joels-place",
                     "open_in_new_window": false,
                     "button_size": "regular",
                     "button_style": "outline",
@@ -142,10 +142,25 @@
                     "color_accent_buttons": "rgba(0,0,0,0)"
                   },
                   "blocks": {}
+                },
+                "button_Nkm9dk": {
+                  "type": "button",
+                  "name": "t:sections.rich-text.blocks.button.name",
+                  "settings": {
+                    "button_label": "Our Tips for Wine Shopping",
+                    "link": "shopify://blogs/guides/shopping-for-wine-a-holiday-primer-with-joel-s-place",
+                    "open_in_new_window": false,
+                    "button_size": "regular",
+                    "button_style": "outline",
+                    "color_text_buttons": "#ffffff",
+                    "color_accent_buttons": "#ffffff"
+                  },
+                  "blocks": {}
                 }
               },
               "block_order": [
-                "button_BEKib7"
+                "button_BEKib7",
+                "button_Nkm9dk"
               ]
             }
           },
@@ -557,12 +572,11 @@
         },
         "1655970985e1e8c596-0": {
           "type": "image",
-          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/2025-christmas-food-platters-category-section.jpg",
             "title": "Festive Platters",
             "caption": "",
-            "link": "",
+            "link": "shopify://collections/2025-christmas-platters",
             "open_in_new_window": false,
             "seo_h_tag": "h3"
           }
@@ -606,7 +620,7 @@
         "subheading": "",
         "section_heading_layout": "section-heading--left",
         "style": "slider",
-        "layout": "grid-4 grid-portable-3 grid-lap-2",
+        "layout": "grid-5 grid-portable-4 grid-lap-3 grid-palm-2 smel",
         "border_radius": 200,
         "section_background_color": "#f3f3f3",
         "section_background_gradient": "",
@@ -809,21 +823,20 @@
         "price_fVyRdW",
         "quick_buy_FbPCYd"
       ],
-      "disabled": true,
       "custom_css": [
         "a.text-link,.rte a {text-decoration: underline;}"
       ],
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
-        "heading": "HEALTHY EATS",
-        "subheading": "Daily dose of wholesome choices",
+        "heading": "FESTIVE FLAVORS",
+        "subheading": "Pre-order Christmas platters made for celebrations",
         "show_view_all": true,
         "section_heading_layout": "section-heading--left",
         "style": "slider",
         "layout_desktop": "four-columns",
         "layout_mobile": "grid-palm-2",
         "products_number": 16,
-        "collection": "2025-festive-flavors-of-christmas",
+        "collection": "2025-christmas-platters",
         "collection_1": "",
         "collection_2": "",
         "collection_3": "",
@@ -844,44 +857,6 @@
     "blog_promotion_cards_YHWhNr": {
       "type": "blog-promotion-cards",
       "blocks": {
-        "card_xeNHiC": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/joels-place-takeouts-for-a-night-in-friends-hangout-cover.jpg",
-            "caption": "SHOPPING GUIDE",
-            "title": "Takeouts for a Night In",
-            "subtitle": "Whether you’re dining solo or feeding the family, treat yourself to a big night in with easy and delicious ready-to-eat meals from Joel’s Place Click and Collect.",
-            "link": "https://joelsplace.com/blogs/guides/takeouts-for-a-night-in-guide",
-            "button_label": "Read Now",
-            "color_background_main": "rgba(0,0,0,0)",
-            "color_text_main": "rgba(0,0,0,0)",
-            "color_accent_main": "rgba(0,0,0,0)",
-            "color_borders_main": "rgba(0,0,0,0)",
-            "color_shadow_main": "rgba(0,0,0,0)",
-            "color_hide_borders": false,
-            "color_hide_shadow": false,
-            "seo_h_tag": "h3"
-          }
-        },
-        "card_VLVpqn": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/JP-Christmas-Catalog-2025-Meet-Block.jpg",
-            "caption": "SHOPPING GUIDE",
-            "title": "The 2025 Joel's Place Christmas Catalog",
-            "subtitle": "Browse our 2025 Christmas catalog and discover a world of festive flavors and vibrant delights this holiday season.",
-            "link": "https://joelsplace.com/blogs/in-store-now/joels-place-christmas-catalog-2025",
-            "button_label": "Read Now",
-            "color_background_main": "rgba(0,0,0,0)",
-            "color_text_main": "rgba(0,0,0,0)",
-            "color_accent_main": "rgba(0,0,0,0)",
-            "color_borders_main": "rgba(0,0,0,0)",
-            "color_shadow_main": "rgba(0,0,0,0)",
-            "color_hide_borders": false,
-            "color_hide_shadow": false,
-            "seo_h_tag": "h3"
-          }
-        },
         "card_xEjHJn": {
           "type": "card",
           "settings": {
@@ -890,6 +865,44 @@
             "title": "Christmas Hampers at Joel's Place",
             "subtitle": "Conveniently shop Christmas Hampers via Click and Collect and make the spirit of giving beautifully effortless.",
             "link": "https://joelsplace.com/blogs/in-store-now/joels-place-christmas-hampers-2025",
+            "button_label": "Read Now",
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)",
+            "color_accent_main": "rgba(0,0,0,0)",
+            "color_borders_main": "rgba(0,0,0,0)",
+            "color_shadow_main": "rgba(0,0,0,0)",
+            "color_hide_borders": false,
+            "color_hide_shadow": false,
+            "seo_h_tag": "h3"
+          }
+        },
+        "card_TQ6bGa": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/shopping-for-wine-holiday-primer-guide-joels-place-sparkling-wine-in-article.jpg",
+            "caption": "SHOPPING GUIDE",
+            "title": "Shopping for Wine This Holiday",
+            "subtitle": "We cover the basics so you can choose the perfect reds, whites, rosés, and sparkling wines with confidence.",
+            "link": "https://joelsplace.com/blogs/guides/shopping-for-wine-a-holiday-primer-with-joel-s-place",
+            "button_label": "Read Now",
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)",
+            "color_accent_main": "rgba(0,0,0,0)",
+            "color_borders_main": "rgba(0,0,0,0)",
+            "color_shadow_main": "rgba(0,0,0,0)",
+            "color_hide_borders": false,
+            "color_hide_shadow": false,
+            "seo_h_tag": "h3"
+          }
+        },
+        "card_xeNHiC": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/joels-place-takeouts-for-a-night-in-friends-hangout-cover.jpg",
+            "caption": "SHOPPING GUIDE",
+            "title": "Takeouts for a Night In",
+            "subtitle": "Whether you’re dining solo or feeding the family, treat yourself to a big night in with easy and delicious ready-to-eat meals from Joel’s Place Click and Collect.",
+            "link": "https://joelsplace.com/blogs/guides/takeouts-for-a-night-in-guide",
             "button_label": "Read Now",
             "color_background_main": "rgba(0,0,0,0)",
             "color_text_main": "rgba(0,0,0,0)",
@@ -910,6 +923,26 @@
             "title": "AOP, DOP, and IGP Certified Products",
             "subtitle": "These labels ensure your ingredients are authentic and sourced straight from their local country.",
             "link": "shopify://blogs/guides/what-are-aop-dop-and-igp-certified-products",
+            "button_label": "Read Now",
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)",
+            "color_accent_main": "rgba(0,0,0,0)",
+            "color_borders_main": "rgba(0,0,0,0)",
+            "color_shadow_main": "rgba(0,0,0,0)",
+            "color_hide_borders": false,
+            "color_hide_shadow": false,
+            "seo_h_tag": "h3"
+          }
+        },
+        "card_VLVpqn": {
+          "type": "card",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/JP-Christmas-Catalog-2025-Meet-Block.jpg",
+            "caption": "SHOPPING GUIDE",
+            "title": "The 2025 Joel's Place Christmas Catalog",
+            "subtitle": "Browse our 2025 Christmas catalog and discover a world of festive flavors and vibrant delights this holiday season.",
+            "link": "https://joelsplace.com/blogs/in-store-now/joels-place-christmas-catalog-2025",
             "button_label": "Read Now",
             "color_background_main": "rgba(0,0,0,0)",
             "color_text_main": "rgba(0,0,0,0)",
@@ -1043,10 +1076,11 @@
         }
       },
       "block_order": [
-        "card_xeNHiC",
-        "card_VLVpqn",
         "card_xEjHJn",
+        "card_TQ6bGa",
+        "card_xeNHiC",
         "card_qa7F8C",
+        "card_VLVpqn",
         "card_UJC9jU",
         "card_DEXJ3q",
         "card_6neAf8",
@@ -1077,6 +1111,46 @@
     "165406738229739f4d": {
       "type": "promotion-cards",
       "blocks": {
+        "card_QNk3Pe": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/JP-Christmas-Catalog-2025-Meet-Block.jpg",
+            "caption": "NEW THIS SEASON",
+            "title": "Our Christmas Catalog",
+            "subtitle": "Celebrate the season with Joel's Place! Browse our Christmas catalog for offers perfect for sharing, gathering, and celebrating the holidays.",
+            "link": "https://joelsplace.com/blogs/in-store-now/joels-place-christmas-catalog-2025",
+            "open_in_new_window": false,
+            "button_label": "Learn More",
+            "color_background_main": "#65a898",
+            "color_text_main": "#ffffff",
+            "color_accent_main": "rgba(0,0,0,0)",
+            "color_borders_main": "rgba(0,0,0,0)",
+            "color_shadow_main": "rgba(0,0,0,0)",
+            "color_hide_borders": false,
+            "color_hide_shadow": false,
+            "seo_h_tag": "h3"
+          }
+        },
+        "card_HnTWEw": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/joels-place-glorietta-4-is-now-open.jpg",
+            "caption": "IN-STORE NEWS",
+            "title": "2025 Holiday Store Hours",
+            "subtitle": "Starting December 1, enjoy extended hours at our Proscenium and Glorietta 4 stores. Check out our 2025 holiday schedule.",
+            "link": "shopify://blogs/in-store-now/joels-place-holiday-store-hours-2025",
+            "open_in_new_window": false,
+            "button_label": "Learn More",
+            "color_background_main": "#d36663",
+            "color_text_main": "#ffffff",
+            "color_accent_main": "rgba(0,0,0,0)",
+            "color_borders_main": "rgba(0,0,0,0)",
+            "color_shadow_main": "rgba(0,0,0,0)",
+            "color_hide_borders": false,
+            "color_hide_shadow": false,
+            "seo_h_tag": "h3"
+          }
+        },
         "card_RcNRD3": {
           "type": "card",
           "settings": {
@@ -1117,53 +1191,12 @@
             "seo_h_tag": "h3"
           }
         },
-        "card_QNk3Pe": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/JP-Christmas-Catalog-2025-Meet-Block.jpg",
-            "caption": "NEW THIS SEASON",
-            "title": "Our Christmas Catalog",
-            "subtitle": "Celebrate the season with Joel's Place! Browse our Christmas catalog for offers perfect for sharing, gathering, and celebrating the holidays.",
-            "link": "https://joelsplace.com/blogs/in-store-now/joels-place-christmas-catalog-2025",
-            "open_in_new_window": false,
-            "button_label": "Learn More",
-            "color_background_main": "#65a898",
-            "color_text_main": "#ffffff",
-            "color_accent_main": "rgba(0,0,0,0)",
-            "color_borders_main": "rgba(0,0,0,0)",
-            "color_shadow_main": "rgba(0,0,0,0)",
-            "color_hide_borders": false,
-            "color_hide_shadow": false,
-            "seo_h_tag": "h3"
-          }
-        },
-        "16540673826052f668-2": {
-          "type": "card",
-          "disabled": true,
-          "settings": {
-            "image": "shopify://shop_images/Special-Order-Card-Block.jpg",
-            "caption": "IN-STORE SERVICE",
-            "title": "Joel's Place Special Orders",
-            "subtitle": "Enjoy Joel’s Place signature charcuterie platters, bakery boxes, and specialty items anywhere when you place Special Orders.",
-            "link": "shopify://blogs/in-store-now/special-orders-at-joels-place",
-            "open_in_new_window": false,
-            "button_label": "Learn More",
-            "color_background_main": "#70a062",
-            "color_text_main": "#ffffff",
-            "color_accent_main": "rgba(0,0,0,0)",
-            "color_borders_main": "#e1e1e1",
-            "color_shadow_main": "rgba(0,0,0,0)",
-            "color_hide_borders": true,
-            "color_hide_shadow": false,
-            "seo_h_tag": "h3"
-          }
-        },
         "16540673826052f668-0": {
           "type": "card",
           "disabled": true,
           "settings": {
             "image": "shopify://shop_images/table-reservations-cover.webp",
-            "caption": "IN-STORE SERVICE",
+            "caption": "IN-STORE NEWS",
             "title": "Call Ahead and Reserve a Table",
             "subtitle": "Enjoy your Joel’s Place favorites sans the hassle of looking for a table by reserving ahead by phone. Available in both stores.",
             "link": "shopify://blogs/in-store-now/joels-place-table-reservations",
@@ -1175,27 +1208,6 @@
             "color_borders_main": "#e1e1e1",
             "color_shadow_main": "rgba(0,0,0,0)",
             "color_hide_borders": true,
-            "color_hide_shadow": false,
-            "seo_h_tag": "h3"
-          }
-        },
-        "card_HnTWEw": {
-          "type": "card",
-          "disabled": true,
-          "settings": {
-            "image": "shopify://shop_images/joels-place-gourmet-burgers-mobile-banner.jpg",
-            "caption": "IN-STORE OFFER",
-            "title": "Try Our Gourmet Burgers",
-            "subtitle": "We fire up the grill to serve delicious new flavors. Discover gourmet burgers at our Cook-to-Order stations.",
-            "link": "shopify://blogs/in-store-now/gourmet-burgers-joels-place",
-            "open_in_new_window": false,
-            "button_label": "Learn More",
-            "color_background_main": "#d36663",
-            "color_text_main": "#ffffff",
-            "color_accent_main": "rgba(0,0,0,0)",
-            "color_borders_main": "rgba(0,0,0,0)",
-            "color_shadow_main": "rgba(0,0,0,0)",
-            "color_hide_borders": false,
             "color_hide_shadow": false,
             "seo_h_tag": "h3"
           }
@@ -1221,8 +1233,30 @@
             "seo_h_tag": "h3"
           }
         },
+        "16540673826052f668-2": {
+          "type": "card",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/Special-Order-Card-Block.jpg",
+            "caption": "IN-STORE SERVICE",
+            "title": "Joel's Place Special Orders",
+            "subtitle": "Enjoy Joel’s Place signature charcuterie platters, bakery boxes, and specialty items anywhere when you place Special Orders.",
+            "link": "shopify://blogs/in-store-now/special-orders-at-joels-place",
+            "open_in_new_window": false,
+            "button_label": "Learn More",
+            "color_background_main": "#70a062",
+            "color_text_main": "#ffffff",
+            "color_accent_main": "rgba(0,0,0,0)",
+            "color_borders_main": "#e1e1e1",
+            "color_shadow_main": "rgba(0,0,0,0)",
+            "color_hide_borders": true,
+            "color_hide_shadow": false,
+            "seo_h_tag": "h3"
+          }
+        },
         "card_atmyV3": {
           "type": "card",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/joels-place-bakery-window-coffee-in-article.jpg",
             "caption": "IN-STORE SERVICE",
@@ -1243,13 +1277,13 @@
         }
       },
       "block_order": [
+        "card_QNk3Pe",
+        "card_HnTWEw",
         "card_RcNRD3",
         "card_HVDJjW",
-        "card_QNk3Pe",
-        "16540673826052f668-2",
         "16540673826052f668-0",
-        "card_HnTWEw",
         "16540673826052f668-1",
+        "16540673826052f668-2",
         "card_atmyV3"
       ],
       "name": "MEET In-Store",
@@ -1279,11 +1313,11 @@
         "16551074836af554cd-0": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/cultured-tastes.jpg",
+            "image": "shopify://shop_images/of-life-culture-and-dark-chocolate-cover.jpg",
             "caption": "ESSAY",
-            "title": "Cultured Tastes",
-            "subtitle": "The idea of eating moldy cheese can sound intimidating, but the unique flavor of blue cheese is worth the adventure. ",
-            "link": "shopify://blogs/joels-journal/cultured-tastes",
+            "title": "Of Life, Culture, and Dark Chocolate",
+            "subtitle": "Cultural and social ties underscore how dark chocolate represents connection, celebration, and the pursuit of a well-balanced life.",
+            "link": "shopify://blogs/joels-journal/of-life-culture-and-dark-chocolates",
             "open_in_new_window": false,
             "button_label": "",
             "color_background_main": "#3d3d3d",
@@ -1296,11 +1330,11 @@
         "16551074836af554cd-1": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/the-city-wakes-up-illustration-cover.jpg",
+            "image": "shopify://shop_images/Come-Over-for-Dinner.jpg",
             "caption": "ESSAY",
-            "title": "The City Wakes Up",
-            "subtitle": "We rarely see the bakers who rise before dawn or the cooks working by the dim glow of a single bulb. But their echoing calls remind everyone that breakfast—and a new day—is here.",
-            "link": "shopify://blogs/joels-journal/the-city-wakes-up",
+            "title": "Come Over for Dinner",
+            "subtitle": "What having 27 guests come over in two months has taught me about having company over and how social ties are nourished by different kinds of gatherings around the table.",
+            "link": "shopify://blogs/joels-journal/come-over-for-dinner",
             "open_in_new_window": true,
             "button_label": "",
             "color_background_main": "#3d3d3d",
@@ -1339,24 +1373,6 @@
     "16553621956de397b6": {
       "type": "testimonials",
       "blocks": {
-        "testimonial_waVW68": {
-          "type": "testimonial",
-          "settings": {
-            "author_name": "Spot.ph",
-            "author_title": "Patricia Baes",
-            "quote": "<p>[T]heir range of specialty grocery finds is hard to beat, and their grab-and-go items make daily lunch decisions a breeze.</p>",
-            "image": "shopify://shop_images/spot-ph-logo.jpg"
-          }
-        },
-        "testimonial_UXLtNP": {
-          "type": "testimonial",
-          "settings": {
-            "author_name": "Daily Tribune ",
-            "author_title": "Luis Espiritu",
-            "quote": "<p>Serving all that is good in food right in the heart of Makati.</p>",
-            "image": "shopify://shop_images/Daily-tribune-logo.png"
-          }
-        },
         "16553621951e01132c-0": {
           "type": "testimonial",
           "settings": {
@@ -1374,13 +1390,31 @@
             "quote": "<p>Grab a gourmet meal on the go, where convenience meets quality!</p>",
             "image": "shopify://shop_images/LifestyleAsia-logo2.png"
           }
+        },
+        "testimonial_waVW68": {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Spot.ph",
+            "author_title": "Patricia Baes",
+            "quote": "<p>[T]heir range of specialty grocery finds is hard to beat, and their grab-and-go items make daily lunch decisions a breeze.</p>",
+            "image": "shopify://shop_images/spot-ph-logo.jpg"
+          }
+        },
+        "testimonial_UXLtNP": {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Daily Tribune ",
+            "author_title": "Luis Espiritu",
+            "quote": "<p>Serving all that is good in food right in the heart of Makati.</p>",
+            "image": "shopify://shop_images/Daily-tribune-logo.png"
+          }
         }
       },
       "block_order": [
-        "testimonial_waVW68",
-        "testimonial_UXLtNP",
         "16553621951e01132c-0",
-        "16553621951e01132c-1"
+        "16553621951e01132c-1",
+        "testimonial_waVW68",
+        "testimonial_UXLtNP"
       ],
       "settings": {
         "heading": "AS SEEN IN",

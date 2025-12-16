@@ -12,8 +12,11 @@ if (typeof DateTimeSlotPicker !== 'function') {
 			this.timeSelect = this.querySelector('select[id$="-time"]');
 			this.isPlatter = this.dataset.isPlatter === 'true';
 			
-			// Lead days: platter = 3 days ahead, other items = 0 (same day + tomorrow)
-			this.leadDays = this.isPlatter ? 3 : 0;
+			// Lead days: read from data attribute, default to 3 for platter, 0 for others
+			this.leadDays = this.dataset.leadDays ? parseInt(this.dataset.leadDays) : (this.isPlatter ? 3 : 0);
+			
+			// Max date: optional hard limit (e.g., "2025-01-07")
+			this.maxDate = this.dataset.maxDate || null;
 			
 			// Cutoff time: 6:30 PM (18:30)
 			this.cutoffHour = 18;
@@ -87,9 +90,23 @@ if (typeof DateTimeSlotPicker !== 'function') {
 		}
 
 		/**
-		 * Get the last available date (first date + 1 day, only 2 days allowed)
+		 * Get the last available date
+		 * If maxDate is set, use that; otherwise first date + 1 day
 		 */
 		getLastAvailableDate() {
+			// If a max date is specified, use it
+			if (this.maxDate) {
+				const parts = this.maxDate.split('-');
+				const maxDateObj = new Date(
+					parseInt(parts[0]), 
+					parseInt(parts[1]) - 1, 
+					parseInt(parts[2]),
+					0, 0, 0, 0
+				);
+				return maxDateObj;
+			}
+			
+			// Default behavior: first date + 1 day
 			const firstDate = this.getFirstAvailableDate();
 			const lastDate = new Date(firstDate);
 			lastDate.setDate(firstDate.getDate() + 1);
@@ -355,3 +372,4 @@ if (typeof DateTimeSlotPicker !== 'function') {
 	}
 
 }
+

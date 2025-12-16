@@ -1,0 +1,421 @@
+{% comment %}
+  Renders cart form (page version).
+
+  Usage:
+  {% render 'cart-form-page' %}
+{% endcomment %}
+
+<cart-form id="AjaxCartForm">
+	
+  {%- liquid
+    if settings.show_currency_codes
+      assign iso_code = localization.country.currency.iso_code | prepend: ' ' 
+    endif
+  -%}
+
+	<form action="{{ routes.cart_url }}" method="post" novalidate class="cart__form {% if cart.item_count == 0 %} cart--empty {% endif %}" id="cart">
+		{%- comment -%} Hidden inputs for date/time attributes to be saved to order {%- endcomment -%}
+		<input type="hidden" name="attributes[Pre-Orders Pickup Date]" id="platter-datetime-attr" value="">
+		<input type="hidden" name="attributes[Click and Collect Pickup Date]" id="non-platter-datetime-attr" value="">
+	
+		{%- liquid
+			assign has_platter = false
+			assign has_non_platter = false
+			
+			for item in cart.items
+				assign is_platter_item = false
+				for tag in item.product.tags
+					if tag == '2025 JP Christmas Platter'
+						assign is_platter_item = true
+						break
+					endif
+				endfor
+				
+				if is_platter_item
+					assign has_platter = true
+				else
+					assign has_non_platter = true
+				endif
+			endfor
+		-%}
+
+		<div class="cart-holder cart-block {% unless has_platter or has_non_platter %}element--has-border--body element--border-radius{% endunless %} element--no-border-on-small margin-bottom--regular" data-items="{{ cart.items.size }}">
+
+			<div class="cart-form__items {% if cart.item_count == 0 %} gutter--regular {% endif %}">
+				{%- if cart.item_count > 0 -%}
+					
+					{%- if has_platter -%}
+						{%- comment -%}
+						  Timeslot Configuration for Pre-Orders (Platters)
+						  - Default: 10:00 AM to 8:00 PM, 30-min slots
+						  - dateOverrides: Different hours for specific dates (format: "YYYY-MM-DD")
+						    - startHour: 10 = 10am, 12 = 12pm, etc.
+						    - endHour: 20 = 8pm, 18 = 6pm, etc.
+						  - closedDates: Dates when store is closed (no pickup available)
+						  
+						  December 2025 Schedule:
+						  - Dec 15-23: 10am (default)
+						  - Dec 24 & 31: 10am (default)  
+						  - Dec 25 & Jan 1: 12pm start
+						  - Jan 2 onwards: 10am (default)
+						{%- endcomment -%}
+						{%- capture platter_timeslot_config -%}
+						{
+							"startHour": 10,
+							"endHour": 20,
+							"slotDuration": 30,
+							"closedDates": [],
+							"dateOverrides": {
+								"2025-12-25": { "startHour": 12, "endHour": 20 },
+								"2026-01-01": { "startHour": 12, "endHour": 20 }
+							}
+						}
+						{%- endcapture -%}
+						<div class="cart-items-group">
+							<div class="cart-items-group__header">
+								<span>Pre-Orders</span>
+								<datetime-slot-picker data-is-platter="true" data-lead-days="3" data-available-days="10" data-timeslot-config='{{ platter_timeslot_config | strip_newlines }}' class="datetime-slot-picker--inline">
+									<div class="datetime-slot-picker__fields">
+										<div class="datetime-slot-picker__field">
+											<label for="platter-date" class="visually-hidden">Date</label>
+											<input type="date" id="platter-date" name="platter-date" required>
+										</div>
+										<div class="datetime-slot-picker__field">
+											<label for="platter-time" class="visually-hidden">Time</label>
+											<select id="platter-time" name="platter-time" required>
+												
+											</select>
+										</div>
+									</div>
+								</datetime-slot-picker>
+							</div>
+							<div class="cart-block__head element--hide-on-small">
+								<span>{{ 'cart.table.product' | t }}</span>
+								<span>{{ 'cart.table.quantity' | t }}</span>
+								<span class="text-align--right">{{ 'cart.table.total' | t }}</span>
+							</div>
+							{%- for item in cart.items -%}
+								{%- liquid
+									assign is_platter = false
+									for tag in item.product.tags
+										if tag == '2025 JP Christmas Platter'
+											assign is_platter = true
+											break
+										endif
+									endfor
+								-%}
+								{%- if is_platter -%}
+									{%- render 'cart-form-item', item: item, iso_code: iso_code, line: forloop.index -%}
+								{%- endif -%}
+							{%- endfor -%}
+						</div>
+					{%- endif -%}
+
+					{%- if has_non_platter -%}
+						{%- comment -%}
+						  Timeslot Configuration for Click and Collect
+						  - Default: 10:00 AM to 8:00 PM, 30-min slots
+						  - dateOverrides: Different hours for specific dates (format: "YYYY-MM-DD")
+						  - closedDates: Dates when store is closed (no pickup available)
+						  
+						  December 2025 Schedule:
+						  - Dec 15-23: 10am (default)
+						  - Dec 24 & 31: 10am (default)  
+						  - Dec 25 & Jan 1: 12pm start
+						  - Jan 2 onwards: 10am (default)
+						{%- endcomment -%}
+						{%- capture collect_timeslot_config -%}
+						{
+							"startHour": 10,
+							"endHour": 20,
+							"slotDuration": 30,
+							"closedDates": [],
+							"dateOverrides": {
+								"2025-12-25": { "startHour": 12, "endHour": 20 },
+								"2026-01-01": { "startHour": 12, "endHour": 20 }
+							}
+						}
+						{%- endcapture -%}
+						<div class="cart-items-group">
+							<div class="cart-items-group__header">
+								<span>Click and Collect</span>
+								<datetime-slot-picker data-is-platter="false" data-lead-days="0" data-timeslot-config='{{ collect_timeslot_config | strip_newlines }}' class="datetime-slot-picker--inline">
+									<div class="datetime-slot-picker__fields">
+										<div class="datetime-slot-picker__field">
+											<label for="non-platter-date" class="visually-hidden">Date</label>
+											<input type="date" id="non-platter-date" name="non-platter-date" required>
+										</div>
+										<div class="datetime-slot-picker__field">
+											<label for="non-platter-time" class="visually-hidden">Time</label>
+											<select id="non-platter-time" name="non-platter-time" required>
+												
+											</select>
+										</div>
+									</div>
+								</datetime-slot-picker>
+							</div>
+							<div class="cart-block__head element--hide-on-small">
+								<span>{{ 'cart.table.product' | t }}</span>
+								<span>{{ 'cart.table.quantity' | t }}</span>
+								<span class="text-align--right">{{ 'cart.table.total' | t }}</span>
+							</div>
+							{%- for item in cart.items -%}
+								{%- liquid
+									assign is_platter = false
+									for tag in item.product.tags
+										if tag == '2025 JP Christmas Platter'
+											assign is_platter = true
+											break
+										endif
+									endfor
+								-%}
+								{%- unless is_platter -%}
+									{%- render 'cart-form-item', item: item, iso_code: iso_code, line: forloop.index -%}
+								{%- endunless -%}
+							{%- endfor -%}
+						</div>
+					{%- endif -%}
+
+					{%- unless has_platter or has_non_platter -%}
+						<div class="cart-block__head element--hide-on-small">
+							<span>{{ 'cart.table.product' | t }}</span>
+							<span>{{ 'cart.table.quantity' | t }}</span>
+							<span class="text-align--right">{{ 'cart.table.total' | t }}</span>
+						</div>
+						{%- for item in cart.items -%}
+							{%- render 'cart-form-item', item: item, iso_code: iso_code, line: forloop.index -%}
+						{%- endfor -%}
+					{%- endunless -%}
+
+				{%- else -%}
+
+					{{ 'cart.empty' | t }}
+					<div class="gutter-top--regular">
+						<a href="{{ routes.all_products_collection_url }}" class="button button--solid button--large">
+							{{ 'cart.continue_browsing' | t }}
+						</a>
+					</div>
+
+				{%- endif -%}
+
+			</div>
+
+		</div>
+
+	</form>
+
+	<span class="cart__count hidden" aria-hidden="true" data-cart-count>{{ cart.item_count }}</span>
+	<span class="cart__total hidden" aria-hidden="true" data-cart-total>{{ cart.total_price | money | append: iso_code }}</span>
+
+</cart-form>
+
+{%- render 'cart-gift-wrapping', class: 'cart-wrapping--page' -%}
+
+<noscript>
+	<button type="submit" class="button button--outline button--regular" form="cart">
+		{{ 'cart.update' | t }}
+	</button>
+</noscript>
+
+<script src="{{ 'component-datetime-slot-picker.js' | asset_url }}" defer></script>
+
+<script type="text/javascript">
+	document.querySelector('cart-form').addEventListener('cart-updated', ()=>{
+		const items = parseInt(document.querySelector('.cart-holder').getAttribute('data-items'));
+		if ( items == 0 ) {
+			document.querySelector('.cart-section').classList.add('cart-section--empty');
+		} else {
+			document.querySelector('.cart-section').classList.remove('cart-section--empty');
+		}
+	});
+
+	// Handle checkout - update cart attributes and note with selected dates
+	document.addEventListener('DOMContentLoaded', function() {
+		const checkoutButton = document.querySelector('button[type="submit"][name="checkout"]');
+		const cartForm = document.querySelector('form#cart');
+		
+		if (!cartForm) {
+			console.warn('Cart form not found');
+			return;
+		}
+		
+		if (checkoutButton && cartForm) {
+			cartForm.addEventListener('submit', function(e) {
+				const platterPicker = document.querySelector('datetime-slot-picker[data-is-platter="true"]');
+				const nonPlatterPicker = document.querySelector('datetime-slot-picker[data-is-platter="false"]');
+				
+				let attributes = {};
+				
+				// Get platter date and time
+				if (platterPicker) {
+					const platterDateInput = platterPicker.querySelector('#platter-date');
+					const platterTimeSelect = platterPicker.querySelector('#platter-time');
+					const platterDate = platterDateInput?.value;
+					// Get the displayed text from the selected option (e.g., "10:00 AM - 10:30 AM")
+					const platterTime = platterTimeSelect?.selectedOptions[0]?.text || platterTimeSelect?.value;
+					
+					if (platterDate && platterTime) {
+						const dateObj = new Date(platterDate + 'T00:00:00');
+						const formattedDate = dateObj.toLocaleDateString('en-US', { 
+							weekday: 'long', 
+							year: 'numeric', 
+							month: 'long', 
+							day: 'numeric' 
+						});
+						const formattedDateTime = `${formattedDate} at ${platterTime}`;
+						attributes['Pre-Orders Pickup Date'] = formattedDateTime;
+					}
+				}
+				
+				// Get non-platter date and time
+				if (nonPlatterPicker) {
+					const nonPlatterDateInput = nonPlatterPicker.querySelector('#non-platter-date');
+					const nonPlatterTimeSelect = nonPlatterPicker.querySelector('#non-platter-time');
+					const nonPlatterDate = nonPlatterDateInput?.value;
+					// Get the displayed text from the selected option (e.g., "10:00 AM - 10:30 AM")
+					const nonPlatterTime = nonPlatterTimeSelect?.selectedOptions[0]?.text || nonPlatterTimeSelect?.value;
+					
+					if (nonPlatterDate && nonPlatterTime) {
+						const dateObj = new Date(nonPlatterDate + 'T00:00:00');
+						const formattedDate = dateObj.toLocaleDateString('en-US', { 
+							weekday: 'long', 
+							year: 'numeric', 
+							month: 'long', 
+							day: 'numeric' 
+						});
+						const formattedDateTime = `${formattedDate} at ${nonPlatterTime}`;
+						attributes['Click and Collect Pickup Date'] = formattedDateTime;
+					}
+				}
+				
+				// Update hidden input fields for form submission
+				const platterAttrInput = document.getElementById('platter-datetime-attr');
+				const nonPlatterAttrInput = document.getElementById('non-platter-datetime-attr');
+				
+				if (attributes['Pre-Orders Pickup Date'] && platterAttrInput) {
+					platterAttrInput.value = attributes['Pre-Orders Pickup Date'];
+				}
+				if (attributes['Click and Collect Pickup Date'] && nonPlatterAttrInput) {
+					nonPlatterAttrInput.value = attributes['Click and Collect Pickup Date'];
+				}
+				
+				// Check if this is a checkout submission
+				const isCheckout = (e.submitter && e.submitter.name === 'checkout') || 
+								  (checkoutButton && document.activeElement === checkoutButton);
+				
+				// If we have dates to save, update cart attributes via API with retry logic
+				// This handles conflicts with PickEasy app (409 errors)
+				if (Object.keys(attributes).length > 0 && isCheckout) {
+					e.preventDefault();
+					
+					// Retry function to handle 409 conflicts
+					const updateCartWithRetry = (retries = 3, delay = 500) => {
+						const updateData = { attributes: attributes };
+						
+						fetch(`${KROWN.settings.routes.cart_update_url}`, {
+							method: 'POST',
+							headers: { 
+								'Content-Type': 'application/json', 
+								'Accept': 'application/json'
+							},
+							body: JSON.stringify(updateData)
+						}).then((response) => {
+							if (response.ok) {
+								window.location.href = '/checkout';
+							} else if (response.status === 409 && retries > 0) {
+								// 409 Conflict - retry after delay (PickEasy might be updating)
+								console.warn('Cart update conflict, retrying...', retries);
+								setTimeout(() => updateCartWithRetry(retries - 1, delay), delay);
+							} else {
+								console.error('Error updating cart:', response.statusText);
+								// Still redirect to checkout even if update fails
+								window.location.href = '/checkout';
+							}
+						}).catch((error) => {
+							if (retries > 0) {
+								console.warn('Cart update error, retrying...', retries);
+								setTimeout(() => updateCartWithRetry(retries - 1, delay), delay);
+							} else {
+								console.error('Error updating cart:', error);
+								// Still redirect to checkout even if update fails
+								window.location.href = '/checkout';
+							}
+						});
+					};
+					
+					updateCartWithRetry();
+				}
+			});
+		}
+	});
+
+	// Hide only the "When would you like to get this order?" date picker in cart subtotal widget
+	function hidePickupDateField() {
+		const subtotalWidget = document.querySelector('.cart__subtotal-widget');
+		if (!subtotalWidget) return;
+
+		// Find labels containing "When would you like" text
+		const labels = subtotalWidget.querySelectorAll('label');
+		labels.forEach(function(label) {
+			const labelText = label.textContent || '';
+			if (labelText.toLowerCase().includes('when would you like to get this order') ||
+				labelText.toLowerCase().includes('when would you like')) {
+				// Hide only the form field container, not the whole widget
+				const formField = label.closest('.form-field');
+				if (formField) {
+					formField.style.display = 'none';
+				} else {
+					// If no form-field wrapper, just hide the label and its associated input
+					label.style.display = 'none';
+					const associatedInput = document.querySelector('input[id="' + label.getAttribute('for') + '"]');
+					if (associatedInput) {
+						associatedInput.style.display = 'none';
+					}
+				}
+			}
+		});
+
+		// Hide any date inputs in subtotal widget that aren't our datetime-slot-picker
+		const dateInputs = subtotalWidget.querySelectorAll('input[type="date"]');
+		dateInputs.forEach(function(input) {
+			if (input.id !== 'platter-date' && input.id !== 'non-platter-date') {
+				const formField = input.closest('.form-field');
+				if (formField) {
+					formField.style.display = 'none';
+				} else {
+					input.style.display = 'none';
+				}
+			}
+		});
+	}
+
+	// Run immediately and also on DOMContentLoaded
+	hidePickupDateField();
+	document.addEventListener('DOMContentLoaded', hidePickupDateField);
+
+	// Watch for dynamically added elements only in subtotal widget
+	const observer = new MutationObserver(function(mutations) {
+		hidePickupDateField();
+	});
+
+	// Start observing when DOM is ready
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', function() {
+			const subtotalWidget = document.querySelector('.cart__subtotal-widget');
+			if (subtotalWidget) {
+				observer.observe(subtotalWidget, {
+					childList: true,
+					subtree: true
+				});
+			}
+		});
+	} else {
+		const subtotalWidget = document.querySelector('.cart__subtotal-widget');
+		if (subtotalWidget) {
+			observer.observe(subtotalWidget, {
+				childList: true,
+				subtree: true
+			});
+		}
+	}
+</script>
