@@ -20,6 +20,9 @@ type Pages = {
   "/webhooks/app/uninstalled": {
     params: {};
   };
+  "/checkout-script.js": {
+    params: {};
+  };
   "/auth/login": {
     params: {};
   };
@@ -34,6 +37,9 @@ type Pages = {
   "/app/checkout-branding": {
     params: {};
   };
+  "/app/script-tags": {
+    params: {};
+  };
   "/app/additional": {
     params: {};
   };
@@ -42,7 +48,7 @@ type Pages = {
 type RouteFiles = {
   "root.jsx": {
     id: "root";
-    page: "/" | "/webhooks/app/scopes_update" | "/webhooks/app/uninstalled" | "/auth/login" | "/auth/*" | "/app" | "/app/checkout-branding" | "/app/additional";
+    page: "/" | "/webhooks/app/scopes_update" | "/webhooks/app/uninstalled" | "/checkout-script.js" | "/auth/login" | "/auth/*" | "/app" | "/app/checkout-branding" | "/app/script-tags" | "/app/additional";
   };
   "routes/webhooks.app.scopes_update.jsx": {
     id: "routes/webhooks.app.scopes_update";
@@ -51,6 +57,10 @@ type RouteFiles = {
   "routes/webhooks.app.uninstalled.jsx": {
     id: "routes/webhooks.app.uninstalled";
     page: "/webhooks/app/uninstalled";
+  };
+  "routes/checkout-script[.]js.jsx": {
+    id: "routes/checkout-script[.]js";
+    page: "/checkout-script.js";
   };
   "routes/auth.login/route.jsx": {
     id: "routes/auth.login";
@@ -66,11 +76,15 @@ type RouteFiles = {
   };
   "routes/app.jsx": {
     id: "routes/app";
-    page: "/app" | "/app/checkout-branding" | "/app/additional";
+    page: "/app" | "/app/checkout-branding" | "/app/script-tags" | "/app/additional";
   };
   "routes/app.checkout-branding.jsx": {
     id: "routes/app.checkout-branding";
     page: "/app/checkout-branding";
+  };
+  "routes/app.script-tags.jsx": {
+    id: "routes/app.script-tags";
+    page: "/app/script-tags";
   };
   "routes/app.additional.jsx": {
     id: "routes/app.additional";
@@ -86,11 +100,13 @@ type RouteModules = {
   "root": typeof import("./app/root.jsx");
   "routes/webhooks.app.scopes_update": typeof import("./app/routes/webhooks.app.scopes_update.jsx");
   "routes/webhooks.app.uninstalled": typeof import("./app/routes/webhooks.app.uninstalled.jsx");
+  "routes/checkout-script[.]js": typeof import("./app/routes/checkout-script[.]js.jsx");
   "routes/auth.login": typeof import("./app/routes/auth.login/route.jsx");
   "routes/auth.$": typeof import("./app/routes/auth.$.jsx");
   "routes/_index": typeof import("./app/routes/_index/route.jsx");
   "routes/app": typeof import("./app/routes/app.jsx");
   "routes/app.checkout-branding": typeof import("./app/routes/app.checkout-branding.jsx");
+  "routes/app.script-tags": typeof import("./app/routes/app.script-tags.jsx");
   "routes/app.additional": typeof import("./app/routes/app.additional.jsx");
   "routes/app._index": typeof import("./app/routes/app._index.jsx");
 };
