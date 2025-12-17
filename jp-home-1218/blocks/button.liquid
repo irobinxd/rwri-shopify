@@ -21,7 +21,7 @@
 
         {%- if block.settings.color_accent_buttons != 'rgba(0,0,0,0)' -%}
           --color-accent-main: {{ block.settings.color_accent_buttons }};
-          --color-accent-cards : {{ block.settings.color_accent_buttons }};
+          /* Don't override --color-accent-cards - let card's accent color be used for hover */
           {%- liquid
             assign brightness_accent_main = block.settings.color_accent_buttons | color_brightness
             if brightness_accent_main > 150
@@ -31,9 +31,25 @@
             endif
           -%}
           --color-foreground-accent-main: {{ color_foreground_accent_button }};
-          --color-foreground-accent-cards: {{ color_foreground_accent_button }};
+          /* Don't override --color-foreground-accent-cards - let card's accent foreground be used for hover */
 
         {%- endif -%}
+      }
+      
+      /* Ensure card button hover uses card's original accent colors from the card element */
+      .card #button-{{ block.id }}:not(.button--outline-hover):hover {
+        background-color: var(--color-accent-cards) !important;
+        border-color: var(--color-accent-cards) !important;
+        color: var(--color-foreground-accent-cards) !important;
+      }
+      
+      .card #button-{{ block.id }}:not(.button--outline-hover):hover svg * {
+        stroke: var(--color-foreground-accent-cards) !important;
+      }
+      
+      .card #button-{{ block.id }}.button--outline-hover:hover {
+        border-color: var(--color-accent-cards) !important;
+        color: var(--color-accent-cards) !important;
       }
     </style>
   {%- endif -%}

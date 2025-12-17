@@ -44,9 +44,23 @@ if (typeof DateTimeSlotPicker !== 'function') {
 			
 			this.setupDateConstraints();
 			this.populateTimeOptions();
+			this.setupDateDisplay();
+			
+			// Setup arrow icons - use requestAnimationFrame for better timing
+			requestAnimationFrame(() => {
+				this.ensureArrowIcons();
+			});
 			
 			if (this.dateInput) {
-				this.dateInput.addEventListener('change', () => this.onDateChange());
+				this.dateInput.addEventListener('change', () => {
+					this.onDateChange();
+					this.updateDateDisplay();
+				});
+				
+				// Update display on input (for calendar picker)
+				this.dateInput.addEventListener('input', () => {
+					this.updateDateDisplay();
+				});
 				
 				// Prevent manual keyboard entry - only allow calendar picker
 				this.dateInput.addEventListener('keydown', (e) => {
@@ -66,6 +80,7 @@ if (typeof DateTimeSlotPicker !== 'function') {
 						} else {
 							this.dateInput.value = this.formatDateValue(firstDate);
 						}
+						this.updateDateDisplay();
 					}
 				});
 			}
@@ -199,6 +214,28 @@ if (typeof DateTimeSlotPicker !== 'function') {
 		}
 
 		/**
+		 * Format date for display (mmm-dd-yy format, e.g., "Dec-02-25")
+		 */
+		formatDateDisplay(dateValue) {
+			if (!dateValue) return '';
+			
+			const parts = dateValue.split('-');
+			if (parts.length !== 3) return dateValue;
+			
+			const year = parseInt(parts[0]);
+			const month = parseInt(parts[1]) - 1; // JavaScript months are 0-indexed
+			const day = parseInt(parts[2]);
+			
+			const date = new Date(year, month, day);
+			const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+			const monthAbbr = monthNames[month];
+			const dayFormatted = String(day).padStart(2, '0');
+			const yearShort = String(year).slice(-2);
+			
+			return `${monthAbbr}-${dayFormatted}-${yearShort}`;
+		}
+
+		/**
 		 * Setup date input constraints (min/max dates)
 		 */
 		setupDateConstraints() {
@@ -218,6 +255,12 @@ if (typeof DateTimeSlotPicker !== 'function') {
 			
 			// Set default value to first available date
 			this.dateInput.value = this.formatDateValue(firstDate);
+			
+			// Update display format after setting value
+			// Use setTimeout to ensure display element is created first
+			setTimeout(() => {
+				this.updateDateDisplay();
+			}, 0);
 		}
 
 		/**
@@ -384,10 +427,101 @@ if (typeof DateTimeSlotPicker !== 'function') {
 		}
 
 		/**
+		 * Setup date display formatting
+		 */
+		setupDateDisplay() {
+			if (!this.dateInput) return;
+			
+			const field = this.dateInput.closest('.datetime-slot-picker__field');
+			if (field) {
+				// Create a display element for the formatted date
+				let displayElement = field.querySelector('.date-display-overlay');
+				if (!displayElement) {
+					displayElement = document.createElement('span');
+					displayElement.className = 'date-display-overlay';
+					displayElement.setAttribute('aria-hidden', 'true');
+					field.style.position = 'relative';
+					this.dateInput.parentNode.insertBefore(displayElement, this.dateInput);
+				}
+				this.displayElement = displayElement;
+				
+				// Make the input text transparent so our formatted text shows
+				this.dateInput.style.color = 'transparent';
+				
+				// Create arrow icon for date input
+				this.setupArrowIcon(this.dateInput);
+				
+				// Set initial display
+				this.updateDateDisplay();
+			}
+		}
+
+		/**
+		 * Ensure arrow icons are created for all inputs
+		 */
+		ensureArrowIcons() {
+			if (this.dateInput) {
+				this.setupArrowIcon(this.dateInput);
+			}
+			if (this.timeSelect) {
+				this.setupArrowIcon(this.timeSelect);
+			}
+		}
+
+		/**
+		 * Setup arrow icon for input/select elements
+		 */
+		setupArrowIcon(inputElement) {
+			if (!inputElement) return;
+			
+			const field = inputElement.closest('.datetime-slot-picker__field');
+			if (!field) return;
+			
+			// Ensure field has relative positioning
+			if (getComputedStyle(field).position === 'static') {
+				field.style.position = 'relative';
+			}
+			
+			// Check if arrow already exists for this specific input
+			const inputId = inputElement.id || inputElement.getAttribute('name') || '';
+			const arrowSelector = inputId ? `.dropdown-arrow-icon[data-for="${inputId}"]` : '.dropdown-arrow-icon';
+			let arrowElement = field.querySelector(arrowSelector);
+			
+			if (!arrowElement) {
+				arrowElement = document.createElement('span');
+				arrowElement.className = 'dropdown-arrow-icon';
+				arrowElement.setAttribute('aria-hidden', 'true');
+				if (inputId) {
+					arrowElement.setAttribute('data-for', inputId);
+				}
+				// Append to field wrapper (not after input) to ensure proper absolute positioning
+				field.appendChild(arrowElement);
+			}
+		}
+
+		/**
+		 * Update the date display format
+		 */
+		updateDateDisplay() {
+			if (!this.dateInput) return;
+			
+			const dateValue = this.dateInput.value;
+			if (dateValue && this.displayElement) {
+				const formattedDate = this.formatDateDisplay(dateValue);
+				this.displayElement.textContent = formattedDate;
+				// Also set as title for accessibility
+				this.dateInput.setAttribute('title', formattedDate);
+			} else if (this.displayElement) {
+				this.displayElement.textContent = '';
+			}
+		}
+
+		/**
 		 * Handle date selection change - update time options
 		 */
 		onDateChange() {
 			this.populateTimeOptions();
+			this.updateDateDisplay();
 		}
 
 		/**
