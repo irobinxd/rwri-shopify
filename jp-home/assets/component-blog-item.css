@@ -19,3 +19,21 @@
   gap: 0.75rem;
   flex-wrap: wrap;
 }
+
+/* Style links in blog excerpt - ensure underlines are visible */
+.blog-item__excerpt a,
+.blog-item__excerpt.rte a,
+.blog-item__excerpt p a,
+.blog-item__excerpt.rte p a {
+  border-bottom: none !important;
+  text-decoration: underline !important;
+}
+
+/* Limit excerpt height to prevent too much content */
+.blog-item__excerpt {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

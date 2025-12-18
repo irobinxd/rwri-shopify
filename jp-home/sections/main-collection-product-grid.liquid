@@ -289,6 +289,12 @@
   <script src="{{ 'component-facets.js' | asset_url }}" defer></script>
 {%- endif -%}
 
+{% style %}
+  #main-collection-product-grid .product-item.card {
+    border: 1px solid #dfdfdf;
+  }
+{% endstyle %}
+
 {% schema %}
 {
   "name": "t:sections.main-collection-product-grid.name",

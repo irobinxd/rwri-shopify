@@ -514,6 +514,11 @@
       },
       "shipping": {
         "free_rate_label": "PICK UP"
+      },
+      "local_pickup": {
+        "location_information": {
+          "other": "Pick Up or Book your own Rider"
+        }
       }
     }
   },

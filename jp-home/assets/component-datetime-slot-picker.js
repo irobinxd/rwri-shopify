@@ -15,6 +15,9 @@ if (typeof DateTimeSlotPicker !== 'function') {
 			// Lead days: read from data attribute, default to 3 for platter, 0 for others
 			this.leadDays = this.dataset.leadDays ? parseInt(this.dataset.leadDays) : (this.isPlatter ? 3 : 0);
 			
+			// Available days: how many days from first available date (default 2 for non-platter, 10 for platter)
+			this.availableDays = this.dataset.availableDays ? parseInt(this.dataset.availableDays) : (this.isPlatter ? 10 : 2);
+			
 			// Max date: optional hard limit (e.g., "2025-01-07")
 			this.maxDate = this.dataset.maxDate || null;
 			
@@ -22,22 +25,64 @@ if (typeof DateTimeSlotPicker !== 'function') {
 			this.cutoffHour = 18;
 			this.cutoffMinute = 30;
 			
-			// Time slot configuration
-			this.startHour = 10; // 10:00 AM
-			this.endHour = 20;   // 8:00 PM (last slot ends at 8:00 PM)
-			this.slotDuration = 30; // 30 minutes
+			// Parse timeslot configuration from data attribute
+			this.timeslotConfig = this.parseTimeslotConfig();
+			
+			// Time slot configuration (defaults, can be overridden by config)
+			this.startHour = this.timeslotConfig.startHour ?? 10; // 10:00 AM
+			this.endHour = this.timeslotConfig.endHour ?? 20;     // 8:00 PM
+			this.slotDuration = this.timeslotConfig.slotDuration ?? 30; // 30 minutes
+			
+			// Closed dates (no pickup available)
+			this.closedDates = this.timeslotConfig.closedDates || [];
+			
+			// Date-specific overrides (different hours for specific dates)
+			this.dateOverrides = this.timeslotConfig.dateOverrides || {};
 			
 			// Buffer time in minutes (45 minutes from current time)
 			this.bufferMinutes = 45;
 			
 			this.setupDateConstraints();
 			this.populateTimeOptions();
+			this.setupDateDisplay();
+			
+			// Setup arrow icons - use requestAnimationFrame for better timing
+			requestAnimationFrame(() => {
+				this.ensureArrowIcons();
+			});
 			
 			if (this.dateInput) {
-				this.dateInput.addEventListener('change', () => this.onDateChange());
-				// Prevent manual entry of invalid dates
-				this.dateInput.addEventListener('input', () => this.validateDateInput());
-				this.dateInput.addEventListener('blur', () => this.validateDateInput());
+				this.dateInput.addEventListener('change', () => {
+					this.onDateChange();
+					this.updateDateDisplay();
+				});
+				
+				// Update display on input (for calendar picker)
+				this.dateInput.addEventListener('input', () => {
+					this.updateDateDisplay();
+				});
+				
+				// Prevent manual keyboard entry - only allow calendar picker
+				this.dateInput.addEventListener('keydown', (e) => {
+					// Allow Tab for accessibility
+					if (e.key !== 'Tab') {
+						e.preventDefault();
+					}
+				});
+				
+				// Prevent clearing - if value is empty, reset to first available date
+				this.dateInput.addEventListener('change', () => {
+					if (!this.dateInput.value) {
+						const firstDate = this.getFirstAvailableDate();
+						const lastDate = this.getLastAvailableDate();
+						if (firstDate > lastDate) {
+							this.dateInput.value = this.formatDateValue(lastDate);
+						} else {
+							this.dateInput.value = this.formatDateValue(firstDate);
+						}
+						this.updateDateDisplay();
+					}
+				});
 			}
 		}
 
@@ -91,10 +136,15 @@ if (typeof DateTimeSlotPicker !== 'function') {
 
 		/**
 		 * Get the last available date
-		 * If maxDate is set, use that; otherwise first date + 1 day
+		 * Uses availableDays from first date, or maxDate if specified
 		 */
 		getLastAvailableDate() {
-			// If a max date is specified, use it
+			const firstDate = this.getFirstAvailableDate();
+			let lastDate = new Date(firstDate);
+			// availableDays - 1 because first date counts as day 1
+			lastDate.setDate(firstDate.getDate() + this.availableDays - 1);
+			
+			// If a max date is specified, use the earlier of the two
 			if (this.maxDate) {
 				const parts = this.maxDate.split('-');
 				const maxDateObj = new Date(
@@ -103,14 +153,54 @@ if (typeof DateTimeSlotPicker !== 'function') {
 					parseInt(parts[2]),
 					0, 0, 0, 0
 				);
-				return maxDateObj;
+				if (maxDateObj < lastDate) {
+					lastDate = maxDateObj;
+				}
 			}
 			
-			// Default behavior: first date + 1 day
-			const firstDate = this.getFirstAvailableDate();
-			const lastDate = new Date(firstDate);
-			lastDate.setDate(firstDate.getDate() + 1);
 			return lastDate;
+		}
+
+		/**
+		 * Parse timeslot configuration from data attribute
+		 */
+		parseTimeslotConfig() {
+			const configStr = this.dataset.timeslotConfig;
+			if (!configStr) {
+				return {};
+			}
+			try {
+				return JSON.parse(configStr);
+			} catch (e) {
+				console.warn('Invalid timeslot config:', e);
+				return {};
+			}
+		}
+
+		/**
+		 * Get timeslot hours for a specific date (checks for overrides)
+		 */
+		getHoursForDate(dateValue) {
+			// Check if there's an override for this specific date
+			if (this.dateOverrides && this.dateOverrides[dateValue]) {
+				const override = this.dateOverrides[dateValue];
+				return {
+					startHour: override.startHour ?? this.startHour,
+					endHour: override.endHour ?? this.endHour
+				};
+			}
+			// Return default hours
+			return {
+				startHour: this.startHour,
+				endHour: this.endHour
+			};
+		}
+
+		/**
+		 * Check if a date is closed (no pickup available)
+		 */
+		isDateClosed(dateValue) {
+			return this.closedDates && this.closedDates.includes(dateValue);
 		}
 
 		/**
@@ -124,44 +214,78 @@ if (typeof DateTimeSlotPicker !== 'function') {
 		}
 
 		/**
+		 * Format date for display (mmm dd format, e.g., "Dec 02")
+		 */
+		formatDateDisplay(dateValue) {
+			if (!dateValue) return '';
+			
+			const parts = dateValue.split('-');
+			if (parts.length !== 3) return dateValue;
+			
+			const month = parseInt(parts[1]) - 1; // JavaScript months are 0-indexed
+			const day = parseInt(parts[2]);
+			
+			const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+			const monthAbbr = monthNames[month];
+			const dayFormatted = String(day).padStart(2, '0');
+			
+			return `${monthAbbr} ${dayFormatted}`;
+		}
+
+		/**
 		 * Setup date input constraints (min/max dates)
 		 */
 		setupDateConstraints() {
 			if (!this.dateInput) return;
 			
-			const firstDate = this.getFirstAvailableDate();
+			let firstDate = this.getFirstAvailableDate();
 			const lastDate = this.getLastAvailableDate();
 			
-			// Set min and max to allow only 2 days
+			// If firstDate (D+leadDays) is after maxDate, cap it to maxDate
+			if (firstDate > lastDate) {
+				firstDate = new Date(lastDate);
+			}
+			
+			// Set min and max dates
 			this.dateInput.setAttribute('min', this.formatDateValue(firstDate));
 			this.dateInput.setAttribute('max', this.formatDateValue(lastDate));
 			
 			// Set default value to first available date
 			this.dateInput.value = this.formatDateValue(firstDate);
+			
+			// Update display format after setting value
+			// Use setTimeout to ensure display element is created first
+			setTimeout(() => {
+				this.updateDateDisplay();
+			}, 0);
 		}
 
 		/**
-		 * Generate all time slots from 10:00 AM to 7:30 PM - 8:00 PM
+		 * Generate all time slots based on selected date
+		 * Uses date-specific overrides if available
 		 * Format: "10:00 AM - 10:30 AM"
 		 */
-		generateTimeSlots() {
+		generateTimeSlots(forDate) {
 			const slots = [];
+			const dateValue = forDate || this.dateInput?.value;
 			
-			// Start at 10:00 AM (10:00) and end at 7:30 PM (19:30)
-			// Each slot is 30 minutes
-			for (let hour = this.startHour; hour < this.endHour; hour++) {
+			// Get hours for this specific date (may have overrides)
+			const { startHour, endHour } = this.getHoursForDate(dateValue);
+			
+			// Generate slots based on the hours for this date
+			for (let hour = startHour; hour < endHour; hour++) {
 				for (let minute = 0; minute < 60; minute += this.slotDuration) {
 					// Calculate end time
-					const endHour = minute + this.slotDuration >= 60 ? hour + 1 : hour;
+					const endHourCalc = minute + this.slotDuration >= 60 ? hour + 1 : hour;
 					const endMinute = (minute + this.slotDuration) % 60;
 					
-					// Don't create slots that end after 8:00 PM
-					if (endHour > this.endHour || (endHour === this.endHour && endMinute > 0)) {
+					// Don't create slots that end after end hour
+					if (endHourCalc > endHour || (endHourCalc === endHour && endMinute > 0)) {
 						continue;
 					}
 					
 					const startTime = this.formatTime12Hour(hour, minute);
-					const endTime = this.formatTime12Hour(endHour, endMinute);
+					const endTime = this.formatTime12Hour(endHourCalc, endMinute);
 					
 					slots.push({
 						display: `${startTime} - ${endTime}`,
@@ -300,10 +424,101 @@ if (typeof DateTimeSlotPicker !== 'function') {
 		}
 
 		/**
+		 * Setup date display formatting
+		 */
+		setupDateDisplay() {
+			if (!this.dateInput) return;
+			
+			const field = this.dateInput.closest('.datetime-slot-picker__field');
+			if (field) {
+				// Create a display element for the formatted date
+				let displayElement = field.querySelector('.date-display-overlay');
+				if (!displayElement) {
+					displayElement = document.createElement('span');
+					displayElement.className = 'date-display-overlay';
+					displayElement.setAttribute('aria-hidden', 'true');
+					field.style.position = 'relative';
+					this.dateInput.parentNode.insertBefore(displayElement, this.dateInput);
+				}
+				this.displayElement = displayElement;
+				
+				// Make the input text transparent so our formatted text shows
+				this.dateInput.style.color = 'transparent';
+				
+				// Create arrow icon for date input
+				this.setupArrowIcon(this.dateInput);
+				
+				// Set initial display
+				this.updateDateDisplay();
+			}
+		}
+
+		/**
+		 * Ensure arrow icons are created for all inputs
+		 */
+		ensureArrowIcons() {
+			if (this.dateInput) {
+				this.setupArrowIcon(this.dateInput);
+			}
+			if (this.timeSelect) {
+				this.setupArrowIcon(this.timeSelect);
+			}
+		}
+
+		/**
+		 * Setup arrow icon for input/select elements
+		 */
+		setupArrowIcon(inputElement) {
+			if (!inputElement) return;
+			
+			const field = inputElement.closest('.datetime-slot-picker__field');
+			if (!field) return;
+			
+			// Ensure field has relative positioning
+			if (getComputedStyle(field).position === 'static') {
+				field.style.position = 'relative';
+			}
+			
+			// Check if arrow already exists for this specific input
+			const inputId = inputElement.id || inputElement.getAttribute('name') || '';
+			const arrowSelector = inputId ? `.dropdown-arrow-icon[data-for="${inputId}"]` : '.dropdown-arrow-icon';
+			let arrowElement = field.querySelector(arrowSelector);
+			
+			if (!arrowElement) {
+				arrowElement = document.createElement('span');
+				arrowElement.className = 'dropdown-arrow-icon';
+				arrowElement.setAttribute('aria-hidden', 'true');
+				if (inputId) {
+					arrowElement.setAttribute('data-for', inputId);
+				}
+				// Append to field wrapper (not after input) to ensure proper absolute positioning
+				field.appendChild(arrowElement);
+			}
+		}
+
+		/**
+		 * Update the date display format
+		 */
+		updateDateDisplay() {
+			if (!this.dateInput) return;
+			
+			const dateValue = this.dateInput.value;
+			if (dateValue && this.displayElement) {
+				const formattedDate = this.formatDateDisplay(dateValue);
+				this.displayElement.textContent = formattedDate;
+				// Also set as title for accessibility
+				this.dateInput.setAttribute('title', formattedDate);
+			} else if (this.displayElement) {
+				this.displayElement.textContent = '';
+			}
+		}
+
+		/**
 		 * Handle date selection change - update time options
 		 */
 		onDateChange() {
 			this.populateTimeOptions();
+			this.updateDateDisplay();
 		}
 
 		/**

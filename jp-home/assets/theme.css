@@ -810,7 +810,8 @@ html[dir=ltr] .text-animation--underline-in-header {
 
 #main a.text-link, .rte a {
   color: var(--color-text-main);
-  border-bottom: 1px solid;
+  border-bottom: none;
+  text-decoration: underline;
   padding-bottom: 1px;
   transition: all 100ms linear;
 }

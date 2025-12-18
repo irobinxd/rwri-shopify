@@ -17,6 +17,77 @@
   .cart__subtotal-widget .form-field:has(input[type="text"][name*="Pickup"]) {
     display: none !important;
   }
+  
+  /* Date and Time Picker Styling - Compact */
+  datetime-slot-picker .datetime-slot-picker__field input[type="date"],
+  datetime-slot-picker .datetime-slot-picker__field select {
+    border: 2px solid #70a062 !important;
+    color: #70a062 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: calc(13px / 16 * var(--base-body-size) + 0px) !important;
+  }
+  
+  /* Date input - 40% width with more spacing (desktop only) */
+  datetime-slot-picker .datetime-slot-picker__field input[type="date"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0.4rem 2rem 0.4rem 2.375rem !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Time select - 60% width with tighter padding (desktop only) */
+  datetime-slot-picker .datetime-slot-picker__field select {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0.4rem 2rem 0.4rem 2.125rem !important;
+    box-sizing: border-box !important;
+    font-weight: bold !important;
+  }
+  
+  /* Prevent date input overflow */
+  datetime-slot-picker .datetime-slot-picker__field {
+    max-width: 100%;
+    overflow: visible;
+  }
+  
+  datetime-slot-picker.datetime-slot-picker--inline .datetime-slot-picker__fields {
+    gap: 0.25rem !important;
+  }
+  
+  /* Inline variant - date 40%, time 60% with more spacing (desktop only) */
+  datetime-slot-picker.datetime-slot-picker--inline .datetime-slot-picker__field input[type="date"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0.4rem 2rem 0.4rem 2.375rem !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box !important;
+  }
+  
+  datetime-slot-picker.datetime-slot-picker--inline .datetime-slot-picker__field select {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0.4rem 2rem 0.4rem 2.125rem !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box !important;
+    font-weight: bold !important;
+  }
+  
+  /* Ensure text color for date input value */
+  datetime-slot-picker .datetime-slot-picker__field input[type="date"]::-webkit-datetime-edit-text,
+  datetime-slot-picker .datetime-slot-picker__field input[type="date"]::-webkit-datetime-edit-month-field,
+  datetime-slot-picker .datetime-slot-picker__field input[type="date"]::-webkit-datetime-edit-day-field,
+  datetime-slot-picker .datetime-slot-picker__field input[type="date"]::-webkit-datetime-edit-year-field {
+    color: #70a062 !important;
+  }
+  
+  /* Ensure select option text color */
+  datetime-slot-picker .datetime-slot-picker__field select option {
+    color: #70a062 !important;
+  }
 </style>
 
 <script>

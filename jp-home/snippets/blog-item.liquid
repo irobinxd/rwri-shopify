@@ -88,16 +88,14 @@ remove-empty-space">
         </div>
 
       {%- when 'summary' -%}
-        <div class="blog-item__excerpt" {{ block.shopify_attributes }}>
-          <span class="element--is-inline-block">
-            {%- liquid
-              if article.excerpt.size > 0
-                echo article.excerpt | strip_html
-              else
-                echo article.content | strip_html | truncatewords: block.settings.excerpt_limit, "..."
-              endif
-            -%}
-          </span>
+        <div class="blog-item__excerpt rte" {{ block.shopify_attributes }}>
+          {%- liquid
+            if article.excerpt.size > 0
+              echo article.excerpt
+            else
+              echo article.content
+            endif
+          -%}
         </div>
 
       {%- when 'info' -%}

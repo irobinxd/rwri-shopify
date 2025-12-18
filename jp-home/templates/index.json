@@ -16,8 +16,8 @@
           "type": "_slide-image",
           "name": "t:sections.local-extra-words.sections.slideshow.block.name",
           "settings": {
-            "image": "shopify://shop_images/2025-christmas-platters-in-store-article-cover.jpg",
-            "mobile_image": "shopify://shop_images/2025-christmas-platters-in-store-article-cover.jpg",
+            "image": "shopify://shop_images/2025-christmas-platters-in-store-in-article-grand-holiday-roast.jpg",
+            "mobile_image": "shopify://shop_images/2025-christmas-platters-in-store-in-article-grand-holiday-roast.jpg",
             "link": "https://joelsplace.com/blogs/in-store-now/joels-place-christmas-catalog-2025",
             "open_in_new_window": true,
             "color_background_main": "#3b3b3b",
@@ -534,7 +534,7 @@
         "color_background_main": "rgba(0,0,0,0)",
         "color_text_main": "rgba(0,0,0,0)",
         "color_button_main": "#70a062",
-        "color_borders_main": "rgba(0,0,0,0)",
+        "color_borders_main": "#dfdfdf",
         "color_shadow_main": "rgba(0,0,0,0)",
         "color_hide_borders": false,
         "color_hide_shadow": false,
@@ -857,6 +857,25 @@
     "blog_promotion_cards_YHWhNr": {
       "type": "blog-promotion-cards",
       "blocks": {
+        "card_6neAf8": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/entertaining-with-cheese-cover.jpg",
+            "caption": "SHOPPING GUIDE",
+            "title": "Entertaining with Cheese This Holiday",
+            "subtitle": "Your quick guide to types of cheese, best food pairings, and serving with cheese knives, perfect for entertaining guests this holiday season.",
+            "link": "https://joelsplace.com/blogs/guides/entertaining-with-cheese-this-holiday",
+            "button_label": "Read Now",
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)",
+            "color_accent_main": "rgba(0,0,0,0)",
+            "color_borders_main": "rgba(0,0,0,0)",
+            "color_shadow_main": "rgba(0,0,0,0)",
+            "color_hide_borders": false,
+            "color_hide_shadow": false,
+            "seo_h_tag": "h3"
+          }
+        },
         "card_xEjHJn": {
           "type": "card",
           "settings": {
@@ -897,6 +916,7 @@
         },
         "card_xeNHiC": {
           "type": "card",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/joels-place-takeouts-for-a-night-in-friends-hangout-cover.jpg",
             "caption": "SHOPPING GUIDE",
@@ -994,26 +1014,6 @@
             "seo_h_tag": "h3"
           }
         },
-        "card_6neAf8": {
-          "type": "card",
-          "disabled": true,
-          "settings": {
-            "image": "shopify://shop_images/proudly-filipino-products-at-joels-place-COVER.jpg",
-            "caption": "SHOPPING GUIDE",
-            "title": "Proudly Filipino Products",
-            "subtitle": "Loving local is easy when there’s delicious reasons to do so all over our shelves. Kick off your discovery with our guide on world-class, locally made products.",
-            "link": "shopify://blogs/guides/proudly-filipino-products-at-joels-place",
-            "button_label": "Read Now",
-            "color_background_main": "rgba(0,0,0,0)",
-            "color_text_main": "rgba(0,0,0,0)",
-            "color_accent_main": "rgba(0,0,0,0)",
-            "color_borders_main": "rgba(0,0,0,0)",
-            "color_shadow_main": "rgba(0,0,0,0)",
-            "color_hide_borders": false,
-            "color_hide_shadow": false,
-            "seo_h_tag": "h3"
-          }
-        },
         "card_h94kmY": {
           "type": "card",
           "disabled": true,
@@ -1076,6 +1076,7 @@
         }
       },
       "block_order": [
+        "card_6neAf8",
         "card_xEjHJn",
         "card_TQ6bGa",
         "card_xeNHiC",
@@ -1083,7 +1084,6 @@
         "card_VLVpqn",
         "card_UJC9jU",
         "card_DEXJ3q",
-        "card_6neAf8",
         "card_h94kmY",
         "card_HrxxHW",
         "card_bjxUU4"
@@ -1111,14 +1111,14 @@
     "165406738229739f4d": {
       "type": "promotion-cards",
       "blocks": {
-        "card_QNk3Pe": {
+        "card_RcNRD3": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/JP-Christmas-Catalog-2025-Meet-Block.jpg",
-            "caption": "NEW THIS SEASON",
-            "title": "Our Christmas Catalog",
-            "subtitle": "Celebrate the season with Joel's Place! Browse our Christmas catalog for offers perfect for sharing, gathering, and celebrating the holidays.",
-            "link": "https://joelsplace.com/blogs/in-store-now/joels-place-christmas-catalog-2025",
+            "image": "shopify://shop_images/Click-and-collect-mobile-banner.jpg",
+            "caption": "IN-STORE SERVICE",
+            "title": "Glorietta 4 Click and Collect",
+            "subtitle": "We’re bringing all your ready-to-eat favorites online with Click and Collect! Pick up your order in-store or curbside at Glorietta 4.",
+            "link": "https://joelsplace.com/blogs/in-store-now/click-and-collect-now-online",
             "open_in_new_window": false,
             "button_label": "Learn More",
             "color_background_main": "#65a898",
@@ -1151,14 +1151,14 @@
             "seo_h_tag": "h3"
           }
         },
-        "card_RcNRD3": {
+        "card_QNk3Pe": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Click-and-collect-mobile-banner.jpg",
-            "caption": "IN-STORE SERVICE",
-            "title": "Glorietta 4 Click and Collect",
-            "subtitle": "We’re bringing all your ready-to-eat favorites online with Click and Collect! Pick up your order in-store or curbside at Glorietta 4.",
-            "link": "https://joelsplace.com/blogs/in-store-now/click-and-collect-now-online",
+            "image": "shopify://shop_images/JP-Christmas-Catalog-2025-Meet-Block.jpg",
+            "caption": "NEW THIS SEASON",
+            "title": "Our Christmas Catalog",
+            "subtitle": "Celebrate the season with Joel's Place! Browse our Christmas catalog for offers perfect for sharing, gathering, and celebrating the holidays.",
+            "link": "https://joelsplace.com/blogs/in-store-now/joels-place-christmas-catalog-2025",
             "open_in_new_window": false,
             "button_label": "Learn More",
             "color_background_main": "#65a898",
@@ -1277,9 +1277,9 @@
         }
       },
       "block_order": [
-        "card_QNk3Pe",
-        "card_HnTWEw",
         "card_RcNRD3",
+        "card_HnTWEw",
+        "card_QNk3Pe",
         "card_HVDJjW",
         "16540673826052f668-0",
         "16540673826052f668-1",
@@ -1313,11 +1313,11 @@
         "16551074836af554cd-0": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/of-life-culture-and-dark-chocolate-cover.jpg",
+            "image": "shopify://shop_images/decembers-to-remember-illustration-cover.jpg",
             "caption": "ESSAY",
-            "title": "Of Life, Culture, and Dark Chocolate",
-            "subtitle": "Cultural and social ties underscore how dark chocolate represents connection, celebration, and the pursuit of a well-balanced life.",
-            "link": "shopify://blogs/joels-journal/of-life-culture-and-dark-chocolates",
+            "title": "Decembers to Remember",
+            "subtitle": "As December arrives, Filipinos eagerly count down to Christmas day with Simbang Gabi, puto bumbong, and bibingka.",
+            "link": "shopify://blogs/joels-journal/decembers-to-remember",
             "open_in_new_window": false,
             "button_label": "",
             "color_background_main": "#3d3d3d",
@@ -1373,6 +1373,15 @@
     "16553621956de397b6": {
       "type": "testimonials",
       "blocks": {
+        "testimonial_UXLtNP": {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Daily Tribune ",
+            "author_title": "Luis Espiritu",
+            "quote": "<p>Serving all that is good in food right in the heart of Makati.</p>",
+            "image": "shopify://shop_images/Daily-tribune-logo.png"
+          }
+        },
         "16553621951e01132c-0": {
           "type": "testimonial",
           "settings": {
@@ -1399,22 +1408,13 @@
             "quote": "<p>[T]heir range of specialty grocery finds is hard to beat, and their grab-and-go items make daily lunch decisions a breeze.</p>",
             "image": "shopify://shop_images/spot-ph-logo.jpg"
           }
-        },
-        "testimonial_UXLtNP": {
-          "type": "testimonial",
-          "settings": {
-            "author_name": "Daily Tribune ",
-            "author_title": "Luis Espiritu",
-            "quote": "<p>Serving all that is good in food right in the heart of Makati.</p>",
-            "image": "shopify://shop_images/Daily-tribune-logo.png"
-          }
         }
       },
       "block_order": [
+        "testimonial_UXLtNP",
         "16553621951e01132c-0",
         "16553621951e01132c-1",
-        "testimonial_waVW68",
-        "testimonial_UXLtNP"
+        "testimonial_waVW68"
       ],
       "settings": {
         "heading": "AS SEEN IN",
@@ -1564,7 +1564,7 @@
       ],
       "settings": {
         "height": "regular",
-        "image": "shopify://shop_images/joels-place-rockwell-grocery-lifestyle.jpg",
+        "image": "shopify://shop_images/what-is-a-grocerant-joels-place-proscenium-cover.jpg",
         "image_position": "top",
         "image_crop": true,
         "width": "100",

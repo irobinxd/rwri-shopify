@@ -45,10 +45,36 @@
 				{%- if cart.item_count > 0 -%}
 					
 					{%- if has_platter -%}
+						{%- comment -%}
+						  Timeslot Configuration for Pre-Orders (Platters)
+						  - Default: 10:00 AM to 8:00 PM, 30-min slots
+						  - dateOverrides: Different hours for specific dates (format: "YYYY-MM-DD")
+						    - startHour: 10 = 10am, 12 = 12pm, etc.
+						    - endHour: 20 = 8pm, 18 = 6pm, etc.
+						  - closedDates: Dates when store is closed (no pickup available)
+						  
+						  December 2025 Schedule:
+						  - Dec 15-23: 10am (default)
+						  - Dec 24 & 31: 10am (default)  
+						  - Dec 25 & Jan 1: 12pm start
+						  - Jan 2 onwards: 10am (default)
+						{%- endcomment -%}
+						{%- capture platter_timeslot_config -%}
+						{
+							"startHour": 10,
+							"endHour": 20,
+							"slotDuration": 30,
+							"closedDates": [],
+							"dateOverrides": {
+								"2025-12-25": { "startHour": 12, "endHour": 20 },
+								"2026-01-01": { "startHour": 12, "endHour": 20 }
+							}
+						}
+						{%- endcapture -%}
 						<div class="cart-items-group">
 							<div class="cart-items-group__header">
 								<span>Pre-Orders</span>
-								<datetime-slot-picker data-is-platter="true" data-lead-days="10" data-max-date="2025-01-07" class="datetime-slot-picker--inline">
+								<datetime-slot-picker data-is-platter="true" data-lead-days="3" data-available-days="10" data-timeslot-config='{{ platter_timeslot_config | strip_newlines }}' class="datetime-slot-picker--inline">
 									<div class="datetime-slot-picker__fields">
 										<div class="datetime-slot-picker__field">
 											<label for="platter-date" class="visually-hidden">Date</label>
@@ -86,10 +112,34 @@
 					{%- endif -%}
 
 					{%- if has_non_platter -%}
+						{%- comment -%}
+						  Timeslot Configuration for Click and Collect
+						  - Default: 10:00 AM to 8:00 PM, 30-min slots
+						  - dateOverrides: Different hours for specific dates (format: "YYYY-MM-DD")
+						  - closedDates: Dates when store is closed (no pickup available)
+						  
+						  December 2025 Schedule:
+						  - Dec 15-23: 10am (default)
+						  - Dec 24 & 31: 10am (default)  
+						  - Dec 25 & Jan 1: 12pm start
+						  - Jan 2 onwards: 10am (default)
+						{%- endcomment -%}
+						{%- capture collect_timeslot_config -%}
+						{
+							"startHour": 10,
+							"endHour": 20,
+							"slotDuration": 30,
+							"closedDates": [],
+							"dateOverrides": {
+								"2025-12-25": { "startHour": 12, "endHour": 20 },
+								"2026-01-01": { "startHour": 12, "endHour": 20 }
+							}
+						}
+						{%- endcapture -%}
 						<div class="cart-items-group">
 							<div class="cart-items-group__header">
 								<span>Click and Collect</span>
-								<datetime-slot-picker data-is-platter="false" data-lead-days="0" class="datetime-slot-picker--inline">
+								<datetime-slot-picker data-is-platter="false" data-lead-days="0" data-timeslot-config='{{ collect_timeslot_config | strip_newlines }}' class="datetime-slot-picker--inline">
 									<div class="datetime-slot-picker__fields">
 										<div class="datetime-slot-picker__field">
 											<label for="non-platter-date" class="visually-hidden">Date</label>
@@ -208,7 +258,6 @@
 						const dateObj = new Date(platterDate + 'T00:00:00');
 						const formattedDate = dateObj.toLocaleDateString('en-US', { 
 							weekday: 'long', 
-							year: 'numeric', 
 							month: 'long', 
 							day: 'numeric' 
 						});
@@ -229,7 +278,6 @@
 						const dateObj = new Date(nonPlatterDate + 'T00:00:00');
 						const formattedDate = dateObj.toLocaleDateString('en-US', { 
 							weekday: 'long', 
-							year: 'numeric', 
 							month: 'long', 
 							day: 'numeric' 
 						});
