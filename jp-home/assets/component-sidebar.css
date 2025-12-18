@@ -24,6 +24,14 @@
   transition: transform 0.3s ease-in-out;
   display: none;
 }
+/* Fix mobile overflow - ensure sidebar stays fixed */
+@media screen and (max-width: 767px) {
+  .sidebar {
+    position: fixed !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+  }
+}
 body:not(.sidebar-has-scrollbars) .sidebar {
   overflow-x: hidden;
 }

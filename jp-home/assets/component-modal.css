@@ -111,6 +111,24 @@ modal-box.active .modal-content {
     max-height: none;
     height: 100%;
   }
+  /* Quick View modal - don't take up whole page on mobile */
+  .modal--product .modal-content {
+    max-height: 85vh;
+    height: auto;
+    margin: 7.5vh auto;
+    border-radius: var(--border-radius-cards);
+    width: calc(100% - 2rem);
+    max-width: 500px;
+  }
+  .modal--product > div {
+    height: auto;
+    align-items: flex-start;
+    padding-top: 0;
+  }
+  .modal--product .container--medium {
+    width: 100%;
+    max-width: 100%;
+  }
   .modal .store-selector-map {
     width: calc(100% + var(--gutter-large) * 1.5);
     margin-inline-start: calc(var(--gutter-large) * -0.75);

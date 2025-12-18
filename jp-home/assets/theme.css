@@ -3001,6 +3001,10 @@ svg.onboarding-svg--reduced {
 body.modal-opened,
 body.sidebar-opened {
   overflow: hidden;
+  overflow-y: hidden;
+}
+body:not(.sidebar-opened):not(.modal-opened) {
+  overflow-y: scroll;
 }
 
 .main-content {
