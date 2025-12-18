@@ -214,7 +214,7 @@ if (typeof DateTimeSlotPicker !== 'function') {
 		}
 
 		/**
-		 * Format date for display (mmm-dd-yy format, e.g., "Dec-02-25")
+		 * Format date for display (mmm dd format, e.g., "Dec 02")
 		 */
 		formatDateDisplay(dateValue) {
 			if (!dateValue) return '';
@@ -222,17 +222,14 @@ if (typeof DateTimeSlotPicker !== 'function') {
 			const parts = dateValue.split('-');
 			if (parts.length !== 3) return dateValue;
 			
-			const year = parseInt(parts[0]);
 			const month = parseInt(parts[1]) - 1; // JavaScript months are 0-indexed
 			const day = parseInt(parts[2]);
 			
-			const date = new Date(year, month, day);
 			const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 			const monthAbbr = monthNames[month];
 			const dayFormatted = String(day).padStart(2, '0');
-			const yearShort = String(year).slice(-2);
 			
-			return `${monthAbbr}-${dayFormatted}-${yearShort}`;
+			return `${monthAbbr} ${dayFormatted}`;
 		}
 
 		/**
