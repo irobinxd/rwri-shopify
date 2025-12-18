@@ -502,7 +502,8 @@
     },
     "checkout": {
       "delivery_options": {
-        "pick_up_in_one_hour": " "
+        "pick_up_in_one_hour": " ",
+        "pick_up_locations": "PICK UP OR BOOK YOUR OWN RIDER"
       },
       "stock": {
         "sold_out_label": "Visit us in Store"
@@ -513,12 +514,8 @@
         }
       },
       "shipping": {
-        "free_rate_label": "PICK UP"
-      },
-      "local_pickup": {
-        "location_information": {
-          "other": "Pick Up or Book your own Rider"
-        }
+        "free_rate_label": "PICK UP",
+        "delivery_title": "PICK UP"
       }
     }
   },
