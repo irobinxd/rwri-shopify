@@ -506,7 +506,7 @@
       ".sticky-header.show {font-family: \"Din Alternate\", sans-serif;}",
       ".site-nav .icon {display: none !important;}",
       ".section-heading__subheading {font-size: 16px; font-family: \"Din Alternate\", sans-serif;}",
-      "#main a.text-link,.rte a {border-bottom: none;}",
+      "#main a.text-link,.article .rte a,.blog-item__excerpt.rte a {border-bottom: none;}",
       ".button {line-height: 1; --button-padding-large: 0.8rem 5rem;}",
       "div.submenu-holder {background: #ffffff;}",
       "span.text-animation--underline-in-header {color: #71716f;}",

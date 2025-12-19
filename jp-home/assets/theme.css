@@ -808,14 +808,14 @@ html[dir=ltr] .text-animation--underline-in-header {
   stroke: var(--color-text-main);
 }
 
-#main a.text-link, .rte a {
+#main a.text-link, .article .rte a, .blog-item__excerpt.rte a {
   color: var(--color-text-main);
   border-bottom: none;
   text-decoration: underline;
   padding-bottom: 1px;
   transition: all 100ms linear;
 }
-.no-touchevents #main a.text-link:hover, .no-touchevents .rte a:hover {
+.no-touchevents #main a.text-link:hover, .no-touchevents .article .rte a:hover, .no-touchevents .blog-item__excerpt.rte a:hover {
   color: var(--color-accent-main);
 }
 a.text-link {

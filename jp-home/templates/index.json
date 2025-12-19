@@ -651,7 +651,7 @@
         "quick_buy_aCwUp4"
       ],
       "custom_css": [
-        "a.text-link,.rte a {text-decoration: underline;}"
+        "a.text-link,.article .rte a,.blog-item__excerpt.rte a {text-decoration: underline;}"
       ],
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
@@ -824,7 +824,7 @@
         "quick_buy_FbPCYd"
       ],
       "custom_css": [
-        "a.text-link,.rte a {text-decoration: underline;}"
+        "a.text-link,.article .rte a,.blog-item__excerpt.rte a {text-decoration: underline;}"
       ],
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
