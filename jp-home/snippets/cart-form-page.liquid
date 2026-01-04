@@ -25,8 +25,7 @@
 			for item in cart.items
 				assign is_platter_item = false
 				for tag in item.product.tags
-					assign tag_lower = tag | downcase | strip
-					if tag_lower contains '2025 jp christmas platter'
+					if tag == '2025 JP Christmas Platter'
 						assign is_platter_item = true
 						break
 					endif
@@ -68,6 +67,7 @@
 							"closedDates": [],
 							"dateOverrides": {
 								"2025-12-25": { "startHour": 12, "endHour": 20 },
+								"2025-12-31": { "startHour": 10, "endHour": 17 },
 								"2026-01-01": { "startHour": 12, "endHour": 20 }
 							}
 						}
@@ -99,8 +99,7 @@
 								{%- liquid
 									assign is_platter = false
 									for tag in item.product.tags
-										assign tag_lower = tag | downcase | strip
-										if tag_lower contains '2025 jp christmas platter'
+										if tag == '2025 JP Christmas Platter'
 											assign is_platter = true
 											break
 										endif
@@ -134,6 +133,7 @@
 							"closedDates": [],
 							"dateOverrides": {
 								"2025-12-25": { "startHour": 12, "endHour": 20 },
+								"2025-12-31": { "startHour": 10, "endHour": 17 },
 								"2026-01-01": { "startHour": 12, "endHour": 20 }
 							}
 						}
@@ -165,8 +165,7 @@
 								{%- liquid
 									assign is_platter = false
 									for tag in item.product.tags
-										assign tag_lower = tag | downcase | strip
-										if tag_lower contains '2025 jp christmas platter'
+										if tag == '2025 JP Christmas Platter'
 											assign is_platter = true
 											break
 										endif

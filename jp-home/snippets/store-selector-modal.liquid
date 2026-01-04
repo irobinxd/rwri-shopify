@@ -1,0 +1,264 @@
+{%- comment -%}
+  Store Selector Modal
+  Shows on first visit to let customers choose their preferred store.
+  Products will be filtered based on the selected store's availability.
+  Locations are dynamically loaded from Shopify's actual store locations.
+{%- endcomment -%}
+
+{%- comment -%} Get locations from Shopify {%- endcomment -%}
+{%- render 'store-locations-data' -%}
+
+<div id="store-selector-modal" class="store-selector-modal">
+  <div class="store-selector-overlay"></div>
+  <div class="store-selector-content">
+    <button type="button" class="store-selector-close" id="store-modal-close" aria-label="Close">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    <div class="store-selector-header">
+      <h2>Welcome to Joel's Place</h2>
+      <p>Please select your preferred store for pickup</p>
+    </div>
+    
+    <div class="store-selector-options" id="store-selector-options">
+      {%- comment -%} Options will be populated dynamically from Shopify locations {%- endcomment -%}
+      <div class="store-selector-loading" style="text-align: center; padding: 2rem; color: #666;">
+        Loading stores...
+      </div>
+    </div>
+    
+    <div class="store-selector-footer">
+      <p class="store-selector-note">
+        <small>You'll only see products available at your selected store. You can change your store anytime from the header.</small>
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .store-selector-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2147483647; /* Max z-index to be above everything */
+    display: none; /* Hidden by default */
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .store-selector-modal.active {
+    display: flex !important;
+  }
+  
+  .store-selector-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+  }
+  
+  .store-selector-content {
+    position: relative;
+    background: #fff;
+    border-radius: 12px;
+    max-width: 480px;
+    width: 90%;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: storeModalSlideIn 0.3s ease-out;
+  }
+  
+  .store-selector-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #999;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+  }
+  
+  .store-selector-close:hover {
+    background: #f0f0f0;
+    color: #333;
+  }
+  
+  @keyframes storeModalSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  .store-selector-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .store-selector-header h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .store-selector-header p {
+    margin: 0;
+    color: #666;
+    font-size: 0.95rem;
+  }
+  
+  .store-selector-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .store-option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    width: 100%;
+  }
+  
+  .store-option:hover {
+    border-color: var(--color-accent, #70a062);
+    background: #f8faf7;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(112, 160, 98, 0.15);
+  }
+  
+  .store-option:active {
+    transform: translateY(0);
+  }
+  
+  .store-option-icon {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--color-accent, #70a062), #5a8a4e);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+  
+  .store-option-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .store-option-details strong {
+    font-size: 1.1rem;
+    color: #333;
+  }
+  
+  .store-option-details span {
+    font-size: 0.85rem;
+    color: #666;
+  }
+  
+  .store-selector-footer {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+  
+  .store-selector-note {
+    margin: 0;
+    color: #888;
+  }
+  
+  .store-selector-note small {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+  
+  /* Mobile adjustments */
+  @media (max-width: 480px) {
+    .store-selector-content {
+      padding: 1.5rem;
+      margin: 1rem;
+    }
+    
+    .store-selector-header h2 {
+      font-size: 1.25rem;
+    }
+    
+    .store-option {
+      padding: 1rem;
+    }
+    
+    .store-option-icon {
+      width: 48px;
+      height: 48px;
+    }
+    
+    .store-option-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+    
+    .store-option-details strong {
+      font-size: 1rem;
+    }
+  }
+</style>
+
+<script>
+(function() {
+  function closeModal() {
+    const modal = document.getElementById('store-selector-modal');
+    if (modal) {
+      modal.classList.remove('active');
+      document.body.classList.remove('store-modal-open');
+    }
+  }
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    // Close button
+    const closeBtn = document.getElementById('store-modal-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', closeModal);
+    }
+    
+    // Click overlay to close
+    const overlay = document.querySelector('.store-selector-overlay');
+    if (overlay) {
+      overlay.addEventListener('click', closeModal);
+    }
+    
+    // ESC key to close
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    });
+  });
+})();
+</script>

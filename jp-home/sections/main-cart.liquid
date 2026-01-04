@@ -522,7 +522,82 @@
 </script>
 
 <div class="container container--large container--vertical-space-small">
-  <h1 class="title h2 gutter-bottom--page">{{ 'cart.title' | t }}</h1>
+  <h1 class="title h2" style="margin-bottom: 0.5rem;">{{ 'cart.title' | t }}</h1>
+  
+  {%- comment -%} Display selected pickup location {%- endcomment -%}
+  <div id="cart-pickup-location" class="cart-pickup-location" style="display: none; margin-bottom: 1.5rem;">
+    <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1rem; background: #f8faf7;margin-bottom:5px; border: 1px solid #70a062; border-radius: 6px; font-size: 0.9rem;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#70a062" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+        <circle cx="12" cy="10" r="3"/>
+      </svg>
+      <span style="color: #333;">Pickup at: <strong id="cart-store-name" style="color: #70a062;"></strong></span>
+      <button type="button" id="cart-change-store" style="background: none; border: none; color: #70a062; cursor: pointer; font-size: 0.85rem; text-decoration: underline; padding: 0; margin-left: 0.5rem;">Change</button>
+    </div>
+  </div>
+  <script>
+    (function() {
+      function updateCartLocation() {
+        const container = document.getElementById('cart-pickup-location');
+        const nameEl = document.getElementById('cart-store-name');
+        const changeBtn = document.getElementById('cart-change-store');
+        if (!container || !nameEl) return;
+        
+        let storedStore = null;
+        try {
+          storedStore = localStorage.getItem('joels_preferred_store');
+        } catch(e) {}
+        
+        if (storedStore) {
+          container.style.display = 'block';
+          
+          // Decode HTML entities
+          const decodeHtml = (html) => {
+            const txt = document.createElement('textarea');
+            txt.innerHTML = html;
+            return txt.value;
+          };
+          
+          // Get store name from config
+          if (window.JoelsStoreSelectorConfig && window.JoelsStoreSelectorConfig.stores[storedStore]) {
+            nameEl.textContent = decodeHtml(window.JoelsStoreSelectorConfig.stores[storedStore].name);
+          } else {
+            // Wait for config to load
+            setTimeout(() => {
+              if (window.JoelsStoreSelectorConfig && window.JoelsStoreSelectorConfig.stores[storedStore]) {
+                nameEl.textContent = decodeHtml(window.JoelsStoreSelectorConfig.stores[storedStore].name);
+              } else {
+                nameEl.textContent = storedStore.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+              }
+            }, 500);
+          }
+        } else {
+          container.style.display = 'none';
+        }
+        
+        // Change store button
+        if (changeBtn) {
+          changeBtn.addEventListener('click', function() {
+            const modal = document.getElementById('store-selector-modal');
+            if (modal) {
+              modal.classList.add('active');
+              document.body.classList.add('store-modal-open');
+            }
+          });
+        }
+      }
+      
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', updateCartLocation);
+      } else {
+        updateCartLocation();
+      }
+      
+      // Listen for store changes
+      document.addEventListener('store-selected', updateCartLocation);
+    })();
+  </script>
+  
   <div class="cart-section {% if cart.items.size == 0 %} cart-section--empty {% endif %}">
     <main>
       {%- for block in section.blocks -%}

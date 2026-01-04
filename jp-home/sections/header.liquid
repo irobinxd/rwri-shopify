@@ -320,6 +320,9 @@
             assign iso_code = localization.country.currency.iso_code | prepend: ' '
           endif
         -%}
+
+        {%- comment -%} Store Selector Indicator {%- endcomment -%}
+        {%- render 'store-header-indicator' -%}
           
         <a
           class="button button--solid button--icon no-js-hidden"

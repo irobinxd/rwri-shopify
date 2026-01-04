@@ -1,0 +1,198 @@
+{%- comment -%}
+  Store Header Indicator
+  Floating pin icon - shows selected store on hover/tap
+{%- endcomment -%}
+
+<style>
+  /* Floating pin button - same size as chat button, positioned above it */
+  #joels-store-pin {
+    position: fixed !important;
+    z-index: 9998 !important; /* Below chat widget z-index (usually 9999) */
+    bottom: 90px !important;
+    right: 20px !important;
+    width: 60px !important;
+    height: 60px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #70a062 !important;
+    border: none !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  }
+  
+  #joels-store-pin:hover,
+  #joels-store-pin:active {
+    transform: scale(1.05) !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35) !important;
+  }
+  
+  #joels-store-pin svg {
+    width: 28px !important;
+    height: 28px !important;
+    color: #fff !important;
+    fill: none !important;
+    stroke: #fff !important;
+  }
+  
+  /* Tooltip for store name */
+  #joels-store-pin .pin-tooltip {
+    position: absolute;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #333;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    pointer-events: none;
+    font-family: inherit;
+  }
+  
+  #joels-store-pin .pin-tooltip::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 6px solid transparent;
+    border-left-color: #333;
+  }
+  
+  #joels-store-pin:hover .pin-tooltip,
+  #joels-store-pin:focus .pin-tooltip,
+  #joels-store-pin.show-tooltip .pin-tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* Desktop position - same as mobile, above chat button */
+  @media (min-width: 768px) {
+    #joels-store-pin {
+      bottom: 90px !important;
+      right: 20px !important;
+    }
+  }
+  
+  /* Badge for unavailable products */
+  .store-unavailable {
+    opacity: 0.6;
+    position: relative;
+  }
+  
+  /* Hide native Shopify pickup widget when store is selected */
+  body.store-selected pickup-availability-compact,
+  body.store-selected .product-item__local-availability {
+    display: none !important;
+  }
+</style>
+
+<script>
+(function() {
+  // Create and inject the pin button via JS to ensure it appears
+  function createPinButton() {
+    // Check if already exists
+    if (document.getElementById('joels-store-pin')) return;
+    
+    const pin = document.createElement('div');
+    pin.id = 'joels-store-pin';
+    pin.title = 'Select pickup store';
+    pin.setAttribute('role', 'button');
+    pin.setAttribute('tabindex', '0');
+    
+    // Pin icon SVG
+    pin.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+        <circle cx="12" cy="10" r="3"/>
+      </svg>
+      <span class="pin-tooltip" id="joels-pin-tooltip">Select Store</span>
+    `;
+    
+    // Append to body
+    document.body.appendChild(pin);
+    
+    // Click handler
+    pin.addEventListener('click', function() {
+      const modal = document.getElementById('store-selector-modal');
+      if (modal) {
+        modal.classList.add('active');
+        document.body.classList.add('store-modal-open');
+      }
+    });
+    
+    // Keyboard handler
+    pin.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        pin.click();
+      }
+    });
+    
+    // Update tooltip with store name
+    updateTooltip();
+  }
+  
+  function decodeHtml(html) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+  }
+  
+  function updateTooltip() {
+    const tooltip = document.getElementById('joels-pin-tooltip');
+    if (!tooltip) return;
+    
+    let storedStore = null;
+    try {
+      storedStore = localStorage.getItem('joels_preferred_store');
+    } catch(e) {
+      const match = document.cookie.match(/joels_preferred_store=([^;]+)/);
+      storedStore = match ? match[1] : null;
+    }
+    
+    if (storedStore) {
+      if (window.JoelsStoreSelectorConfig && window.JoelsStoreSelectorConfig.stores[storedStore]) {
+        tooltip.textContent = decodeHtml(window.JoelsStoreSelectorConfig.stores[storedStore].name);
+      } else {
+        // Retry after config loads
+        setTimeout(() => {
+          if (window.JoelsStoreSelectorConfig && window.JoelsStoreSelectorConfig.stores[storedStore]) {
+            tooltip.textContent = decodeHtml(window.JoelsStoreSelectorConfig.stores[storedStore].name);
+          } else {
+            tooltip.textContent = storedStore.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+          }
+        }, 1000);
+      }
+    }
+  }
+  
+  // Initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', createPinButton);
+  } else {
+    createPinButton();
+  }
+  
+  // Also try after a delay in case DOM isn't ready
+  setTimeout(createPinButton, 500);
+  setTimeout(createPinButton, 1500);
+  
+  // Listen for store changes
+  document.addEventListener('store-selected', function(e) {
+    const tooltip = document.getElementById('joels-pin-tooltip');
+    if (tooltip && e.detail.storeName) {
+      tooltip.textContent = decodeHtml(e.detail.storeName);
+    }
+  });
+})();
+</script>

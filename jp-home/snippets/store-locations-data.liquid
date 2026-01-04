@@ -1,0 +1,51 @@
+{%- comment -%}
+  Gets Shopify store locations dynamically
+  This snippet collects all locations that have pickup enabled from products
+{%- endcomment -%}
+
+{%- liquid
+  assign locations_map = ''
+  assign location_names = ''
+  
+  if collections.all.products.size > 0
+    for product in collections.all.products limit: 20
+      assign variant = product.selected_or_first_available_variant
+      if variant
+        assign pick_up_availabilities = variant.store_availabilities | where: 'pick_up_enabled', true
+        if pick_up_availabilities.size > 0
+          for availability in pick_up_availabilities
+            assign location_name = availability.location.name
+            assign location_handle = location_name | handleize
+            
+            unless location_names contains location_name
+              if location_names == blank
+                assign location_names = location_name
+                assign locations_map = location_name | append: '::' | append: location_handle
+              else
+                assign location_names = location_names | append: '||' | append: location_name
+                assign locations_map = locations_map | append: '||' | append: location_name | append: '::' | append: location_handle
+              endif
+            endunless
+          endfor
+        endif
+      endif
+    endfor
+  endif
+-%}
+
+{%- comment -%} Output locations as JSON for JavaScript {%- endcomment -%}
+<script type="application/json" id="shopify-locations-data">
+[
+  {%- if locations_map != blank -%}
+    {%- assign locations_array = locations_map | split: '||' -%}
+    {%- for location_string in locations_array -%}
+      {%- assign location_parts = location_string | split: '::' -%}
+      {
+        "name": {{ location_parts[0] | json }},
+        "handle": {{ location_parts[1] | json }}
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  {%- endif -%}
+]
+</script>
+

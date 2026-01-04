@@ -13,7 +13,7 @@
 
 {%- for availability in pick_up_availabilities -%}
   <div class="pickup-availability-alert" data-store="{{ availability.location.name | handleize }}">
-    <span class="alert alert--circle alert--{%- if availability.available -%} success {%- else -%} note {%- endif -%}">
+    <span class="alert alert--circle {% if availability.available %}alert--success{% else %}alert--note{% endif %}">
       {%- if availability.available -%}
         {{ 'store_availability.compact_widget.available_at_selected_store' | t }}
       {%- else -%}

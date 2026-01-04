@@ -12,85 +12,6 @@
     "1653646142d6a7c886": {
       "type": "flex-slideshow",
       "blocks": {
-        "slide_image_tLrNkC": {
-          "type": "_slide-image",
-          "name": "t:sections.local-extra-words.sections.slideshow.block.name",
-          "settings": {
-            "image": "shopify://shop_images/2025-christmas-platters-in-store-in-article-grand-holiday-roast.jpg",
-            "mobile_image": "shopify://shop_images/2025-christmas-platters-in-store-in-article-grand-holiday-roast.jpg",
-            "link": "https://joelsplace.com/blogs/in-store-now/joels-place-christmas-catalog-2025",
-            "open_in_new_window": true,
-            "color_background_main": "#3b3b3b",
-            "color_text_main": "rgba(0,0,0,0)"
-          },
-          "blocks": {
-            "caption_XaL7EF": {
-              "type": "caption",
-              "settings": {
-                "caption": "Discover a world of festive flavors and vibrant delights this holiday season",
-                "text_size": "regular",
-                "text_background_color": "rgba(0,0,0,0)",
-                "text_color": "#ffffff"
-              },
-              "blocks": {}
-            },
-            "heading_WJzQ39": {
-              "type": "heading",
-              "settings": {
-                "heading": "Paint the Town Merry",
-                "title_size": "h2",
-                "line_height": "default",
-                "text_color": "#ffffff",
-                "seo_h_tag": "h3"
-              },
-              "blocks": {}
-            },
-            "content_group_FDfExW": {
-              "type": "content-group",
-              "settings": {
-                "spacing": "small"
-              },
-              "blocks": {
-                "button_8aYh46": {
-                  "type": "button",
-                  "name": "t:sections.rich-text.blocks.button.name",
-                  "settings": {
-                    "button_label": "Shop Christmas",
-                    "link": "shopify://collections/2025-festive-flavors-of-christmas",
-                    "open_in_new_window": false,
-                    "button_size": "regular",
-                    "button_style": "solid",
-                    "color_text_buttons": "#ffffff",
-                    "color_accent_buttons": "rgba(0,0,0,0)"
-                  },
-                  "blocks": {}
-                },
-                "button_jAdwRc": {
-                  "type": "button",
-                  "settings": {
-                    "button_label": "Ways to Collect Your Order",
-                    "link": "shopify://blogs/in-store-now/how-to-pick-up-your-click-and-collect-order-at-joels-place",
-                    "open_in_new_window": false,
-                    "button_size": "regular",
-                    "button_style": "outline",
-                    "color_text_buttons": "#ffffff",
-                    "color_accent_buttons": "rgba(0,0,0,0)"
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "button_8aYh46",
-                "button_jAdwRc"
-              ]
-            }
-          },
-          "block_order": [
-            "caption_XaL7EF",
-            "heading_WJzQ39",
-            "content_group_FDfExW"
-          ]
-        },
         "slide_image_iT6yTR": {
           "type": "_slide-image",
           "name": "t:sections.local-extra-words.sections.slideshow.block.name",
@@ -170,6 +91,149 @@
             "content_group_bPgdb3"
           ]
         },
+        "slide_image_tLrNkC": {
+          "type": "_slide-image",
+          "name": "t:sections.local-extra-words.sections.slideshow.block.name",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/2025-christmas-platters-in-store-in-article-grand-holiday-roast.jpg",
+            "mobile_image": "shopify://shop_images/2025-christmas-platters-in-store-in-article-grand-holiday-roast.jpg",
+            "link": "https://joelsplace.com/blogs/in-store-now/joels-place-christmas-catalog-2025",
+            "open_in_new_window": true,
+            "color_background_main": "#3b3b3b",
+            "color_text_main": "rgba(0,0,0,0)"
+          },
+          "blocks": {
+            "caption_XaL7EF": {
+              "type": "caption",
+              "settings": {
+                "caption": "Discover a world of festive flavors and vibrant delights this holiday season",
+                "text_size": "regular",
+                "text_background_color": "rgba(0,0,0,0)",
+                "text_color": "#ffffff"
+              },
+              "blocks": {}
+            },
+            "heading_WJzQ39": {
+              "type": "heading",
+              "settings": {
+                "heading": "Paint the Town Merry",
+                "title_size": "h2",
+                "line_height": "default",
+                "text_color": "#ffffff",
+                "seo_h_tag": "h3"
+              },
+              "blocks": {}
+            },
+            "content_group_FDfExW": {
+              "type": "content-group",
+              "settings": {
+                "spacing": "small"
+              },
+              "blocks": {
+                "button_8aYh46": {
+                  "type": "button",
+                  "name": "t:sections.rich-text.blocks.button.name",
+                  "settings": {
+                    "button_label": "Shop Christmas",
+                    "link": "shopify://collections/2025-festive-flavors-of-christmas",
+                    "open_in_new_window": false,
+                    "button_size": "regular",
+                    "button_style": "solid",
+                    "color_text_buttons": "#ffffff",
+                    "color_accent_buttons": "rgba(0,0,0,0)"
+                  },
+                  "blocks": {}
+                },
+                "button_jAdwRc": {
+                  "type": "button",
+                  "settings": {
+                    "button_label": "Ways to Collect Your Order",
+                    "link": "shopify://blogs/in-store-now/how-to-pick-up-your-click-and-collect-order-at-joels-place",
+                    "open_in_new_window": false,
+                    "button_size": "regular",
+                    "button_style": "outline",
+                    "color_text_buttons": "#ffffff",
+                    "color_accent_buttons": "rgba(0,0,0,0)"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "button_8aYh46",
+                "button_jAdwRc"
+              ]
+            }
+          },
+          "block_order": [
+            "caption_XaL7EF",
+            "heading_WJzQ39",
+            "content_group_FDfExW"
+          ]
+        },
+        "slide-2": {
+          "type": "_slide-image",
+          "settings": {
+            "image": "shopify://shop_images/giftcards_homepage.jpg",
+            "mobile_image": "shopify://shop_images/giftcards_homepage.jpg",
+            "link": "shopify://products/joels-place-gift-card",
+            "open_in_new_window": false,
+            "color_background_main": "#3b3b3b",
+            "color_text_main": "#1d1d1b"
+          },
+          "blocks": {
+            "slide-2-caption-1": {
+              "type": "caption",
+              "settings": {
+                "caption": "Enjoy year-round gifting",
+                "text_size": "large",
+                "text_background_color": "rgba(0,0,0,0)",
+                "text_color": "#ffffff"
+              },
+              "blocks": {}
+            },
+            "slide-2-heading-1": {
+              "type": "heading",
+              "settings": {
+                "heading": "Joel's Place Gift Cards",
+                "title_size": "h2",
+                "line_height": "default",
+                "text_color": "#ffffff",
+                "seo_h_tag": "h3"
+              },
+              "blocks": {}
+            },
+            "slide-2-content-group-1": {
+              "type": "content-group",
+              "settings": {
+                "spacing": "small"
+              },
+              "blocks": {
+                "slide-2-button-1": {
+                  "type": "button",
+                  "settings": {
+                    "button_label": "Shop Now",
+                    "link": "shopify://products/joels-place-gift-card",
+                    "open_in_new_window": false,
+                    "button_size": "regular",
+                    "button_style": "solid",
+                    "color_text_buttons": "#ffffff",
+                    "color_accent_buttons": "rgba(0,0,0,0)"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "slide-2-button-1"
+              ]
+            }
+          },
+          "block_order": [
+            "slide-2-caption-1",
+            "slide-2-heading-1",
+            "slide-2-content-group-1"
+          ]
+        },
         "slide_image_pDaktm": {
           "type": "_slide-image",
           "name": "t:sections.local-extra-words.sections.slideshow.block.name",
@@ -246,69 +310,6 @@
             "caption_dKjFW3",
             "heading_CAUTbi",
             "content_group_Bb8pbB"
-          ]
-        },
-        "slide-2": {
-          "type": "_slide-image",
-          "settings": {
-            "image": "shopify://shop_images/giftcards_homepage.jpg",
-            "mobile_image": "shopify://shop_images/giftcards_homepage.jpg",
-            "link": "shopify://products/joels-place-gift-card",
-            "open_in_new_window": false,
-            "color_background_main": "#3b3b3b",
-            "color_text_main": "#1d1d1b"
-          },
-          "blocks": {
-            "slide-2-caption-1": {
-              "type": "caption",
-              "settings": {
-                "caption": "Enjoy year-round gifting",
-                "text_size": "large",
-                "text_background_color": "rgba(0,0,0,0)",
-                "text_color": "#ffffff"
-              },
-              "blocks": {}
-            },
-            "slide-2-heading-1": {
-              "type": "heading",
-              "settings": {
-                "heading": "Joel's Place Gift Cards",
-                "title_size": "h2",
-                "line_height": "default",
-                "text_color": "#ffffff",
-                "seo_h_tag": "h3"
-              },
-              "blocks": {}
-            },
-            "slide-2-content-group-1": {
-              "type": "content-group",
-              "settings": {
-                "spacing": "small"
-              },
-              "blocks": {
-                "slide-2-button-1": {
-                  "type": "button",
-                  "settings": {
-                    "button_label": "Shop Now",
-                    "link": "shopify://products/joels-place-gift-card",
-                    "open_in_new_window": false,
-                    "button_size": "regular",
-                    "button_style": "solid",
-                    "color_text_buttons": "#ffffff",
-                    "color_accent_buttons": "rgba(0,0,0,0)"
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "slide-2-button-1"
-              ]
-            }
-          },
-          "block_order": [
-            "slide-2-caption-1",
-            "slide-2-heading-1",
-            "slide-2-content-group-1"
           ]
         },
         "slide-1": {
@@ -470,10 +471,10 @@
         }
       },
       "block_order": [
-        "slide_image_tLrNkC",
         "slide_image_iT6yTR",
-        "slide_image_pDaktm",
+        "slide_image_tLrNkC",
         "slide-2",
+        "slide_image_pDaktm",
         "slide-1",
         "slide_image_KPfirg"
       ],
@@ -494,139 +495,6 @@
         "color_hide_borders": false,
         "color_hide_shadow": true,
         "disable_parallax": false
-      }
-    },
-    "featured_collection_V4XQpV": {
-      "type": "featured-collection",
-      "blocks": {
-        "title_xDYKii": {
-          "type": "title",
-          "settings": {}
-        },
-        "price_H3iqEL": {
-          "type": "price",
-          "settings": {}
-        },
-        "quick_buy_wyKyPh": {
-          "type": "quick_buy",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "title_xDYKii",
-        "price_H3iqEL",
-        "quick_buy_wyKyPh"
-      ],
-      "name": "t:sections.featured-collection.presets.name",
-      "settings": {
-        "heading": "CHRISTMAS HAMPERS",
-        "subheading": "Shop Christmas Hampers for Click and Collect",
-        "show_view_all": true,
-        "section_heading_layout": "section-heading--left",
-        "style": "slider",
-        "layout_desktop": "four-columns",
-        "layout_mobile": "grid-palm-2",
-        "products_number": 11,
-        "collection": "2025-christmas-hampers",
-        "collection_1": "",
-        "collection_2": "",
-        "collection_3": "",
-        "color_background_main": "rgba(0,0,0,0)",
-        "color_text_main": "rgba(0,0,0,0)",
-        "color_button_main": "#70a062",
-        "color_borders_main": "#dfdfdf",
-        "color_shadow_main": "rgba(0,0,0,0)",
-        "color_hide_borders": false,
-        "color_hide_shadow": false,
-        "section_background_color": "rgba(0,0,0,0)",
-        "section_background_gradient": "",
-        "section_heading_color": "rgba(0,0,0,0)",
-        "remove_margin": false,
-        "seo_h_tag": "h2"
-      }
-    },
-    "165597098555c514a4": {
-      "type": "text-columns-images",
-      "blocks": {
-        "1655970985e1e8c596-1": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Gusto-basket-1010383.jpg",
-            "title": "Christmas Hampers",
-            "caption": "",
-            "link": "shopify://collections/2025-christmas-hampers",
-            "open_in_new_window": false,
-            "seo_h_tag": "h3"
-          }
-        },
-        "image_pH4jhD": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Moet-and-chandon-ice-rose-750ml-1002195-front.jpg",
-            "title": "Holiday Wines",
-            "caption": "",
-            "link": "shopify://collections/2025-christmas-wines",
-            "open_in_new_window": false,
-            "seo_h_tag": "h3"
-          }
-        },
-        "1655970985e1e8c596-0": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/2025-christmas-food-platters-category-section.jpg",
-            "title": "Festive Platters",
-            "caption": "",
-            "link": "shopify://collections/2025-christmas-platters",
-            "open_in_new_window": false,
-            "seo_h_tag": "h3"
-          }
-        },
-        "1655970985e1e8c596-2": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Joels-place-gift-card1.jpg",
-            "title": "Gift Cards",
-            "caption": "",
-            "link": "shopify://products/joels-place-gift-card",
-            "open_in_new_window": false,
-            "seo_h_tag": "h3"
-          }
-        },
-        "image_tGwwUc": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Grilled-all-day-breakfast-bowl-1001029.jpg",
-            "title": "Ready-to-Eat",
-            "caption": "",
-            "link": "shopify://collections/click-and-collect",
-            "open_in_new_window": false,
-            "seo_h_tag": "h3"
-          }
-        }
-      },
-      "block_order": [
-        "1655970985e1e8c596-1",
-        "image_pH4jhD",
-        "1655970985e1e8c596-0",
-        "1655970985e1e8c596-2",
-        "image_tGwwUc"
-      ],
-      "custom_css": [
-        ".h5 {font-size: 20px;}"
-      ],
-      "name": "Collection Categories",
-      "settings": {
-        "heading": "",
-        "subheading": "",
-        "section_heading_layout": "section-heading--left",
-        "style": "slider",
-        "layout": "grid-5 grid-portable-4 grid-lap-3 grid-palm-2 smel",
-        "border_radius": 200,
-        "section_background_color": "#f3f3f3",
-        "section_background_gradient": "",
-        "section_heading_color": "#1d1d1d",
-        "remove_margin": false,
-        "seo_h_tag": "h2"
       }
     },
     "featured_collection_nRe88d": {
@@ -677,6 +545,144 @@
         "section_background_color": "rgba(0,0,0,0)",
         "section_background_gradient": "",
         "section_heading_color": "rgba(0,0,0,0)",
+        "remove_margin": false,
+        "seo_h_tag": "h2"
+      }
+    },
+    "featured_collection_NP8VGD": {
+      "type": "featured-collection",
+      "blocks": {
+        "title_CQCeWT": {
+          "type": "title",
+          "settings": {}
+        },
+        "price_fVyRdW": {
+          "type": "price",
+          "settings": {}
+        },
+        "quick_buy_FbPCYd": {
+          "type": "quick_buy",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "title_CQCeWT",
+        "price_fVyRdW",
+        "quick_buy_FbPCYd"
+      ],
+      "disabled": true,
+      "custom_css": [
+        "a.text-link,.article .rte a,.blog-item__excerpt.rte a {text-decoration: underline;}"
+      ],
+      "name": "t:sections.featured-collection.presets.name",
+      "settings": {
+        "heading": "FESTIVE FLAVORS",
+        "subheading": "Pre-order Christmas platters made for celebrations",
+        "show_view_all": true,
+        "section_heading_layout": "section-heading--left",
+        "style": "slider",
+        "layout_desktop": "four-columns",
+        "layout_mobile": "grid-palm-2",
+        "products_number": 16,
+        "collection": "2025-christmas-platters",
+        "collection_1": "",
+        "collection_2": "",
+        "collection_3": "",
+        "color_background_main": "rgba(0,0,0,0)",
+        "color_text_main": "rgba(0,0,0,0)",
+        "color_button_main": "#70a062",
+        "color_borders_main": "#dfdfdf",
+        "color_shadow_main": "rgba(0,0,0,0)",
+        "color_hide_borders": false,
+        "color_hide_shadow": false,
+        "section_background_color": "rgba(0,0,0,0)",
+        "section_background_gradient": "",
+        "section_heading_color": "rgba(0,0,0,0)",
+        "remove_margin": false,
+        "seo_h_tag": "h2"
+      }
+    },
+    "165597098555c514a4": {
+      "type": "text-columns-images",
+      "blocks": {
+        "1655970985e1e8c596-0": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/2025-christmas-food-platters-category-section.jpg",
+            "title": "Festive Platters",
+            "caption": "",
+            "link": "shopify://collections/2025-christmas-platters",
+            "open_in_new_window": false,
+            "seo_h_tag": "h3"
+          }
+        },
+        "image_pH4jhD": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Moet-and-chandon-ice-rose-750ml-1002195-front.jpg",
+            "title": "Holiday Wines",
+            "caption": "",
+            "link": "shopify://collections/2025-christmas-wines",
+            "open_in_new_window": false,
+            "seo_h_tag": "h3"
+          }
+        },
+        "1655970985e1e8c596-1": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/Gusto-basket-1010383.jpg",
+            "title": "Christmas Hampers",
+            "caption": "",
+            "link": "shopify://collections/2025-christmas-hampers",
+            "open_in_new_window": false,
+            "seo_h_tag": "h3"
+          }
+        },
+        "1655970985e1e8c596-2": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Joels-place-gift-card1.jpg",
+            "title": "Gift Cards",
+            "caption": "",
+            "link": "shopify://products/joels-place-gift-card",
+            "open_in_new_window": false,
+            "seo_h_tag": "h3"
+          }
+        },
+        "image_tGwwUc": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Grilled-all-day-breakfast-bowl-1001029.jpg",
+            "title": "Ready-to-Eat",
+            "caption": "",
+            "link": "shopify://collections/click-and-collect",
+            "open_in_new_window": false,
+            "seo_h_tag": "h3"
+          }
+        }
+      },
+      "block_order": [
+        "1655970985e1e8c596-0",
+        "image_pH4jhD",
+        "1655970985e1e8c596-1",
+        "1655970985e1e8c596-2",
+        "image_tGwwUc"
+      ],
+      "custom_css": [
+        ".h5 {font-size: 20px;}"
+      ],
+      "name": "Collection Categories",
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "section_heading_layout": "section-heading--left",
+        "style": "slider",
+        "layout": "grid-4 grid-portable-3 grid-lap-2",
+        "border_radius": 200,
+        "section_background_color": "#f3f3f3",
+        "section_background_gradient": "",
+        "section_heading_color": "#1d1d1d",
         "remove_margin": false,
         "seo_h_tag": "h2"
       }
@@ -802,41 +808,38 @@
         "seo_h_tag": "h2"
       }
     },
-    "featured_collection_NP8VGD": {
+    "featured_collection_V4XQpV": {
       "type": "featured-collection",
       "blocks": {
-        "title_CQCeWT": {
+        "title_xDYKii": {
           "type": "title",
           "settings": {}
         },
-        "price_fVyRdW": {
+        "price_H3iqEL": {
           "type": "price",
           "settings": {}
         },
-        "quick_buy_FbPCYd": {
+        "quick_buy_wyKyPh": {
           "type": "quick_buy",
           "settings": {}
         }
       },
       "block_order": [
-        "title_CQCeWT",
-        "price_fVyRdW",
-        "quick_buy_FbPCYd"
-      ],
-      "custom_css": [
-        "a.text-link,.article .rte a,.blog-item__excerpt.rte a {text-decoration: underline;}"
+        "title_xDYKii",
+        "price_H3iqEL",
+        "quick_buy_wyKyPh"
       ],
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
-        "heading": "FESTIVE FLAVORS",
-        "subheading": "Pre-order Christmas platters made for celebrations",
+        "heading": "INTERNATIONAL FLAIR",
+        "subheading": "Global Eats You'll Love",
         "show_view_all": true,
         "section_heading_layout": "section-heading--left",
         "style": "slider",
         "layout_desktop": "four-columns",
         "layout_mobile": "grid-palm-2",
-        "products_number": 16,
-        "collection": "2025-christmas-platters",
+        "products_number": 11,
+        "collection": "international-flair",
         "collection_1": "",
         "collection_2": "",
         "collection_3": "",
@@ -857,12 +860,50 @@
     "blog_promotion_cards_YHWhNr": {
       "type": "blog-promotion-cards",
       "blocks": {
+        "card_TQ6bGa": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/shopping-for-wine-holiday-primer-guide-joels-place-sparkling-wine-in-article.jpg",
+            "caption": "SHOPPING GUIDE",
+            "title": "Shopping for Wine This Holiday",
+            "subtitle": "We cover the basics so you can choose the perfect reds, whites, rosés, and sparkling wines with confidence.",
+            "link": "https://joelsplace.com/blogs/guides/shopping-for-wine-a-holiday-primer-with-joel-s-place",
+            "button_label": "Read Now",
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)",
+            "color_accent_main": "rgba(0,0,0,0)",
+            "color_borders_main": "rgba(0,0,0,0)",
+            "color_shadow_main": "rgba(0,0,0,0)",
+            "color_hide_borders": false,
+            "color_hide_shadow": false,
+            "seo_h_tag": "h3"
+          }
+        },
+        "card_VLVpqn": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/2025-christmas-platters-in-store-in-article-fruit-and-bread.jpg",
+            "caption": "SHOPPING GUIDE",
+            "title": "Joel's Place Christmas Platters",
+            "subtitle": "The holiday season is in full swing! Joel’s Place is joining in the celebrations with our 2025 Christmas platters collection.",
+            "link": "shopify://blogs/in-store-now/joels-place-christmas-platters-2025",
+            "button_label": "Read Now",
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)",
+            "color_accent_main": "rgba(0,0,0,0)",
+            "color_borders_main": "rgba(0,0,0,0)",
+            "color_shadow_main": "rgba(0,0,0,0)",
+            "color_hide_borders": false,
+            "color_hide_shadow": false,
+            "seo_h_tag": "h3"
+          }
+        },
         "card_6neAf8": {
           "type": "card",
           "settings": {
             "image": "shopify://shop_images/entertaining-with-cheese-cover.jpg",
             "caption": "SHOPPING GUIDE",
-            "title": "Entertaining with Cheese This Holiday",
+            "title": "Entertaining with Cheese",
             "subtitle": "Your quick guide to types of cheese, best food pairings, and serving with cheese knives, perfect for entertaining guests this holiday season.",
             "link": "https://joelsplace.com/blogs/guides/entertaining-with-cheese-this-holiday",
             "button_label": "Read Now",
@@ -878,31 +919,13 @@
         },
         "card_xEjHJn": {
           "type": "card",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/joels-place-christmas-hampers-2025-red-basket-bayong.jpg",
             "caption": "SHOPPING GUIDE",
             "title": "Christmas Hampers at Joel's Place",
             "subtitle": "Conveniently shop Christmas Hampers via Click and Collect and make the spirit of giving beautifully effortless.",
             "link": "https://joelsplace.com/blogs/in-store-now/joels-place-christmas-hampers-2025",
-            "button_label": "Read Now",
-            "color_background_main": "rgba(0,0,0,0)",
-            "color_text_main": "rgba(0,0,0,0)",
-            "color_accent_main": "rgba(0,0,0,0)",
-            "color_borders_main": "rgba(0,0,0,0)",
-            "color_shadow_main": "rgba(0,0,0,0)",
-            "color_hide_borders": false,
-            "color_hide_shadow": false,
-            "seo_h_tag": "h3"
-          }
-        },
-        "card_TQ6bGa": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/shopping-for-wine-holiday-primer-guide-joels-place-sparkling-wine-in-article.jpg",
-            "caption": "SHOPPING GUIDE",
-            "title": "Shopping for Wine This Holiday",
-            "subtitle": "We cover the basics so you can choose the perfect reds, whites, rosés, and sparkling wines with confidence.",
-            "link": "https://joelsplace.com/blogs/guides/shopping-for-wine-a-holiday-primer-with-joel-s-place",
             "button_label": "Read Now",
             "color_background_main": "rgba(0,0,0,0)",
             "color_text_main": "rgba(0,0,0,0)",
@@ -943,26 +966,6 @@
             "title": "AOP, DOP, and IGP Certified Products",
             "subtitle": "These labels ensure your ingredients are authentic and sourced straight from their local country.",
             "link": "shopify://blogs/guides/what-are-aop-dop-and-igp-certified-products",
-            "button_label": "Read Now",
-            "color_background_main": "rgba(0,0,0,0)",
-            "color_text_main": "rgba(0,0,0,0)",
-            "color_accent_main": "rgba(0,0,0,0)",
-            "color_borders_main": "rgba(0,0,0,0)",
-            "color_shadow_main": "rgba(0,0,0,0)",
-            "color_hide_borders": false,
-            "color_hide_shadow": false,
-            "seo_h_tag": "h3"
-          }
-        },
-        "card_VLVpqn": {
-          "type": "card",
-          "disabled": true,
-          "settings": {
-            "image": "shopify://shop_images/JP-Christmas-Catalog-2025-Meet-Block.jpg",
-            "caption": "SHOPPING GUIDE",
-            "title": "The 2025 Joel's Place Christmas Catalog",
-            "subtitle": "Browse our 2025 Christmas catalog and discover a world of festive flavors and vibrant delights this holiday season.",
-            "link": "https://joelsplace.com/blogs/in-store-now/joels-place-christmas-catalog-2025",
             "button_label": "Read Now",
             "color_background_main": "rgba(0,0,0,0)",
             "color_text_main": "rgba(0,0,0,0)",
@@ -1076,12 +1079,12 @@
         }
       },
       "block_order": [
+        "card_TQ6bGa",
+        "card_VLVpqn",
         "card_6neAf8",
         "card_xEjHJn",
-        "card_TQ6bGa",
         "card_xeNHiC",
         "card_qa7F8C",
-        "card_VLVpqn",
         "card_UJC9jU",
         "card_DEXJ3q",
         "card_h94kmY",
@@ -1310,6 +1313,23 @@
     "16551074833cdf378e": {
       "type": "media-with-text-overlay",
       "blocks": {
+        "16551074836af554cd-1": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/at-the-stroke-of-midnight-pomegranate-grapes-glass-cover.jpg",
+            "caption": "ESSAY",
+            "title": "At the Stroke of Midnight",
+            "subtitle": "To hope is human and we express this hope in our New Year eating customs. ",
+            "link": "shopify://blogs/joels-journal/at-the-stroke-of-midnight",
+            "open_in_new_window": true,
+            "button_label": "",
+            "color_background_main": "#3d3d3d",
+            "color_text_main": "#ffffff",
+            "color_hide_borders": true,
+            "color_hide_shadow": false,
+            "seo_h_tag": "h3"
+          }
+        },
         "16551074836af554cd-0": {
           "type": "image",
           "settings": {
@@ -1326,28 +1346,11 @@
             "color_hide_shadow": false,
             "seo_h_tag": "h3"
           }
-        },
-        "16551074836af554cd-1": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Come-Over-for-Dinner.jpg",
-            "caption": "ESSAY",
-            "title": "Come Over for Dinner",
-            "subtitle": "What having 27 guests come over in two months has taught me about having company over and how social ties are nourished by different kinds of gatherings around the table.",
-            "link": "shopify://blogs/joels-journal/come-over-for-dinner",
-            "open_in_new_window": true,
-            "button_label": "",
-            "color_background_main": "#3d3d3d",
-            "color_text_main": "#ffffff",
-            "color_hide_borders": true,
-            "color_hide_shadow": false,
-            "seo_h_tag": "h3"
-          }
         }
       },
       "block_order": [
-        "16551074836af554cd-0",
-        "16551074836af554cd-1"
+        "16551074836af554cd-1",
+        "16551074836af554cd-0"
       ],
       "name": "LONG READS Essays",
       "settings": {
@@ -1373,6 +1376,15 @@
     "16553621956de397b6": {
       "type": "testimonials",
       "blocks": {
+        "testimonial_waVW68": {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Spot.ph",
+            "author_title": "Patricia Baes",
+            "quote": "<p>[T]heir range of specialty grocery finds is hard to beat, and their grab-and-go items make daily lunch decisions a breeze.</p>",
+            "image": "shopify://shop_images/spot-ph-logo.jpg"
+          }
+        },
         "testimonial_UXLtNP": {
           "type": "testimonial",
           "settings": {
@@ -1399,22 +1411,13 @@
             "quote": "<p>Grab a gourmet meal on the go, where convenience meets quality!</p>",
             "image": "shopify://shop_images/LifestyleAsia-logo2.png"
           }
-        },
-        "testimonial_waVW68": {
-          "type": "testimonial",
-          "settings": {
-            "author_name": "Spot.ph",
-            "author_title": "Patricia Baes",
-            "quote": "<p>[T]heir range of specialty grocery finds is hard to beat, and their grab-and-go items make daily lunch decisions a breeze.</p>",
-            "image": "shopify://shop_images/spot-ph-logo.jpg"
-          }
         }
       },
       "block_order": [
+        "testimonial_waVW68",
         "testimonial_UXLtNP",
         "16553621951e01132c-0",
-        "16553621951e01132c-1",
-        "testimonial_waVW68"
+        "16553621951e01132c-1"
       ],
       "settings": {
         "heading": "AS SEEN IN",
@@ -1608,12 +1611,12 @@
   },
   "order": [
     "1653646142d6a7c886",
-    "featured_collection_V4XQpV",
-    "165597098555c514a4",
     "featured_collection_nRe88d",
+    "featured_collection_NP8VGD",
+    "165597098555c514a4",
     "collection_list_URXwXH",
     "shop_the_look_MKVA6D",
-    "featured_collection_NP8VGD",
+    "featured_collection_V4XQpV",
     "blog_promotion_cards_YHWhNr",
     "165406738229739f4d",
     "16551074833cdf378e",

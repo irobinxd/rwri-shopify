@@ -16,7 +16,7 @@
 
 {%- assign product_variant = product.selected_or_first_available_variant -%}
 
-<div id="product-item-{{ product.id }}" class="product-item card" data-js-product-item>
+<div id="product-item-{{ product.id }}" class="product-item card" data-js-product-item data-product-id="{{ product.id }}" data-variant-id="{{ product_variant.id }}">
 
   {%- liquid
     
