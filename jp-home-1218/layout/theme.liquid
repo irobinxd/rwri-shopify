@@ -122,6 +122,10 @@
   {%- section 'popup-age-verification' -%}
   {%- section 'exit-intent-popup' -%}
   {%- section 'store-selector' -%}
+
+  {%- comment -%} Store Selector Modal - Shows on first visit {%- endcomment -%}
+  {%- render 'store-selector-modal' -%}
+  <script src="{{ 'store-selector.js' | asset_url }}" defer></script>
   
   <script src="{{ 'component-modal.js' | asset_url }}" defer></script>
   <link rel="stylesheet" href="{{ 'component-modal.css' | asset_url }}" media="print" onload="this.media='all'">

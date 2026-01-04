@@ -1,0 +1,230 @@
+{%- comment -%}
+  Store Selector Modal
+  Shows on first visit to let customers choose their preferred store.
+  Products will be filtered based on the selected store's availability.
+{%- endcomment -%}
+
+<div id="store-selector-modal" class="store-selector-modal" style="display: none;">
+  <div class="store-selector-overlay"></div>
+  <div class="store-selector-content">
+    <div class="store-selector-header">
+      <h2>Welcome to Joel's Place</h2>
+      <p>Please select your preferred store for pickup</p>
+    </div>
+    
+    <div class="store-selector-options">
+      <button type="button" class="store-option" data-store="jpp" data-store-name="Joel's Place Proscenium">
+        <div class="store-option-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </div>
+        <div class="store-option-details">
+          <strong>Joel's Place Proscenium</strong>
+          <span>Rockwell Center, Makati City</span>
+        </div>
+      </button>
+      
+      <button type="button" class="store-option" data-store="jpa" data-store-name="Joel's Place Alabang">
+        <div class="store-option-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </div>
+        <div class="store-option-details">
+          <strong>Joel's Place Alabang</strong>
+          <span>Molito Lifestyle Center, Alabang</span>
+        </div>
+      </button>
+      
+      <button type="button" class="store-option" data-store="jpm" data-store-name="Joel's Place Makati">
+        <div class="store-option-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </div>
+        <div class="store-option-details">
+          <strong>Joel's Place Makati</strong>
+          <span>Makati City</span>
+        </div>
+      </button>
+    </div>
+    
+    <div class="store-selector-footer">
+      <p class="store-selector-note">
+        <small>You'll only see products available at your selected store. You can change your store anytime from the header.</small>
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .store-selector-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .store-selector-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+  }
+  
+  .store-selector-content {
+    position: relative;
+    background: #fff;
+    border-radius: 12px;
+    max-width: 480px;
+    width: 90%;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: storeModalSlideIn 0.3s ease-out;
+  }
+  
+  @keyframes storeModalSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  .store-selector-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .store-selector-header h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .store-selector-header p {
+    margin: 0;
+    color: #666;
+    font-size: 0.95rem;
+  }
+  
+  .store-selector-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .store-option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    width: 100%;
+  }
+  
+  .store-option:hover {
+    border-color: var(--color-accent, #70a062);
+    background: #f8faf7;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(112, 160, 98, 0.15);
+  }
+  
+  .store-option:active {
+    transform: translateY(0);
+  }
+  
+  .store-option-icon {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--color-accent, #70a062), #5a8a4e);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+  
+  .store-option-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .store-option-details strong {
+    font-size: 1.1rem;
+    color: #333;
+  }
+  
+  .store-option-details span {
+    font-size: 0.85rem;
+    color: #666;
+  }
+  
+  .store-selector-footer {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+  
+  .store-selector-note {
+    margin: 0;
+    color: #888;
+  }
+  
+  .store-selector-note small {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+  
+  /* Mobile adjustments */
+  @media (max-width: 480px) {
+    .store-selector-content {
+      padding: 1.5rem;
+      margin: 1rem;
+    }
+    
+    .store-selector-header h2 {
+      font-size: 1.25rem;
+    }
+    
+    .store-option {
+      padding: 1rem;
+    }
+    
+    .store-option-icon {
+      width: 48px;
+      height: 48px;
+    }
+    
+    .store-option-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+    
+    .store-option-details strong {
+      font-size: 1rem;
+    }
+  }
+</style>
+

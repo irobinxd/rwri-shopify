@@ -81,6 +81,11 @@
             location: 'ancmt'
           -%}
         </div>
+
+        {%- comment -%} Store Selector in Announcement Bar {%- endcomment -%}
+        <div class="announcement-bar__store-selector lap-hide">
+          {%- render 'store-header-indicator' -%}
+        </div>
       </div>
     </div>
   </announcement-bar>

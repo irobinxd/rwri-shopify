@@ -88,6 +88,59 @@
   datetime-slot-picker .datetime-slot-picker__field select option {
     color: #70a062 !important;
   }
+  
+  /* Multi-location warning styles */
+  .cart-multi-location-warning {
+    margin-bottom: var(--gutter-regular);
+    padding: var(--gutter-regular);
+    background-color: #fff3cd;
+    border: 2px solid #ffc107;
+    border-radius: var(--border-radius-cards);
+  }
+  
+  .cart-multi-location-warning .warning-title {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #856404;
+    font-size: 1rem;
+  }
+  
+  .cart-multi-location-warning .warning-message {
+    color: #856404;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+  }
+  
+  .cart-multi-location-warning .warning-locations {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(133, 100, 4, 0.2);
+  }
+  
+  .cart-multi-location-warning .location-group {
+    margin-bottom: 0.75rem;
+  }
+  
+  .cart-multi-location-warning .location-group:last-child {
+    margin-bottom: 0;
+  }
+  
+  .cart-multi-location-warning .location-group strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #856404;
+  }
+  
+  .cart-multi-location-warning .location-items {
+    font-size: 0.85rem;
+    padding-left: 1rem;
+    color: #856404;
+  }
+  
+  .cart-multi-location-warning .location-items li {
+    margin-bottom: 0.25rem;
+  }
 </style>
 
 <script>
@@ -188,6 +241,290 @@
     
     // Update alignment on window resize
     window.addEventListener('resize', alignWhenWouldYouLike);
+  })();
+  
+  // Multi-location cart warning detection
+  (function() {
+    'use strict';
+    
+    // Enable/disable multi-location warning
+    const ENABLE_MULTI_LOCATION_WARNING = true;
+    
+    // If disabled, exit early
+    if (!ENABLE_MULTI_LOCATION_WARNING) {
+      return;
+    }
+    
+    // Store name patterns to identify locations
+    const STORE_PATTERNS = {
+      'jpp': ['proscenium', 'jpp', 'rockwell'],
+      'jpa': ['alabang', 'jpa', 'makati']
+    };
+    
+    // Normalize store name for matching
+    function normalizeStoreName(storeName) {
+      if (!storeName) return '';
+      return storeName.toLowerCase().trim();
+    }
+    
+    // Check if store name matches a location pattern
+    function getLocationFromStoreName(storeName) {
+      const normalized = normalizeStoreName(storeName);
+      for (const [location, patterns] of Object.entries(STORE_PATTERNS)) {
+        for (const pattern of patterns) {
+          if (normalized.includes(pattern)) {
+            return location.toUpperCase();
+          }
+        }
+      }
+      return null;
+    }
+    
+    // Get store availability for a variant
+    async function getVariantAvailability(variantId) {
+      try {
+        const baseUrl = window.Shopify?.routes?.root_url || '/';
+        const url = `${baseUrl}variants/${variantId}/?section_id=helper-pickup-availability-compact`;
+        
+        const response = await fetch(url);
+        if (!response.ok) return null;
+        
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        
+        // Find all availability alerts
+        const availabilityAlerts = doc.querySelectorAll('.pickup-availability-alert');
+        const locations = [];
+        
+        availabilityAlerts.forEach(alert => {
+          const storeNameEl = alert.querySelector('.pickup-availability-alert-store');
+          const isAvailable = alert.querySelector('.alert--success');
+          
+          if (storeNameEl && isAvailable) {
+            const storeName = storeNameEl.textContent.trim();
+            const location = getLocationFromStoreName(storeName);
+            if (location) {
+              locations.push({
+                name: storeName,
+                code: location
+              });
+            }
+          }
+        });
+        
+        return locations;
+      } catch (error) {
+        console.warn('Error fetching variant availability:', error);
+        return null;
+      }
+    }
+    
+    // Check cart items for multi-location availability
+    async function checkMultiLocationCart() {
+      const cartForm = document.getElementById('AjaxCartForm');
+      if (!cartForm) return;
+      
+      // Get cart data from API
+      let cartData = null;
+      try {
+        const response = await fetch('/cart.js');
+        if (response.ok) {
+          cartData = await response.json();
+        }
+      } catch (error) {
+        console.warn('Error fetching cart data:', error);
+        return;
+      }
+      
+      if (!cartData || !cartData.items || cartData.items.length < 2) {
+        hideWarning();
+        return;
+      }
+      
+      // Get variant IDs from cart data
+      const itemData = [];
+      for (const cartItem of cartData.items) {
+        if (cartItem.variant_id) {
+          itemData.push({
+            variantId: cartItem.variant_id,
+            title: cartItem.product_title + (cartItem.variant_title && cartItem.variant_title !== 'Default Title' ? ' (' + cartItem.variant_title + ')' : ''),
+            element: null
+          });
+        }
+      }
+      
+      if (itemData.length < 2) {
+        hideWarning();
+        return;
+      }
+      
+      // Check availability for each item
+      const itemLocations = {};
+      let allChecked = true;
+      
+      for (const item of itemData) {
+        const locations = await getVariantAvailability(item.variantId);
+        if (locations === null) {
+          allChecked = false;
+          break;
+        }
+        
+        // Group items by location
+        locations.forEach(loc => {
+          if (!itemLocations[loc.code]) {
+            itemLocations[loc.code] = {
+              name: loc.name,
+              items: []
+            };
+          }
+          itemLocations[loc.code].items.push(item.title);
+        });
+      }
+      
+      if (!allChecked || Object.keys(itemLocations).length <= 1) {
+        // Either couldn't check all items or all items are from same location(s)
+        hideWarning();
+        return;
+      }
+      
+      // Check if items are exclusively from different locations
+      const locationCodes = Object.keys(itemLocations);
+      const exclusiveLocations = {};
+      
+      locationCodes.forEach(locCode => {
+        const itemsInThisLocation = itemLocations[locCode].items;
+        // Check if any item is ONLY in this location (not in others)
+        itemsInThisLocation.forEach(itemTitle => {
+          let isExclusive = true;
+          locationCodes.forEach(otherLocCode => {
+            if (otherLocCode !== locCode && itemLocations[otherLocCode].items.includes(itemTitle)) {
+              isExclusive = false;
+            }
+          });
+          
+          if (isExclusive) {
+            if (!exclusiveLocations[locCode]) {
+              exclusiveLocations[locCode] = {
+                name: itemLocations[locCode].name,
+                items: []
+              };
+            }
+            if (!exclusiveLocations[locCode].items.includes(itemTitle)) {
+              exclusiveLocations[locCode].items.push(itemTitle);
+            }
+          }
+        });
+      });
+      
+      // Show warning if we have items exclusively from different locations
+      if (Object.keys(exclusiveLocations).length > 1) {
+        showWarning(exclusiveLocations);
+      } else {
+        hideWarning();
+      }
+    }
+    
+    // Show multi-location warning
+    function showWarning(locationGroups) {
+      let warningContainer = document.getElementById('cart-multi-location-warning');
+      
+      if (!warningContainer) {
+        // Create warning container
+        const cartForm = document.getElementById('AjaxCartForm');
+        if (!cartForm) return;
+        
+        const cartHolder = cartForm.querySelector('.cart-holder');
+        if (!cartHolder) return;
+        
+        warningContainer = document.createElement('div');
+        warningContainer.id = 'cart-multi-location-warning';
+        warningContainer.className = 'cart-multi-location-warning';
+        cartHolder.insertBefore(warningContainer, cartHolder.firstChild);
+      }
+      
+      // Build warning content
+      const locationCodes = Object.keys(locationGroups);
+      let locationsHTML = '<div class="warning-locations">';
+      
+      locationCodes.forEach(locCode => {
+        const group = locationGroups[locCode];
+        locationsHTML += `
+          <div class="location-group">
+            <strong>${group.name}:</strong>
+            <ul class="location-items">
+              ${group.items.map(item => `<li>${item}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      });
+      
+      locationsHTML += '</div>';
+      
+      warningContainer.innerHTML = `
+        <div class="warning-title">⚠️ Items Available at Different Stores</div>
+        <div class="warning-message">
+          Your cart has items that can only be picked up from different branches. 
+          To proceed with pickup, you'll need to <strong>place separate orders</strong> for each location.
+        </div>
+        ${locationsHTML}
+        <div class="warning-actions" style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid rgba(133, 100, 4, 0.2);">
+          <p style="font-size: 0.85rem; margin-bottom: 0.5rem; color: #856404;"><strong>What you can do:</strong></p>
+          <ul style="font-size: 0.85rem; padding-left: 1.25rem; color: #856404; margin: 0;">
+            <li>Remove items from one location and place a separate order for them later</li>
+            <li>Choose shipping instead of pickup (if available)</li>
+            <li>Contact us if you need assistance</li>
+          </ul>
+        </div>
+      `;
+      
+      warningContainer.style.display = 'block';
+    }
+    
+    // Hide warning
+    function hideWarning() {
+      const warningContainer = document.getElementById('cart-multi-location-warning');
+      if (warningContainer) {
+        warningContainer.style.display = 'none';
+      }
+    }
+    
+    // Run check when cart loads or updates
+    function initMultiLocationCheck() {
+      // Wait a bit for cart to fully render
+      setTimeout(() => {
+        checkMultiLocationCart();
+      }, 500);
+    }
+    
+    // Run on page load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initMultiLocationCheck);
+    } else {
+      initMultiLocationCheck();
+    }
+    
+    // Re-check when cart is updated
+    document.addEventListener('cart-updated', function() {
+      setTimeout(() => {
+        checkMultiLocationCart();
+      }, 1000);
+    });
+    
+    // Also watch for cart form changes
+    const cartForm = document.getElementById('AjaxCartForm');
+    if (cartForm) {
+      const observer = new MutationObserver(function() {
+        setTimeout(() => {
+          checkMultiLocationCart();
+        }, 500);
+      });
+      
+      observer.observe(cartForm, {
+        childList: true,
+        subtree: true
+      });
+    }
   })();
 </script>
 
