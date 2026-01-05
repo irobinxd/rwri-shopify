@@ -82,7 +82,7 @@
 					@endforeach
 				@endif
 
-				@if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin'))
+				@if(auth()->user()->hasRole('administrator') || auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin'))
 					<!--begin:Menu item-->
 					<div class="menu-item pt-5">
 						<!--begin:Menu content-->
@@ -159,7 +159,7 @@
 							<!--begin:Menu item-->
 							<div class="menu-item">
 								<!--begin:Menu link-->
-								<a class="menu-link {{ request()->routeIs('modules.*') ? 'active' : '' }}" href="{{ route('modules.index') }}">
+								<a class="menu-link {{ request()->routeIs('modules.*') ? 'active' : '' }}" href="{{ route('modules.modules.index') }}">
 									<span class="menu-bullet">
 										<span class="bullet bullet-dot"></span>
 									</span>
@@ -171,7 +171,7 @@
 							<!--begin:Menu item-->
 							<div class="menu-item">
 								<!--begin:Menu link-->
-								<a class="menu-link {{ request()->routeIs('menus.*') ? 'active' : '' }}" href="{{ route('menus.index') }}">
+								<a class="menu-link {{ request()->routeIs('menus.*') ? 'active' : '' }}" href="{{ route('menus.menus.index') }}">
 									<span class="menu-bullet">
 										<span class="bullet bullet-dot"></span>
 									</span>

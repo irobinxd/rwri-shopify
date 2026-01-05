@@ -16,18 +16,28 @@ class UsersSeeder extends Seeder
      */
     public function run(Generator $faker)
     {
-        $demoUser = User::create([
-            'name'              => $faker->name,
-            'email'             => 'demo@demo.com',
-            'password'          => Hash::make('demo'),
-            'email_verified_at' => now(),
-        ]);
+        // Create demo user if it doesn't exist
+        $demoUser = User::firstOrCreate(
+            ['email' => 'demo@demo.com'],
+            [
+                'firstname'         => 'Demo',
+                'lastname'          => 'User',
+                'password'          => Hash::make('demo'),
+                'email_verified_at' => now(),
+                'is_active'         => true,
+            ]
+        );
 
-        $demoUser2 = User::create([
-            'name'              => $faker->name,
-            'email'             => 'admin@demo.com',
-            'password'          => Hash::make('demo'),
-            'email_verified_at' => now(),
-        ]);
+        // Create admin user if it doesn't exist
+        $demoUser2 = User::firstOrCreate(
+            ['email' => 'admin@demo.com'],
+            [
+                'firstname'         => 'Admin',
+                'lastname'          => 'User',
+                'password'          => Hash::make('demo'),
+                'email_verified_at' => now(),
+                'is_active'         => true,
+            ]
+        );
     }
 }

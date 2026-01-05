@@ -7,15 +7,15 @@
         <div class="text-center mb-11">
             <!--begin::Logo-->
             <div class="mb-5">
-                <h1 class="text-royal-primary fw-bolder mb-3" style="font-size: 2.5rem; letter-spacing: 2px;">
-                    ROYAL
-                </h1>
+                <div style="display: inline-block; background-color: white; padding: 12px; border-radius: 8px;">
+                    <img alt="RWRI Portal" src="{{ image('logos/Royal-logo.avif') }}" class="h-50px mb-3" />
+                </div>
             </div>
             <!--end::Logo-->
             
             <!--begin::Title-->
             <h2 class="text-gray-900 fw-bolder mb-3">
-                Employee Portal
+                {{ config('app.name') }}
             </h2>
             <!--end::Title-->
 
