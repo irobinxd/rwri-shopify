@@ -89,13 +89,13 @@ remove-empty-space">
 
       {%- when 'summary' -%}
         <div class="blog-item__excerpt rte" {{ block.shopify_attributes }}>
-          {%- liquid
-            if article.excerpt.size > 0
+            {%- liquid
+              if article.excerpt.size > 0
               echo article.excerpt
-            else
+              else
               echo article.content
-            endif
-          -%}
+              endif
+            -%}
         </div>
 
       {%- when 'info' -%}

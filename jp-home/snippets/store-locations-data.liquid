@@ -1,14 +1,17 @@
 {%- comment -%}
   Gets Shopify store locations dynamically
-  This snippet collects all locations that have pickup enabled from products
+  This snippet collects ALL locations that have pickup enabled from products
+  Checks multiple products to ensure all locations are captured, even if they don't have inventory
 {%- endcomment -%}
 
 {%- liquid
   assign locations_map = ''
-  assign location_names = ''
+  assign location_handles = ''
+  assign products_checked = 0
+  assign max_products_to_check = 50
   
   if collections.all.products.size > 0
-    for product in collections.all.products limit: 20
+    for product in collections.all.products limit: max_products_to_check
       assign variant = product.selected_or_first_available_variant
       if variant
         assign pick_up_availabilities = variant.store_availabilities | where: 'pick_up_enabled', true
@@ -17,16 +20,20 @@
             assign location_name = availability.location.name
             assign location_handle = location_name | handleize
             
-            unless location_names contains location_name
-              if location_names == blank
-                assign location_names = location_name
+            assign check_handle = '||' | append: location_handle | append: '||'
+            assign check_handles = '||' | append: location_handles | append: '||'
+            
+            unless check_handles contains check_handle
+              if location_handles == blank
+                assign location_handles = location_handle
                 assign locations_map = location_name | append: '::' | append: location_handle
               else
-                assign location_names = location_names | append: '||' | append: location_name
+                assign location_handles = location_handles | append: '||' | append: location_handle
                 assign locations_map = locations_map | append: '||' | append: location_name | append: '::' | append: location_handle
               endif
             endunless
           endfor
+          assign products_checked = products_checked | plus: 1
         endif
       endif
     endfor

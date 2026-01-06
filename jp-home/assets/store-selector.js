@@ -49,86 +49,254 @@
   // Fetch locations from a product variant's availability
   async function fetchShopifyLocationsFromProduct() {
     try {
-      // Try to get a product variant ID from the page
-      const variantId = document.querySelector('[data-variant-id]')?.dataset.variantId;
-      if (!variantId) {
-        // Try to get from any product on the page
-        const productItem = document.querySelector('[data-product-id]');
-        if (productItem) {
-          const productId = productItem.dataset.productId;
-          // Fetch product data to get variant
-          const response = await fetch(`/products/${productId}.js`);
-          if (response.ok) {
-            const product = await response.json();
-            if (product.variants && product.variants.length > 0) {
-              const firstVariantId = product.variants[0].id;
-              await fetchLocationsFromVariant(firstVariantId);
+      // Try to get variant IDs from multiple products on the page
+      const variantIds = [];
+      const processedProductIds = new Set();
+      
+      // Get variant ID from data attribute (product page)
+      const variantElement = document.querySelector('[data-variant-id]');
+      if (variantElement) {
+        variantIds.push(variantElement.dataset.variantId);
+      }
+      
+      // Get variant IDs from product items (collections, homepage, etc.)
+      const productItems = document.querySelectorAll('[data-product-id]');
+      const maxProductsToCheck = 30; // Increased to check more products
+      
+      for (let i = 0; i < Math.min(productItems.length, maxProductsToCheck); i++) {
+        const productItem = productItems[i];
+        const productId = productItem.dataset.productId;
+        
+        if (productId && !processedProductIds.has(productId)) {
+          processedProductIds.add(productId);
+          
+          try {
+            const response = await fetch(`/products/${productId}.js`);
+            if (response.ok) {
+              const product = await response.json();
+              if (product.variants && product.variants.length > 0) {
+                // Get the first available variant, or first variant if none available
+                const variant = product.variants.find(v => v.available) || product.variants[0];
+                if (variant && variant.id) {
+                  variantIds.push(variant.id);
+                }
+              }
             }
+          } catch (e) {
+            // Continue to next product
           }
         }
-        return;
       }
-      await fetchLocationsFromVariant(variantId);
+      
+      // If we don't have enough variants, try fetching from collections
+      if (variantIds.length < 5) {
+        await fetchVariantsFromCollections(variantIds, processedProductIds);
+      }
+      
+      // Fetch locations from all variants and combine results
+      if (variantIds.length > 0) {
+        await fetchLocationsFromMultipleVariants(variantIds);
+      } else {
+        console.warn('Store Selector: No variants found on page, locations may be incomplete');
+      }
     } catch (e) {
+      console.error('Error fetching locations from products:', e);
     }
   }
 
-  async function fetchLocationsFromVariant(variantId) {
+  // Fetch variants from collections to get more location coverage
+  async function fetchVariantsFromCollections(existingVariantIds, processedProductIds) {
+    try {
+      // Try to get collection URLs from the page
+      const collectionLinks = document.querySelectorAll('a[href*="/collections/"]');
+      const collectionUrls = new Set();
+      
+      // Get unique collection URLs (limit to 3 collections)
+      for (const link of collectionLinks) {
+        const href = link.getAttribute('href');
+        if (href && href.includes('/collections/') && !href.includes('/products/')) {
+          const match = href.match(/\/collections\/([^\/\?]+)/);
+          if (match && collectionUrls.size < 3) {
+            collectionUrls.add(match[1]);
+          }
+        }
+      }
+      
+      // Fetch products from collections
+      for (const collectionHandle of collectionUrls) {
+        try {
+          const response = await fetch(`/collections/${collectionHandle}?view=json&limit=10`);
+          if (response.ok) {
+            const text = await response.text();
+            // Try to parse as JSON or HTML
+            try {
+              const data = JSON.parse(text);
+              if (data.products) {
+                for (const product of data.products.slice(0, 5)) {
+                  if (product.id && !processedProductIds.has(product.id.toString())) {
+                    processedProductIds.add(product.id.toString());
+                    if (product.variants && product.variants.length > 0) {
+                      const variant = product.variants.find(v => v.available) || product.variants[0];
+                      if (variant && variant.id) {
+                        existingVariantIds.push(variant.id);
+                      }
+                    }
+                  }
+                }
+              }
+            } catch (e) {
+              // If not JSON, try parsing as HTML
+              const parser = new DOMParser();
+              const doc = parser.parseFromString(text, 'text/html');
+              const productLinks = doc.querySelectorAll('a[href*="/products/"]');
+              
+              for (const link of productLinks.slice(0, 5)) {
+                const href = link.getAttribute('href');
+                const match = href.match(/\/products\/([^\/\?]+)/);
+                if (match) {
+                  const productHandle = match[1];
+                  if (!processedProductIds.has(productHandle)) {
+                    processedProductIds.add(productHandle);
+                    try {
+                      const productResponse = await fetch(`/products/${productHandle}.js`);
+                      if (productResponse.ok) {
+                        const product = await productResponse.json();
+                        if (product.variants && product.variants.length > 0) {
+                          const variant = product.variants.find(v => v.available) || product.variants[0];
+                          if (variant && variant.id) {
+                            existingVariantIds.push(variant.id);
+                          }
+                        }
+                      }
+                    } catch (e) {
+                      // Continue
+                    }
+                  }
+                }
+              }
+            }
+          }
+        } catch (e) {
+          // Continue to next collection
+        }
+      }
+    } catch (e) {
+      // Silently fail
+    }
+  }
+
+  async function fetchLocationsFromMultipleVariants(variantIds) {
+    const allLocationsMap = new Map();
+    
+    console.log(`Store Selector: Fetching locations from ${variantIds.length} variant(s)...`);
+    
+    // Fetch from multiple variants to get all locations
+    // Use all variant IDs to maximize location coverage
+    const fetchPromises = variantIds.map((variantId, index) => {
+      return fetchLocationsFromVariant(variantId, allLocationsMap).then(() => {
+        console.log(`Store Selector: Fetched from variant ${index + 1}/${variantIds.length} (${variantId}), found ${allLocationsMap.size} unique location(s) so far`);
+      });
+    });
+    
+    await Promise.all(fetchPromises);
+    
+    // Populate CONFIG.stores with all collected locations
+    allLocationsMap.forEach((location, handle) => {
+      CONFIG.stores[handle] = location;
+    });
+    
+    // Build modal options with all collected locations
+    buildModalOptions();
+    
+    // Log for debugging
+    const locationNames = Array.from(allLocationsMap.values()).map(l => l.name);
+    if (Object.keys(CONFIG.stores).length === 0) {
+      console.warn('Store Selector: No locations found. Make sure products have pickup availability configured.');
+    } else {
+      console.log(`Store Selector: Found ${Object.keys(CONFIG.stores).length} location(s):`, locationNames);
+    }
+  }
+
+  async function fetchLocationsFromVariant(variantId, locationsMap = null) {
     try {
       const baseUrl = window.Shopify?.routes?.root_url || '/';
       const url = `${baseUrl}variants/${variantId}/?section_id=helper-pickup-availability-compact`;
       const response = await fetch(url);
-      if (!response.ok) return;
+      if (!response.ok) {
+        console.warn(`Store Selector: Failed to fetch pickup availability for variant ${variantId}`);
+        return;
+      }
       
       const html = await response.text();
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, 'text/html');
       
+      // Get ALL pickup availability alerts (both available and unavailable locations)
+      // This includes all locations with pickup enabled, regardless of inventory
       const alerts = doc.querySelectorAll('.pickup-availability-alert');
-      const locationsMap = new Map();
+      const targetMap = locationsMap || new Map();
+      let foundCount = 0;
       
       alerts.forEach(alert => {
+        // Skip default/unavailable placeholders that don't have store names
+        if (alert.hasAttribute('data-default-unavailable') || alert.hasAttribute('data-default-store')) {
+          return;
+        }
+        
         const storeNameEl = alert.querySelector('.pickup-availability-alert-store');
         if (storeNameEl) {
           const locationName = storeNameEl.textContent.trim();
-          const handle = locationName.toLowerCase().replace(/\s+/g, '-');
-          
-          if (!locationsMap.has(handle)) {
-            locationsMap.set(handle, {
-              name: locationName,
-              handle: handle,
-              patterns: [
-                locationName.toLowerCase(),
-                handle,
-                ...locationName.toLowerCase().split(' ').filter(word => word.length > 2)
-              ]
-            });
+          if (locationName) {
+            const handle = locationName.toLowerCase().replace(/\s+/g, '-');
+            
+            if (!targetMap.has(handle)) {
+              foundCount++;
+              targetMap.set(handle, {
+                name: locationName,
+                handle: handle,
+                patterns: [
+                  locationName.toLowerCase(),
+                  handle,
+                  ...locationName.toLowerCase().split(' ').filter(word => word.length > 2)
+                ]
+              });
+            }
           }
         }
       });
       
-      // Populate CONFIG.stores
-      locationsMap.forEach((location, handle) => {
-        CONFIG.stores[handle] = location;
-      });
+      if (foundCount > 0) {
+        console.log(`Store Selector: Found ${foundCount} new location(s) from variant ${variantId}`);
+      }
       
-      // Build modal options
-      buildModalOptions();
+      // If not using shared map, populate CONFIG.stores
+      if (!locationsMap) {
+        targetMap.forEach((location, handle) => {
+          CONFIG.stores[handle] = location;
+        });
+        buildModalOptions();
+      }
     } catch (e) {
+      console.warn(`Store Selector: Error fetching locations from variant ${variantId}:`, e);
     }
   }
 
     // Build modal options from loaded locations
-    function buildModalOptions() {
+    function buildModalOptions(availableStores = null, currentStore = null) {
       const optionsContainer = document.getElementById('store-selector-options');
       if (!optionsContainer) return;
       
       const loadingEl = optionsContainer.querySelector('.store-selector-loading');
       if (loadingEl) loadingEl.remove();
       
-      const stores = Object.entries(CONFIG.stores);
+      // If availableStores is provided, filter to only show those stores
+      let stores = Object.entries(CONFIG.stores);
+      if (availableStores && availableStores.length > 0) {
+        stores = stores.filter(([handle]) => availableStores.includes(handle));
+      }
+      
       if (stores.length === 0) {
-        optionsContainer.innerHTML = '<div style="text-align: center; padding: 2rem; color: #999;">No pickup locations available</div>';
+        optionsContainer.innerHTML = '<div style="text-align: center; padding: 2rem; color: #999;">No pickup locations available for this item</div>';
         return;
       }
       
@@ -149,8 +317,11 @@
         const safeHandle = escapeHtml(handle);
         const displayName = decodeHtml(store.name); // Decode for display
         const safeNameAttr = escapeHtml(store.name); // Escape for attribute
+        const isSelected = currentStore && handle === currentStore;
+        const selectedClass = isSelected ? 'store-option-selected' : '';
+        const selectedText = isSelected ? 'Selected Store' : 'Pickup available';
         return `
-      <button type="button" class="store-option" data-store="${safeHandle}" data-store-name="${safeNameAttr}">
+      <button type="button" class="store-option ${selectedClass}" data-store="${safeHandle}" data-store-name="${safeNameAttr}">
         <div class="store-option-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -159,7 +330,7 @@
         </div>
         <div class="store-option-details">
           <strong>${displayName}</strong>
-          <span>Pickup available</span>
+          <span>${selectedText}</span>
         </div>
       </button>
     `;
@@ -207,15 +378,18 @@
       // Setup header store indicator
       this.setupHeaderIndicator();
       
-      // Check if we need to show the modal
-      if (!this.currentStore && this.modal) {
-        // Wait for locations to load before showing
-        setTimeout(() => {
-          if (Object.keys(CONFIG.stores).length > 0) {
-            this.showModal();
-          }
-        }, 500);
-      }
+      // Don't show modal on page load - only show on first add to cart
+      // if (!this.currentStore && this.modal) {
+      //   // Wait for locations to load before showing
+      //   setTimeout(() => {
+      //     if (Object.keys(CONFIG.stores).length > 0) {
+      //       this.showModal();
+      //     }
+      //   }, 500);
+      // }
+      
+      // Listen for add to cart events - show store selector if no store is selected
+      this.setupAddToCartListener();
       
       // Filter products based on store (with delay to ensure DOM is ready)
       if (CONFIG.enableProductFiltering && this.currentStore) {
@@ -233,6 +407,86 @@
       
       // Dispatch event for other scripts
       this.dispatchStoreEvent();
+    }
+
+    // Setup listener for add to cart events
+    setupAddToCartListener() {
+      const self = this;
+      
+      // Method 1: Intercept button clicks on add to cart buttons (capture phase)
+      document.addEventListener('click', function(e) {
+        // Check if clicked element is an add to cart button or inside one
+        let button = e.target;
+        if (button.tagName !== 'BUTTON' && button.type !== 'submit') {
+          button = e.target.closest('button[type="submit"], button[name="add"], [data-js-product-add-to-cart]');
+        }
+        if (!button) return;
+        
+        // Check if button is inside a product form
+        const productForm = button.closest('product-form');
+        if (!productForm) return;
+        
+        // Check if form has the add-to-cart-form type
+        let form = productForm.querySelector('form[data-type="add-to-cart-form"]');
+        if (!form) {
+          // Try to find form without the data-type attribute
+          form = productForm.querySelector('form');
+        }
+        if (!form) return;
+        
+        // Only intercept if no store is selected
+        if (!self.currentStore) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          e.stopPropagation();
+          
+          // Get variant ID
+          const variantInput = form.querySelector('input[name="id"]');
+          const variantId = variantInput ? variantInput.value : null;
+          
+          if (variantId) {
+            // Store the form and button for later submission
+            self._pendingAddToCart = {
+              form: form,
+              productForm: productForm,
+              variantId: variantId,
+              button: button
+            };
+            
+            // Show modal with filtered stores for this variant
+            self.showModalForVariant(variantId);
+          } else {
+            console.warn('Store Selector: Could not find variant ID in form', form);
+          }
+        }
+      }, true); // Use capture phase to intercept before default behavior
+      
+      // Method 2: Also listen for the custom add-to-cart event as fallback
+      document.addEventListener('add-to-cart', function(e) {
+        if (!self.currentStore) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          
+          // Try to get variant ID from the event target
+          const productForm = e.target?.closest('product-form');
+          if (productForm) {
+            const form = productForm.querySelector('form[data-type="add-to-cart-form"]') || productForm.querySelector('form');
+            if (form) {
+              const variantInput = form.querySelector('input[name="id"]');
+              const variantId = variantInput ? variantInput.value : null;
+              
+              if (variantId) {
+                self._pendingAddToCart = {
+                  form: form,
+                  productForm: productForm,
+                  variantId: variantId
+                };
+                self.showModalForVariant(variantId);
+              }
+            }
+          }
+        }
+      }, true);
     }
 
     // Get stored store from localStorage
@@ -292,20 +546,129 @@
     }
 
     // Modal methods
-    showModal() {
+    showModal(showAllStores = false) {
       if (this.modal) {
+        // If showAllStores is true, rebuild with all stores and highlight current
+        if (showAllStores) {
+          buildModalOptions(null, this.currentStore);
+          this.setupModalListeners();
+        }
+        
+        this.modal.style.display = 'flex';
         this.modal.classList.add('active');
         document.body.style.overflow = 'hidden';
         document.body.classList.add('store-modal-open');
+      } else {
+        console.warn('Store Selector: Modal element not found when trying to show');
+      }
+    }
+
+    // Show modal with filtered stores for a specific variant
+    async showModalForVariant(variantId) {
+      if (!this.modal) {
+        console.warn('Store Selector: Modal element not found');
+        return;
+      }
+
+      if (!variantId) {
+        // If no variant ID, show all stores
+        buildModalOptions();
+        this.showModal();
+        return;
+      }
+
+      // Show loading state
+      const optionsContainer = document.getElementById('store-selector-options');
+      if (optionsContainer) {
+        optionsContainer.innerHTML = '<div class="store-selector-loading" style="text-align: center; padding: 2rem; color: #666;">Loading available stores...</div>';
+      }
+
+      // Show modal first (with loading state)
+      this.showModal();
+
+      // Get available stores for this variant
+      const availableStores = await this.getAvailableStoresForVariant(variantId);
+      
+      // Build modal with filtered stores
+      buildModalOptions(availableStores);
+      
+      // Re-attach listeners after building options
+      this.setupModalListeners();
+    }
+
+    // Get list of available store handles for a variant
+    async getAvailableStoresForVariant(variantId) {
+      try {
+        const baseUrl = window.Shopify?.routes?.root_url || '/';
+        const url = `${baseUrl}variants/${variantId}/?section_id=helper-pickup-availability-compact`;
+        
+        const response = await fetch(url);
+        if (!response.ok) {
+          // If can't fetch, return all stores
+          return Object.keys(CONFIG.stores);
+        }
+        
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        
+        const alerts = doc.querySelectorAll('.pickup-availability-alert');
+        const availableStoreHandles = [];
+        
+        alerts.forEach(alert => {
+          const storeNameEl = alert.querySelector('.pickup-availability-alert-store');
+          if (!storeNameEl) return;
+          
+          const isAvailable = alert.querySelector('.alert--success');
+          if (!isAvailable) return; // Skip unavailable stores
+          
+          const locationName = storeNameEl.textContent.trim();
+          const locationNameLower = locationName.toLowerCase().replace(/[''&#39;]/g, '');
+          const apiStoreHandle = locationNameLower.replace(/\s+/g, '-');
+          
+          // Find matching store handle in CONFIG.stores
+          for (const [handle, store] of Object.entries(CONFIG.stores)) {
+            const storeNameLower = store.name.toLowerCase().replace(/[''&#39;]/g, '');
+            const storeHandle = handle.toLowerCase();
+            
+            // Check for exact match or partial match
+            if (apiStoreHandle === storeHandle || 
+                apiStoreHandle === storeNameLower.replace(/\s+/g, '-') ||
+                storeNameLower.includes(locationNameLower) ||
+                locationNameLower.includes(storeNameLower)) {
+              if (!availableStoreHandles.includes(handle)) {
+                availableStoreHandles.push(handle);
+              }
+              break;
+            }
+          }
+        });
+        
+        // If no stores found, return all stores as fallback
+        return availableStoreHandles.length > 0 ? availableStoreHandles : Object.keys(CONFIG.stores);
+      } catch (e) {
+        console.error('Error fetching available stores:', e);
+        // Return all stores as fallback
+        return Object.keys(CONFIG.stores);
       }
     }
 
     hideModal() {
       if (this.modal) {
         this.modal.classList.remove('active');
-        this.modal.style.display = '';
+        this.modal.style.display = 'none';
         document.body.style.overflow = '';
         document.body.classList.remove('store-modal-open');
+        
+        // Clear any pending add to cart if modal is closed without selecting
+        if (this._pendingAddToCart) {
+          this._pendingAddToCart = null;
+        }
+        
+        // Reset modal to show all stores for next time (when opened via pin)
+        // This ensures that if user closes without selecting, next open shows all stores
+        buildModalOptions(null, this.currentStore);
+        this.setupModalListeners();
       }
     }
 
@@ -328,11 +691,49 @@
         });
       });
 
-      // Don't close on overlay click - force selection
-      // const overlay = this.modal.querySelector('.store-selector-overlay');
-      // if (overlay) {
-      //   overlay.addEventListener('click', () => this.hideModal());
-      // }
+      // Setup close button
+      const closeBtn = this.modal.querySelector('#store-modal-close');
+      if (closeBtn) {
+        // Remove old listeners by cloning
+        const newCloseBtn = closeBtn.cloneNode(true);
+        closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+        
+        // Add close listener
+        newCloseBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.hideModal();
+        });
+      }
+
+      // Setup overlay click to close
+      const overlay = this.modal.querySelector('.store-selector-overlay');
+      if (overlay) {
+        // Remove old listeners by cloning
+        const newOverlay = overlay.cloneNode(true);
+        overlay.parentNode.replaceChild(newOverlay, overlay);
+        
+        // Add close listener
+        newOverlay.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.hideModal();
+        });
+      }
+
+      // Setup ESC key to close
+      const escHandler = (e) => {
+        if (e.key === 'Escape' && this.modal && this.modal.classList.contains('active')) {
+          this.hideModal();
+        }
+      };
+      
+      // Remove old ESC listener if exists
+      if (this._escHandler) {
+        document.removeEventListener('keydown', this._escHandler);
+      }
+      this._escHandler = escHandler;
+      document.addEventListener('keydown', escHandler);
     }
 
     selectStore(storeCode) {
@@ -362,6 +763,26 @@
           this.validateCartOnStoreChange(previousStore, storeCode);
         } else {
           this.validateCart();
+        }
+      }
+
+      // If there's a pending add to cart, trigger it now
+      if (this._pendingAddToCart) {
+        const { variantId, form, productForm, button } = this._pendingAddToCart;
+        this._pendingAddToCart = null;
+        
+        // Trigger the add to cart by clicking the button again
+        if (button && productForm) {
+          // Use setTimeout to ensure modal is closed first
+          setTimeout(() => {
+            // Create a new click event and dispatch it
+            const clickEvent = new MouseEvent('click', {
+              bubbles: true,
+              cancelable: true,
+              view: window
+            });
+            button.dispatchEvent(clickEvent);
+          }, 100);
         }
       }
     }
@@ -442,9 +863,14 @@
       if (headerIndicator) {
         this.updateHeaderIndicator();
         
-        // Click to change store
+        // Click to change store - show all locations
         headerIndicator.addEventListener('click', (e) => {
           e.preventDefault();
+          // Clear any pending add to cart
+          this._pendingAddToCart = null;
+          // Always show all stores when opened via pin icon, and highlight current store
+          buildModalOptions(null, this.currentStore);
+          this.setupModalListeners();
           this.showModal();
         });
       }
@@ -610,7 +1036,7 @@
       } else {
         item.classList.add('store-unavailable');
         
-        // Change Add to Cart button to "Not Available"
+        // Change Add to Cart button to "Visit us in Store"
         if (addToCartBtn) {
           addToCartBtn.disabled = true;
           addToCartBtn.classList.add('disabled', 'store-unavailable-button');
@@ -619,7 +1045,7 @@
             if (!btnText.dataset.originalText) {
               btnText.dataset.originalText = btnText.textContent;
             }
-            btnText.textContent = 'Not Available';
+            btnText.textContent = 'Visit us in Store';
           }
         }
       }
@@ -672,7 +1098,7 @@
             
             // Update button text
             if (addToCartText) {
-              addToCartText.textContent = 'Not Available';
+              addToCartText.textContent = 'Visit us in Store';
             }
             
             // Only show warning message on actual product pages
@@ -1112,7 +1538,7 @@
           </ul>
           <p>Would you like to remove these items from your cart?</p>
           <div class="store-cart-warning-actions">
-            <button type="button" class="btn btn-secondary" data-action="keep">Keep Items</button>
+            <button type="button" class="btn btn-secondary" data-action="select-store">Select Other Store</button>
             <button type="button" class="btn btn-primary" data-action="remove">Remove Items</button>
           </div>
         </div>
@@ -1189,8 +1615,12 @@
       document.body.appendChild(warning);
       
       // Event listeners
-      warning.querySelector('[data-action="keep"]').addEventListener('click', () => {
+      warning.querySelector('[data-action="select-store"]').addEventListener('click', () => {
         warning.remove();
+        // Open store selector modal
+        if (window.JoelsStoreSelector) {
+          window.JoelsStoreSelector.showModal(true);
+        }
       });
       
       warning.querySelector('[data-action="remove"]').addEventListener('click', async () => {

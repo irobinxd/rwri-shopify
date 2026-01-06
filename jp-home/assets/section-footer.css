@@ -104,3 +104,13 @@ html[dir=ltr] .footer-item__newsletter button[type=submit] {
 .footer-item__newsletter button[type=submit] svg path {
   stroke: var(--color-text-footer);
 }
+
+/* Mobile footer logo spacing adjustment */
+@media screen and (max-width: 767px) {
+  /* Reduce top and bottom margin for logo only on mobile */
+  .footer-item__image {
+    margin-top: -2em !important;
+    margin-left: -1.5em !important;
+    margin-bottom: -1.5em !important;
+  }
+}

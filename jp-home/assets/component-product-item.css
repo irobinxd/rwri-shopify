@@ -1,5 +1,8 @@
 .product-item {
   overflow: visible;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .product-item__image-figure {
@@ -29,6 +32,23 @@ div + .equalize-white-space {
   margin-top: -0.1875rem;
 }
 
+.product-item__price {
+  /* Price sticks to button, positioned at bottom */
+  margin-bottom: 0.5rem;
+}
+
+/* When price comes before button, push price to bottom so both are fixed at bottom */
+.product-item__price + .product-item__quick-buy {
+  margin-top: auto;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+/* Also push price itself to bottom when it comes before button, with negative margin to reduce gap */
+.product-item__text > .product-item__price:not(:last-child) {
+  margin-top: auto;
+  margin-top: calc(auto - 3.5rem);
+}
 .product-item__price span {
   width: auto;
 }
@@ -50,7 +70,53 @@ div + .equalize-white-space {
 .product-item__text {
   display: flex;
   flex-direction: column;
-  justify-content: stretch;
+  justify-content: flex-start;
+  flex-grow: 1;
+  min-height: 0;
+}
+
+/* Reduce spacing between title and price - only on homepage, not collection pages */
+.product-item__title + .product-item__price {
+  margin-top: 0.25rem;
+}
+
+/* Collections view - keep default spacing (revert to spacing--xlarge default) */
+.collection .product-item__title + .product-item__price {
+  margin-top: revert;
+}
+
+/* Ensure title and other content don't interfere with bottom alignment */
+.product-item__title,
+.product-item__vendor,
+.product-item__icons,
+.product-item__text > div:not(.product-item__price):not(.product-item__quick-buy) {
+  flex-shrink: 0;
+}
+
+/* Button pushes to bottom, price sticks directly above it */
+/* When price comes before quick-buy, button pushes to bottom and price follows */
+.product-item__price + .product-item__quick-buy {
+  margin-top: auto;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+/* When button comes before price, button still pushes to bottom */
+.product-item__quick-buy + .product-item__price {
+  /* Price sticks above button */
+  margin-top: 0.5rem;
+}
+
+/* If button is the last element (no price after it), push it to bottom */
+.product-item__text > .product-item__quick-buy:last-child {
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+/* If price is the last element (no button after it), push it to bottom */
+.product-item__text > .product-item__price:last-child {
+  margin-top: auto;
+  margin-bottom: 0;
 }
 .product-item__text.text-align--center {
   align-items: center;
@@ -68,8 +134,13 @@ div + .equalize-white-space {
 .product-item__quick-buy .no-touchevents .button:hover .button__preloader svg circle {
   stroke: var(--color-foreground-cards);
 }
+/* Only apply margin-top if button comes directly after title (not after price) */
 .product-item__title + .product-item__quick-buy {
   margin-top: 0.5rem;
+}
+/* Override the above when button comes after price */
+.product-item__price + .product-item__quick-buy {
+  margin-top: 0.5rem !important;
 }
 .product-item__quick-buy .button {
   padding-left: 0.75rem !important;
@@ -180,6 +251,33 @@ html[dir=ltr] .product-item__badges {
 }
 .main-content--align-product-items .product-item__text:first-of-type {
   flex-grow: 1;
+}
+/* Ensure the aligned container (with price and button) also uses flexbox for bottom alignment */
+.main-content--align-product-items .product-item__text:last-of-type {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 0;
+  margin-top: auto;
+  padding-top: 0;
+}
+/* When price is in the aligned container, ensure button pushes to bottom */
+.main-content--align-product-items .product-item__text:last-of-type .product-item__price + .product-item__quick-buy {
+  margin-top: auto;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+/* Ensure price in aligned container has proper spacing and doesn't push independently */
+.main-content--align-product-items .product-item__text:last-of-type .product-item__price {
+  margin-bottom: 0.5rem;
+  margin-top: 0;
+  flex-shrink: 0;
+}
+/* If button is alone in aligned container, push it to bottom */
+.main-content--align-product-items .product-item__text:last-of-type > .product-item__quick-buy:only-child,
+.main-content--align-product-items .product-item__text:last-of-type > .product-item__quick-buy:last-child {
+  margin-top: auto;
+  flex-shrink: 0;
 }
 
 .product-item .stamped-badge-caption {

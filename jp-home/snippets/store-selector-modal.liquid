@@ -31,7 +31,7 @@
     
     <div class="store-selector-footer">
       <p class="store-selector-note">
-        <small>You'll only see products available at your selected store. You can change your store anytime from the header.</small>
+        <small>You'll only see products available at your selected store. You can change your store anytime by clicking the pin icon.</small>
       </p>
     </div>
   </div>
@@ -154,6 +154,25 @@
   
   .store-option:active {
     transform: translateY(0);
+  }
+  
+  .store-option-selected {
+    border-color: var(--color-accent, #70a062) !important;
+    background: #e8f5e9 !important;
+    box-shadow: 0 4px 12px rgba(112, 160, 98, 0.25);
+  }
+  
+  .store-option-selected .store-option-icon {
+    background: linear-gradient(135deg, var(--color-accent, #70a062), #5a8a4e) !important;
+  }
+  
+  .store-option-selected .store-option-details strong {
+    color: var(--color-accent, #70a062);
+  }
+  
+  .store-option-selected:hover {
+    border-color: var(--color-accent, #70a062) !important;
+    background: #d4edda !important;
   }
   
   .store-option-icon {

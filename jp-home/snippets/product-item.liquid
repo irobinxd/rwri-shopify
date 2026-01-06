@@ -125,18 +125,21 @@
           </a>
 
         {%- when 'price' -%}
-          <div 
-            class="product-item__price text-size--{{ settings.product_card_price_size }} equalize-white-space" 
-            {{ block.shopify_attributes }}
-          >
-            <div class="remove-line-height-space">
-              {% unless blank_product %}
-                {%- render 'product-price', target: product, variant: product_variant, product_price_varies: product.price_varies -%}
-              {%- else -%}
-                {{ 9999 | money }}
-              {%- endunless -%}
+          {%- comment -%} Skip rendering price here if align_buy is enabled - it will be rendered in quick_buy block {%- endcomment -%}
+          {%- unless settings.product_card_align_buy -%}
+            <div 
+              class="product-item__price text-size--{{ settings.product_card_price_size }} equalize-white-space" 
+              {{ block.shopify_attributes }}
+            >
+              <div class="remove-line-height-space">
+                {% unless blank_product %}
+                  {%- render 'product-price', target: product, variant: product_variant, product_price_varies: product.price_varies -%}
+                {%- else -%}
+                  {{ 9999 | money }}
+                {%- endunless -%}
+              </div>
             </div>
-          </div>
+          {%- endunless -%}
 
         {%- when 'text' -%}
           <div 
@@ -236,6 +239,30 @@
                 class="product-item__text gutter--regular spacing--xlarge remove-empty-space text-align--{{ settings.product_card_text_alignment }}" 
                 style="padding-top: 0;"
               >
+              {%- comment -%} Move price into this container above the button {%- endcomment -%}
+              {%- liquid
+                assign price_block = null
+                for block_item in section_blocks
+                  if block_item.type == 'price'
+                    assign price_block = block_item
+                    break
+                  endif
+                endfor
+              -%}
+              {%- if price_block -%}
+                <div 
+                  class="product-item__price text-size--{{ settings.product_card_price_size }} equalize-white-space" 
+                  {{ price_block.shopify_attributes }}
+                >
+                  <div class="remove-line-height-space">
+                    {% unless blank_product %}
+                      {%- render 'product-price', target: product, variant: product_variant, product_price_varies: product.price_varies -%}
+                    {%- else -%}
+                      {{ 9999 | money }}
+                    {%- endunless -%}
+                  </div>
+                </div>
+              {%- endif -%}
             {%- endif -%}
             {% # theme-check-enable UnclosedHTMLElement %}
             <div 
