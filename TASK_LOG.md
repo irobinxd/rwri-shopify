@@ -28,6 +28,19 @@ Reduced top and bottom margins for footer logo on mobile view for better spacing
 **Files:**
 - `jp-home/assets/section-footer.css`
 
+## 4. Store Selector Location Fetching Improvements
+Enhanced dynamic location fetching to check multiple products (up to 30) and collections to capture all locations. Added console logging for debugging. Improved location deduplication logic.
+
+**Files:**
+- `jp-home/assets/store-selector.js`
+- `jp-home/snippets/store-locations-data.liquid`
+
+## 5. Cart Warning Modal Update
+Changed "Keep Items" button to "Select Other Store" in cart validation warning modal. Button now opens store selector modal to allow users to switch stores instead of keeping unavailable items.
+
+**Files:**
+- `jp-home/assets/store-selector.js`
+
 ---
 **Note:** Update this log when merging changes from other laptop.
 
