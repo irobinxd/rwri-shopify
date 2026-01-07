@@ -176,16 +176,29 @@
     }
   }
   
-  // Initialize
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', createPinButton);
-  } else {
-    createPinButton();
+  // Only show pin button on cart page
+  function shouldShowPinButton() {
+    // Check if we're on the cart page
+    return window.location.pathname.includes('/cart') || 
+           document.body.classList.contains('template-cart');
   }
   
-  // Also try after a delay in case DOM isn't ready
-  setTimeout(createPinButton, 500);
-  setTimeout(createPinButton, 1500);
+  // Initialize only on cart page
+  if (shouldShowPinButton()) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', createPinButton);
+    } else {
+      createPinButton();
+    }
+    
+    // Also try after a delay in case DOM isn't ready
+    setTimeout(() => {
+      if (shouldShowPinButton()) createPinButton();
+    }, 500);
+    setTimeout(() => {
+      if (shouldShowPinButton()) createPinButton();
+    }, 1500);
+  }
   
   // Listen for store changes
   document.addEventListener('store-selected', function(e) {

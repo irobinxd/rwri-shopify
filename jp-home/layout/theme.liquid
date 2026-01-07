@@ -124,11 +124,17 @@
   {%- section 'store-selector' -%}
   
   {%- comment -%} Store Selector Modal - Shows on first visit {%- endcomment -%}
-  {%- render 'store-selector-modal' -%}
+  {%- comment -%} Store selector modal - only on cart page {%- endcomment -%}
+  {%- if template.name == 'cart' -%}
+    {%- render 'store-selector-modal' -%}
+  {%- endif -%}
   {%- render 'store-locations-data' -%}
   
   {%- comment -%} Floating Store Selector Indicator {%- endcomment -%}
-  {%- render 'store-header-indicator' -%}
+  {%- comment -%} Store header indicator (pin button) - only on cart page {%- endcomment -%}
+  {%- if template.name == 'cart' -%}
+    {%- render 'store-header-indicator' -%}
+  {%- endif -%}
   
   <script src="{{ 'store-selector.js' | asset_url }}" defer></script>
   

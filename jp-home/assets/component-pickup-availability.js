@@ -45,16 +45,40 @@ if ( typeof PickupAvailabilityCompact !== 'function' ) {
 
         const variantSectionUrl = `${this.dataset.baseUrl.endsWith('/')?this.dataset.baseUrl:`${this.dataset.baseUrl}/`}variants/${variantId}/?section_id=helper-pickup-availability-compact`;
 
-        fetch(variantSectionUrl)
-          .then(response => response.text())
+        fetch(variantSectionUrl, {
+          mode: 'same-origin',
+          credentials: 'same-origin'
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP ${response.status}`);
+            }
+            return response.text();
+          })
           .then(text => {
             const sectionInnerHTML = new DOMParser()
               .parseFromString(text, 'text/html')
               .querySelector('.shopify-section');
-            this.renderPreview(sectionInnerHTML);
+            if (sectionInnerHTML) {
+              this.renderPreview(sectionInnerHTML);
+            } else {
+              // Fallback to default unavailable state
+              const defaultData = this.querySelector('[data-js-pickup-availability-data]');
+              if (defaultData) {
+                this.renderPreview(defaultData);
+              }
+            }
           })
           .catch(e => {
-            console.log(e);
+            // Silently handle errors (CORS, network, etc.) - common in development
+            // Use fallback data if available
+            const defaultData = this.querySelector('[data-js-pickup-availability-data]');
+            if (defaultData) {
+              this.renderPreview(defaultData);
+            } else {
+              // Hide component if no fallback data
+              this.style.display = 'none';
+            }
           });
 
       }

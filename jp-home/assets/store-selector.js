@@ -19,6 +19,10 @@
 
   // Load Shopify locations dynamically
   function loadShopifyLocations() {
+    // Check if we're on cart page - only do expensive fetching on cart page
+    const isCartPage = window.location.pathname.includes('/cart') || 
+                       document.body.classList.contains('template-cart');
+    
     // Try to get from JSON script tag first
     const locationsScript = document.getElementById('shopify-locations-data');
     if (locationsScript) {
@@ -39,15 +43,28 @@
         });
         return;
       } catch (e) {
+        // If JSON parsing fails and we're on cart page, continue to fallback
+        if (!isCartPage) return;
       }
     }
 
-    // Fallback: Fetch from a product variant
-    fetchShopifyLocationsFromProduct();
+    // Only fetch from products/collections on cart page
+    // On other pages, we don't need this expensive operation
+    if (isCartPage) {
+      fetchShopifyLocationsFromProduct();
+    }
   }
 
   // Fetch locations from a product variant's availability
+  // NOTE: This should only be called on cart page
   async function fetchShopifyLocationsFromProduct() {
+    // Double-check we're on cart page - don't fetch on homepage
+    const isCartPage = window.location.pathname.includes('/cart') || 
+                       document.body.classList.contains('template-cart');
+    if (!isCartPage) {
+      return; // Don't fetch on non-cart pages
+    }
+    
     try {
       // Try to get variant IDs from multiple products on the page
       const variantIds = [];
@@ -88,8 +105,8 @@
         }
       }
       
-      // If we don't have enough variants, try fetching from collections
-      if (variantIds.length < 5) {
+      // Only fetch from collections on cart page if we don't have enough variants
+      if (variantIds.length < 5 && isCartPage) {
         await fetchVariantsFromCollections(variantIds, processedProductIds);
       }
       
@@ -105,7 +122,15 @@
   }
 
   // Fetch variants from collections to get more location coverage
+  // NOTE: This should only be called on cart page
   async function fetchVariantsFromCollections(existingVariantIds, processedProductIds) {
+    // Double-check we're on cart page - don't fetch on homepage
+    const isCartPage = window.location.pathname.includes('/cart') || 
+                       document.body.classList.contains('template-cart');
+    if (!isCartPage) {
+      return; // Don't fetch collections on non-cart pages
+    }
+    
     try {
       // Try to get collection URLs from the page
       const collectionLinks = document.querySelectorAll('a[href*="/collections/"]');
@@ -221,9 +246,24 @@
     try {
       const baseUrl = window.Shopify?.routes?.root_url || '/';
       const url = `${baseUrl}variants/${variantId}/?section_id=helper-pickup-availability-compact`;
-      const response = await fetch(url);
+      
+      let response;
+      try {
+        response = await fetch(url, {
+          mode: 'same-origin', // Only allow same-origin requests to avoid CORS issues
+          credentials: 'same-origin'
+        });
+      } catch (fetchError) {
+        // CORS or network error - common in theme development
+        if (fetchError.name === 'TypeError' || fetchError.message.includes('CORS') || fetchError.message.includes('Failed to fetch')) {
+          // Silently skip in development - variant availability checks will be skipped
+          return;
+        }
+        throw fetchError; // Re-throw if it's a different error
+      }
+      
       if (!response.ok) {
-        console.warn(`Store Selector: Failed to fetch pickup availability for variant ${variantId}`);
+        // Silently skip non-OK responses (common in development)
         return;
       }
       
@@ -363,14 +403,78 @@
       this.modal = document.getElementById('store-selector-modal');
       this.currentStore = this.getStoredStore();
       
-      // Load Shopify locations first
-      loadShopifyLocations();
+      // Check what page we're on
+      const isCartPage = window.location.pathname.includes('/cart') || 
+                         document.body.classList.contains('template-cart');
+      const isProductPage = window.location.pathname.includes('/products/');
+      const isCollectionPage = window.location.pathname.includes('/collections/');
+      const isHomepage = !isCartPage && !isProductPage && !isCollectionPage;
       
-      // Wait a bit for locations to load, then build modal
-      setTimeout(() => {
-        buildModalOptions();
-        this.setupModalListeners();
-      }, 100);
+      // On homepage or any non-cart page, skip all location fetching - no validation needed
+      if (isHomepage || (!isCartPage && !isProductPage && !isCollectionPage)) {
+        // Just load from JSON script tag if available (no API calls)
+        const locationsScript = document.getElementById('shopify-locations-data');
+        if (locationsScript) {
+          try {
+            const locations = JSON.parse(locationsScript.textContent);
+            locations.forEach(location => {
+              const handle = location.handle || location.name.toLowerCase().replace(/\s+/g, '-');
+              CONFIG.stores[handle] = {
+                id: location.id,
+                name: location.name,
+                handle: handle,
+                patterns: [
+                  location.name.toLowerCase(),
+                  handle,
+                  ...location.name.toLowerCase().split(' ').filter(word => word.length > 2)
+                ]
+              };
+            });
+          } catch (e) {
+            // Ignore errors
+          }
+        }
+        // Skip all other initialization on homepage
+        this.updateBodyClass();
+        this.dispatchStoreEvent();
+        return;
+      }
+      
+      // Only load locations on cart page
+      if (isCartPage) {
+        // Load Shopify locations first
+        loadShopifyLocations();
+        
+        // Wait a bit for locations to load, then build modal
+        setTimeout(() => {
+          buildModalOptions();
+          this.setupModalListeners();
+        }, 100);
+      } else if (isProductPage || isCollectionPage) {
+        // On non-cart pages, just try to get locations from JSON script tag
+        // Don't fetch from products/collections
+        const locationsScript = document.getElementById('shopify-locations-data');
+        if (locationsScript) {
+          try {
+            const locations = JSON.parse(locationsScript.textContent);
+            locations.forEach(location => {
+              const handle = location.handle || location.name.toLowerCase().replace(/\s+/g, '-');
+              CONFIG.stores[handle] = {
+                id: location.id,
+                name: location.name,
+                handle: handle,
+                patterns: [
+                  location.name.toLowerCase(),
+                  handle,
+                  ...location.name.toLowerCase().split(' ').filter(word => word.length > 2)
+                ]
+              };
+            });
+          } catch (e) {
+            // Ignore errors
+          }
+        }
+      }
       
       // Add body class for current store
       this.updateBodyClass();
@@ -391,15 +495,18 @@
       // Listen for add to cart events - show store selector if no store is selected
       this.setupAddToCartListener();
       
-      // Filter products based on store (with delay to ensure DOM is ready)
-      if (CONFIG.enableProductFiltering && this.currentStore) {
+      // Only filter products and check availability on product/collection pages, not homepage
+      const isProductPage = window.location.pathname.includes('/products/');
+      const isCollectionPage = window.location.pathname.includes('/collections/');
+      
+      if ((isProductPage || isCollectionPage) && CONFIG.enableProductFiltering && this.currentStore) {
         setTimeout(() => {
           this.filterProducts();
         }, 500);
       }
       
       // Check product page availability (with delay to ensure DOM is ready)
-      if (this.currentStore) {
+      if (isProductPage && this.currentStore) {
         setTimeout(() => {
           this.checkProductPageAvailability();
         }, 800);
@@ -410,83 +517,13 @@
     }
 
     // Setup listener for add to cart events
+    // DISABLED: No longer intercepting add-to-cart on product pages
+    // Store selection now happens in cart only
     setupAddToCartListener() {
-      const self = this;
-      
-      // Method 1: Intercept button clicks on add to cart buttons (capture phase)
-      document.addEventListener('click', function(e) {
-        // Check if clicked element is an add to cart button or inside one
-        let button = e.target;
-        if (button.tagName !== 'BUTTON' && button.type !== 'submit') {
-          button = e.target.closest('button[type="submit"], button[name="add"], [data-js-product-add-to-cart]');
-        }
-        if (!button) return;
-        
-        // Check if button is inside a product form
-        const productForm = button.closest('product-form');
-        if (!productForm) return;
-        
-        // Check if form has the add-to-cart-form type
-        let form = productForm.querySelector('form[data-type="add-to-cart-form"]');
-        if (!form) {
-          // Try to find form without the data-type attribute
-          form = productForm.querySelector('form');
-        }
-        if (!form) return;
-        
-        // Only intercept if no store is selected
-        if (!self.currentStore) {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          e.stopPropagation();
-          
-          // Get variant ID
-          const variantInput = form.querySelector('input[name="id"]');
-          const variantId = variantInput ? variantInput.value : null;
-          
-          if (variantId) {
-            // Store the form and button for later submission
-            self._pendingAddToCart = {
-              form: form,
-              productForm: productForm,
-              variantId: variantId,
-              button: button
-            };
-            
-            // Show modal with filtered stores for this variant
-            self.showModalForVariant(variantId);
-          } else {
-            console.warn('Store Selector: Could not find variant ID in form', form);
-          }
-        }
-      }, true); // Use capture phase to intercept before default behavior
-      
-      // Method 2: Also listen for the custom add-to-cart event as fallback
-      document.addEventListener('add-to-cart', function(e) {
-        if (!self.currentStore) {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          
-          // Try to get variant ID from the event target
-          const productForm = e.target?.closest('product-form');
-          if (productForm) {
-            const form = productForm.querySelector('form[data-type="add-to-cart-form"]') || productForm.querySelector('form');
-            if (form) {
-              const variantInput = form.querySelector('input[name="id"]');
-              const variantId = variantInput ? variantInput.value : null;
-              
-              if (variantId) {
-                self._pendingAddToCart = {
-                  form: form,
-                  productForm: productForm,
-                  variantId: variantId
-                };
-                self.showModalForVariant(variantId);
-              }
-            }
-          }
-        }
-      }, true);
+      // Removed: Add-to-cart interception on product pages
+      // Customers can add items to cart without selecting a store first
+      // Store selection happens in the cart page
+      return;
     }
 
     // Get stored store from localStorage
@@ -602,7 +639,20 @@
         const baseUrl = window.Shopify?.routes?.root_url || '/';
         const url = `${baseUrl}variants/${variantId}/?section_id=helper-pickup-availability-compact`;
         
-        const response = await fetch(url);
+        let response;
+        try {
+          response = await fetch(url, {
+            mode: 'same-origin', // Only allow same-origin requests to avoid CORS issues
+            credentials: 'same-origin'
+          });
+        } catch (fetchError) {
+          // CORS or network error - return all stores as fallback
+          if (fetchError.name === 'TypeError' || fetchError.message.includes('CORS') || fetchError.message.includes('Failed to fetch')) {
+            return Object.keys(CONFIG.stores);
+          }
+          throw fetchError;
+        }
+        
         if (!response.ok) {
           // If can't fetch, return all stores
           return Object.keys(CONFIG.stores);
@@ -1659,7 +1709,10 @@
   }
 
   // Initialize
-  window.JoelsStoreSelector = new StoreSelector();
+  const selectorInstance = new StoreSelector();
+  window.JoelsStoreSelector = selectorInstance;
+  window.JoelsStoreSelector.instance = selectorInstance; // For backward compatibility
+  window.JoelsStoreSelector.buildModalOptions = buildModalOptions; // Expose buildModalOptions
 
   // Also expose config for customization
   window.JoelsStoreSelectorConfig = CONFIG;
