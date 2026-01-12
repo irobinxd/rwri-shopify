@@ -1,0 +1,256 @@
+.cart-section {
+  display: grid;
+  grid-template-columns: 3fr 1.4fr;
+  gap: var(--gutter-regular);
+}
+@media screen and (max-width: 1100px) {
+  .cart-section {
+    grid-template-columns: 2fr 1.4fr;
+  }
+}
+@media screen and (max-width: 1023px) {
+  .cart-section {
+    grid-template-columns: 100%;
+  }
+}
+.cart-section aside {
+  position: relative;
+}
+.cart-section--empty shipping-calculator,
+.cart-section--empty product-recommendations,
+.cart-section--empty aside {
+  display: none;
+}
+.cart-section--empty .cart-holder {
+  border: none;
+}
+.cart-section--empty .cart-holder .cart-form__items {
+  padding: 0;
+}
+
+.cart__subtotal-widget {
+  padding: var(--gutter-regular);
+  position: sticky;
+  top: 1.25rem;
+}
+html[dir=rtl] .cart__subtotal-widget {
+  right: 0;
+}
+html[dir=ltr] .cart__subtotal-widget {
+  left: 0;
+}
+.cart__subtotal-widget .button {
+  width: 100%;
+}
+
+.cart-form-item:not(:last-child) {
+  border-bottom: solid var(--color-borders-main) var(--border-width-cards);
+}
+@media screen and (max-width: 767px) {
+  .cart-form-item:not(:last-child) {
+    border: 0;
+  }
+}
+.cart-form-item__title-variants span {
+  display: inline-block;
+  width: 100%;
+}
+
+.cart-form-item--layout {
+  padding: var(--gutter-regular);
+  display: grid;
+  gap: var(--gutter-regular);
+  grid-template-columns: 6.25rem 18.75rem 1fr 6.25rem;
+  grid-template-areas: "thumbnail price-title-variants quantity total";
+  align-items: center;
+}
+@media screen and (max-width: 1100px) {
+  .cart-form-item--layout {
+    grid-template-columns: 6.25rem 12.5rem 1fr 6.25rem;
+  }
+}
+@media screen and (max-width: 767px) {
+  .cart-form-item--layout {
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    row-gap: 0;
+    grid-template-columns: 6.25rem 1fr;
+    grid-template-rows: max-content max-content;
+    grid-template-areas: "thumbnail price-title-variants" "thumbnail quantity";
+  }
+}
+.cart-form-item--layout .cart-item__thumbnail {
+  grid-area: thumbnail;
+}
+.cart-form-item--layout .cart-form-item__price-title-variants {
+  grid-area: price-title-variants;
+}
+@media screen and (max-width: 767px) {
+  .cart-form-item--layout .cart-form-item__price-title-variants {
+    align-self: flex-end;
+  }
+}
+.cart-form-item--layout .cart-form-item__price-title-variants > * {
+  display: inline-block;
+  width: 100%;
+}
+.cart-form-item--layout .cart__quantity {
+  grid-area: quantity;
+}
+.cart-form-item--layout .cart__quantity svg {
+  height: 0.6875rem;
+}
+.cart-form-item--layout .cart__quantity svg * {
+  transition: all 100ms linear;
+}
+@media screen and (max-width: 767px) {
+  .cart-form-item--layout .cart__quantity {
+    align-self: flex-start;
+  }
+}
+.cart-form-item--layout .cart-item__total {
+  grid-area: total;
+}
+@media screen and (max-width: 767px) {
+  .cart-form-item--layout .cart-item__total {
+    display: none;
+  }
+}
+
+.cart-block__head {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-bottom: solid var(--color-borders-main) var(--border-width-cards);
+  border-radius: var(--border-radius-cards) var(--border-radius-cards) 0 0;
+  height: 3.4375rem;
+  display: grid;
+  grid-template-columns: calc(25rem + var(--gutter-regular)) 1fr 6.25rem;
+  align-items: center;
+  gap: var(--gutter-regular);
+  padding: 0 var(--gutter-regular);
+  grid-template-areas: "product-info quantity total";
+}
+.cart-block__head.element--hide-on-small {
+  border-radius: 0;
+}
+.cart-items-group .cart-block__head {
+  border-radius: 0;
+  border-top: none;
+}
+.cart-items-group:first-child .cart-items-group__header {
+  border-top-left-radius: var(--border-radius-cards);
+  border-top-right-radius: var(--border-radius-cards);
+}
+@media screen and (max-width: 1100px) {
+  .cart-block__head {
+    grid-template-columns: calc(18.75rem + var(--gutter-regular)) 1fr 6.25rem;
+  }
+}
+
+/* Custom additions: Hide only pickup date/time fields in cart subtotal widget (not the whole aside) */
+.cart__subtotal-widget input[type="date"]:not(#platter-date):not(#non-platter-date),
+.cart__subtotal-widget input[type="date"][name*="pickup"],
+.cart__subtotal-widget input[type="date"][name*="Pickup"],
+.cart__subtotal-widget input[type="date"][name*="delivery"],
+.cart__subtotal-widget input[type="date"][name*="Delivery"] {
+  display: none !important;
+}
+
+/* Hide form field containers that contain unwanted date pickers in subtotal widget only */
+.cart__subtotal-widget .form-field:has(input[type="date"]:not(#platter-date):not(#non-platter-date)) {
+  display: none !important;
+}
+/* WellnessBoost Freebie Section */
+.cart-freebie-section {
+  margin-top: var(--gutter-regular);
+}
+
+.cart-freebie__options {
+  padding: var(--gutter-regular);
+}
+
+.cart-freebie__description {
+  text-align: center;
+  margin-bottom: var(--gutter-regular);
+}
+
+.cart-freebie__products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 0.39fr));
+  gap: var(--gutter-regular);
+  justify-content: center;
+}
+
+@media screen and (max-width: 767px) {
+  .cart-freebie__products {
+    grid-template-columns: 15rem;
+    justify-content: center;
+  }
+}
+
+.cart-freebie__product {
+  position: relative;
+}
+
+.cart-freebie__product-inner {
+  border: 2px solid var(--color-borders-main);
+  border-radius: var(--border-radius-cards);
+  padding: var(--gutter-regular);
+  transition: all 0.2s ease;
+  background: var(--color-background-main);
+  cursor: pointer;
+}
+
+.cart-freebie__product-inner:hover {
+  border-color: var(--color-accent-main, var(--color-borders-main));
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cart-freebie__thumbnail {
+  display: block;
+  margin-bottom: var(--gutter-small);
+  text-decoration: none;
+}
+
+.cart-freebie__title {
+  display: block;
+  margin-bottom: var(--gutter-xsmall);
+  text-decoration: none;
+  color: var(--color-text-main);
+}
+
+.cart-freebie__title:hover {
+  color: var(--color-accent-main);
+}
+
+.cart-freebie__price {
+  margin-bottom: var(--gutter-small);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cart-freebie__price del {
+  color: var(--color-text-opacity);
+}
+
+.cart-freebie__price .text-color--accent {
+  color: var(--color-accent-main);
+  font-weight: var(--font-weight-body-bold);
+  margin-left: 0.5rem;
+}
+
+.cart-freebie__select-btn {
+  width: 100%;
+  margin-top: var(--gutter-small);
+}
+
+.cart-freebie__select-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cart-freebie__selected {
+  padding: var(--gutter-regular);
+  text-align: center;
+  color: var(--color-accent-main);
+}

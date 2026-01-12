@@ -1,0 +1,24 @@
+To Do Dec 11,
+
+
+Limit View Cart if not logged in
+Allow only add to Cart for logged in members = Visit Us in Store for not logged in stores
+Inventory
+
+Product description
+grammage
+image
+
+list down all available JDA data to integrate in shopify
+
+inventory allocation percentage
+category level - 3 below do not push
+
+integrate articles if possible
+
+
+what are the tipping point to use royalstores.com
+
+image upload automation via SKU filename
+
+target - March, April

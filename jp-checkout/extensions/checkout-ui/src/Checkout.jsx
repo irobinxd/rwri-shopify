@@ -49,11 +49,24 @@ function Extension() {
   console.log('Checkout Extension - Selected pickup location:', selectedPickupLocation);
   
   // Find the pickup date attributes from cart
-  const platterPickupDate = currentAttributes.find(attr => attr.key === "Platter Pickup Date")?.value || "";
-  const otherItemsPickupDate = currentAttributes.find(attr => attr.key === "Other Items Pickup Date")?.value || "";
+  // Support both old and new attribute names for backward compatibility
+  const platterPickupDate = currentAttributes.find(attr => 
+    attr.key === "Pre-Orders Pickup Date" || attr.key === "Platter Pickup Date"
+  )?.value || "";
+  const otherItemsPickupDate = currentAttributes.find(attr => 
+    attr.key === "Click and Collect Pickup Date" || attr.key === "Other Items Pickup Date"
+  )?.value || "";
   
-  console.log('Checkout Extension - Platter Pickup Date:', platterPickupDate);
-  console.log('Checkout Extension - Other Items Pickup Date:', otherItemsPickupDate);
+  // Determine which attribute keys are actually being used
+  const platterAttrKey = currentAttributes.find(attr => 
+    attr.key === "Pre-Orders Pickup Date" || attr.key === "Platter Pickup Date"
+  )?.key || "Pre-Orders Pickup Date";
+  const otherItemsAttrKey = currentAttributes.find(attr => 
+    attr.key === "Click and Collect Pickup Date" || attr.key === "Other Items Pickup Date"
+  )?.key || "Click and Collect Pickup Date";
+  
+  console.log('Checkout Extension - Platter Pickup Date:', platterPickupDate, 'Key:', platterAttrKey);
+  console.log('Checkout Extension - Other Items Pickup Date:', otherItemsPickupDate, 'Key:', otherItemsAttrKey);
   
   // Function to handle pickup location selection
   const handlePickupLocationChange = async (locationId) => {
@@ -96,13 +109,13 @@ function Extension() {
   if (!global.__checkoutAttributesSet) {
     global.__checkoutAttributesSet = true;
     
-    // Ensure both attributes are set in checkout
+    // Ensure both attributes are preserved in checkout using the correct keys
     const promises = [];
     
     if (platterPickupDate) {
       promises.push(
         shopify.applyAttributeChange({
-          key: "Platter Pickup Date",
+          key: platterAttrKey, // Use the actual attribute key from cart
           type: "updateAttribute",
           value: platterPickupDate,
         }).catch(err => console.log("Error setting Platter Pickup Date:", err))
@@ -112,33 +125,14 @@ function Extension() {
     if (otherItemsPickupDate) {
       promises.push(
         shopify.applyAttributeChange({
-          key: "Other Items Pickup Date",
+          key: otherItemsAttrKey, // Use the actual attribute key from cart
           type: "updateAttribute",
           value: otherItemsPickupDate,
         }).catch(err => console.log("Error setting Other Items Pickup Date:", err))
       );
     }
     
-    // Also ensure empty attributes are set if they don't exist
-    if (!platterPickupDate) {
-      promises.push(
-        shopify.applyAttributeChange({
-          key: "Platter Pickup Date",
-          type: "updateAttribute",
-          value: "",
-        }).catch(() => {})
-      );
-    }
-    
-    if (!otherItemsPickupDate) {
-      promises.push(
-        shopify.applyAttributeChange({
-          key: "Other Items Pickup Date",
-          type: "updateAttribute",
-          value: "",
-        }).catch(() => {})
-      );
-    }
+    // DO NOT set empty attributes - this would overwrite existing ones with wrong names
     
     Promise.all(promises).catch(() => {});
   }
@@ -358,8 +352,13 @@ function Extension() {
                     try {
                       if (window.Shopify?.checkout?.cart?.attributes) {
                         const attrs = window.Shopify.checkout.cart.attributes;
-                        const platterAttr = attrs.find(attr => attr.key === 'Platter Pickup Date');
-                        const otherAttr = attrs.find(attr => attr.key === 'Other Items Pickup Date');
+                        // Look for both old and new attribute names
+                        const platterAttr = attrs.find(attr => 
+                          attr.key === 'Pre-Orders Pickup Date' || attr.key === 'Platter Pickup Date'
+                        );
+                        const otherAttr = attrs.find(attr => 
+                          attr.key === 'Click and Collect Pickup Date' || attr.key === 'Other Items Pickup Date'
+                        );
                         if (platterAttr) platterValue = platterAttr.value || '';
                         if (otherAttr) otherValue = otherAttr.value || '';
                         console.log('📦 Cart attributes - Platter:', platterValue, 'Other:', otherValue);
@@ -374,20 +373,37 @@ function Extension() {
                     
                     console.log('Target section for inputs:', targetSection?.id || targetSection?.tagName);
                     
+                    // Get the actual attribute keys from cart to use correct names
+                    let platterAttrKey = 'Pre-Orders Pickup Date';
+                    let otherItemsAttrKey = 'Click and Collect Pickup Date';
+                    try {
+                      if (window.Shopify?.checkout?.cart?.attributes) {
+                        const attrs = window.Shopify.checkout.cart.attributes;
+                        const platterAttr = attrs.find(attr => 
+                          attr.key === 'Pre-Orders Pickup Date' || attr.key === 'Platter Pickup Date'
+                        );
+                        const otherAttr = attrs.find(attr => 
+                          attr.key === 'Click and Collect Pickup Date' || attr.key === 'Other Items Pickup Date'
+                        );
+                        if (platterAttr) platterAttrKey = platterAttr.key;
+                        if (otherAttr) otherItemsAttrKey = otherAttr.key;
+                      }
+                    } catch(e) {}
+                    
                     if (targetSection && !document.getElementById('platter-datetime-attr')) {
                       const platterInput = document.createElement('input');
                       platterInput.type = 'hidden';
-                      platterInput.name = 'attributes[Platter Pickup Date]';
+                      platterInput.name = 'attributes[' + platterAttrKey + ']'; // Use correct attribute key
                       platterInput.id = 'platter-datetime-attr';
                       platterInput.value = platterValue;
                       targetSection.insertBefore(platterInput, targetSection.firstChild);
-                      console.log('✅ Added platter pickup date input');
+                      console.log('✅ Added platter pickup date input with key:', platterAttrKey);
                     }
                     
                     if (targetSection && !document.getElementById('non-platter-datetime-attr')) {
                       const otherInput = document.createElement('input');
                       otherInput.type = 'hidden';
-                      otherInput.name = 'attributes[Other Items Pickup Date]';
+                      otherInput.name = 'attributes[' + otherItemsAttrKey + ']'; // Use correct attribute key
                       otherInput.id = 'non-platter-datetime-attr';
                       otherInput.value = otherValue;
                       const platterInput = document.getElementById('platter-datetime-attr');
@@ -396,7 +412,7 @@ function Extension() {
                       } else {
                         targetSection.insertBefore(otherInput, targetSection.firstChild);
                       }
-                      console.log('✅ Added other items pickup date input');
+                      console.log('✅ Added other items pickup date input with key:', otherItemsAttrKey);
                     }
                   }
                   

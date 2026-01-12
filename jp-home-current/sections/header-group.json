@@ -1,0 +1,133 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "t:sections.refactor_words.labels.header_group",
+  "sections": {
+    "announcement": {
+      "type": "announcement-bar",
+      "blocks": {
+        "content_keizrA": {
+          "type": "content",
+          "disabled": true,
+          "settings": {
+            "text": "Visit our stores! View our holiday store hours",
+            "link": "shopify://blogs/in-store-now/joels-place-holiday-store-hours-2025",
+            "target": false
+          }
+        },
+        "content_hkgUYc": {
+          "type": "content",
+          "disabled": true,
+          "settings": {
+            "text": "Paint the town merry—browse our 2025 Christmas Catalog",
+            "link": "shopify://blogs/in-store-now/joels-place-christmas-catalog-2025",
+            "target": false
+          }
+        },
+        "content": {
+          "type": "content",
+          "settings": {
+            "text": "Shop Click and Collect! Order online for pick up at Joel's Place Glorietta 4.",
+            "link": "shopify://collections/click-and-collect",
+            "target": false
+          }
+        },
+        "content_4WN8h8": {
+          "type": "content",
+          "settings": {
+            "text": "Experience fresh food, great meals, and specialty groceries",
+            "link": "shopify://pages/our-story",
+            "target": false
+          }
+        },
+        "content_tmL89q": {
+          "type": "content",
+          "settings": {
+            "text": "Be the first to know about special events—join The List",
+            "link": "shopify://pages/joels-place-join-the-list",
+            "target": false
+          }
+        }
+      },
+      "block_order": [
+        "content_keizrA",
+        "content_hkgUYc",
+        "content",
+        "content_4WN8h8",
+        "content_tmL89q"
+      ],
+      "settings": {
+        "visibility": "all",
+        "show_locale_selector": true,
+        "show_country_selector": true,
+        "show_social_icons": true,
+        "bar_bgcolor": "#111111",
+        "bar_txtcolor": "#ffffff"
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "store": {
+          "type": "store-selector",
+          "disabled": true,
+          "settings": {}
+        },
+        "mega_menu_kLfgjx": {
+          "type": "mega-menu",
+          "settings": {
+            "menu_handle": "discover",
+            "show_promotion_block": true,
+            "promotion_title": "Click and Collect",
+            "promotion_title_size": "text-size--xlarge",
+            "promotion_subtitle": "",
+            "promotion_subtitle_size": "text-size--regular",
+            "promotion_button_label": "Shop Now",
+            "promotion_button_size": "regular",
+            "promotion_button_link": "shopify://collections/click-and-collect",
+            "promotion_color_txt": "#ffffff",
+            "promotion_color_bg": "#3b3b3b",
+            "promotion_image": "shopify://shop_images/Homepage-FeaturedCollection_Brews-Bites.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "store",
+        "mega_menu_kLfgjx"
+      ],
+      "custom_css": [],
+      "settings": {
+        "logo_src": "shopify://shop_images/jplogo-transparent_black-1188x746_8c0f8313-ec6d-4eb5-8f26-89126bc50451.png",
+        "logo_height": 55,
+        "logo_mobile_src": "shopify://shop_images/jplogo-transparent_black-1188x746_8c0f8313-ec6d-4eb5-8f26-89126bc50451.png",
+        "logo_mobile_height": 100,
+        "main_linklist": "mega-menu-selling-phase-wellness-boost",
+        "show_search": true,
+        "sticky_header": true,
+        "header_absolute_homepage": false,
+        "header_absolute_collection": false,
+        "header_absolute_custom": "",
+        "color_text_header": "#000000",
+        "logo_src_transparent": "shopify://shop_images/Transparent_Joels_Place_logo_Philippines_BW_site_logo.png",
+        "logo_mobile_src_transparent": "shopify://shop_images/Transparent_Joels_Place_logo_Philippines_BW_site_logo.png",
+        "select_header_actions_on_mobile": "show_on_homepage",
+        "show_header_actions": true,
+        "show_locale_selector": true,
+        "show_country_selector": true,
+        "show_social_icons": true
+      }
+    }
+  },
+  "order": [
+    "announcement",
+    "header"
+  ]
+}

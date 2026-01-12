@@ -1,0 +1,1025 @@
+{% comment %}
+  Renders cart form (page version).
+
+  Usage:
+  {% render 'cart-form-page' %}
+{% endcomment %}
+
+<cart-form id="AjaxCartForm">
+	
+  {%- liquid
+    if settings.show_currency_codes
+      assign iso_code = localization.country.currency.iso_code | prepend: ' ' 
+    endif
+  -%}
+
+	<form action="{{ routes.cart_url }}" method="post" novalidate class="cart__form {% if cart.item_count == 0 %} cart--empty {% endif %}" id="cart">
+		{%- comment -%} Hidden inputs for date/time attributes to be saved to order {%- endcomment -%}
+		<input type="hidden" name="attributes[Pre-Orders Pickup Date]" id="platter-datetime-attr" value="">
+		<input type="hidden" name="attributes[Click and Collect Pickup Date]" id="non-platter-datetime-attr" value="">
+	
+		{%- liquid
+			assign has_platter = false
+			assign has_non_platter = false
+			assign has_freebie = false
+			
+			for item in cart.items
+				assign is_platter_item = false
+				assign is_freebie_item = false
+				
+				for tag in item.product.tags
+					if tag == '2025 JP Christmas Platter'
+						assign is_platter_item = true
+						break
+					endif
+				endfor
+				
+				if item.properties['_freebie'] == 'wellness-boost'
+					assign is_freebie_item = true
+					assign has_freebie = true
+				endif
+				
+				if is_platter_item
+					assign has_platter = true
+				elsif is_freebie_item
+					assign has_freebie = true
+				else
+					assign has_non_platter = true
+				endif
+			endfor
+		-%}
+
+		<div class="cart-holder cart-block {% unless has_platter or has_non_platter %}element--has-border--body element--border-radius{% endunless %} element--no-border-on-small margin-bottom--regular" data-items="{{ cart.items.size }}">
+
+			<div class="cart-form__items {% if cart.item_count == 0 %} gutter--regular {% endif %}">
+				{%- if cart.item_count > 0 -%}
+					
+					{%- if has_platter -%}
+						{%- comment -%}
+						  Timeslot Configuration for Pre-Orders (Platters)
+						  - Default: 10:00 AM to 8:00 PM, 30-min slots
+						  - dateOverrides: Different hours for specific dates (format: "YYYY-MM-DD")
+						    - startHour: 10 = 10am, 12 = 12pm, etc.
+						    - endHour: 20 = 8pm, 18 = 6pm, etc.
+						  - closedDates: Dates when store is closed (no pickup available)
+						  
+						  December 2025 Schedule:
+						  - Dec 15-23: 10am (default)
+						  - Dec 24 & 31: 10am (default)  
+						  - Dec 25 & Jan 1: 12pm start
+						  - Jan 2 onwards: 10am (default)
+						{%- endcomment -%}
+						{%- capture platter_timeslot_config -%}
+						{
+							"startHour": 10,
+							"endHour": 20,
+							"slotDuration": 30,
+							"closedDates": [],
+							"dateOverrides": {
+								"2025-12-25": { "startHour": 12, "endHour": 20 },
+								"2025-12-31": { "startHour": 10, "endHour": 17 },
+								"2026-01-01": { "startHour": 12, "endHour": 20 }
+							}
+						}
+						{%- endcapture -%}
+						<div class="cart-items-group">
+							<div class="cart-items-group__header">
+								<span>Pre-Orders</span>
+								<datetime-slot-picker data-is-platter="true" data-lead-days="3" data-available-days="10" data-timeslot-config='{{ platter_timeslot_config | strip_newlines }}' class="datetime-slot-picker--inline">
+									<div class="datetime-slot-picker__fields">
+										<div class="datetime-slot-picker__field">
+											<label for="platter-date" class="visually-hidden">Date</label>
+											<input type="date" id="platter-date" name="platter-date" required>
+										</div>
+										<div class="datetime-slot-picker__field">
+											<label for="platter-time" class="visually-hidden">Time</label>
+											<select id="platter-time" name="platter-time" required>
+												
+											</select>
+										</div>
+									</div>
+								</datetime-slot-picker>
+							</div>
+							<div class="cart-block__head element--hide-on-small">
+								<span>{{ 'cart.table.product' | t }}</span>
+								<span>{{ 'cart.table.quantity' | t }}</span>
+								<span class="text-align--right">{{ 'cart.table.total' | t }}</span>
+							</div>
+							{%- for item in cart.items -%}
+								{%- liquid
+									assign is_platter = false
+									for tag in item.product.tags
+										if tag == '2025 JP Christmas Platter'
+											assign is_platter = true
+											break
+										endif
+									endfor
+								-%}
+								{%- if is_platter -%}
+									{%- render 'cart-form-item', item: item, iso_code: iso_code, line: forloop.index -%}
+								{%- endif -%}
+							{%- endfor -%}
+						</div>
+					{%- endif -%}
+
+					{%- if has_non_platter -%}
+						{%- comment -%}
+						  Timeslot Configuration for Click and Collect
+						  - Default: 10:00 AM to 8:00 PM, 30-min slots
+						  - dateOverrides: Different hours for specific dates (format: "YYYY-MM-DD")
+						  - closedDates: Dates when store is closed (no pickup available)
+						  
+						  December 2025 Schedule:
+						  - Dec 15-23: 10am (default)
+						  - Dec 24 & 31: 10am (default)  
+						  - Dec 25 & Jan 1: 12pm start
+						  - Jan 2 onwards: 10am (default)
+						{%- endcomment -%}
+						{%- capture collect_timeslot_config -%}
+						{
+							"startHour": 10,
+							"endHour": 20,
+							"slotDuration": 30,
+							"closedDates": [],
+							"dateOverrides": {
+								"2025-12-25": { "startHour": 12, "endHour": 20 },
+								"2025-12-31": { "startHour": 10, "endHour": 17 },
+								"2026-01-01": { "startHour": 12, "endHour": 20 }
+							}
+						}
+						{%- endcapture -%}
+						<div class="cart-items-group">
+							<div class="cart-items-group__header">
+								<span>Click and Collect</span>
+								<datetime-slot-picker data-is-platter="false" data-lead-days="0" data-timeslot-config='{{ collect_timeslot_config | strip_newlines }}' class="datetime-slot-picker--inline">
+									<div class="datetime-slot-picker__fields">
+										<div class="datetime-slot-picker__field">
+											<label for="non-platter-date" class="visually-hidden">Date</label>
+											<input type="date" id="non-platter-date" name="non-platter-date" required>
+										</div>
+										<div class="datetime-slot-picker__field">
+											<label for="non-platter-time" class="visually-hidden">Time</label>
+											<select id="non-platter-time" name="non-platter-time" required>
+												
+											</select>
+										</div>
+									</div>
+								</datetime-slot-picker>
+							</div>
+							<div class="cart-block__head element--hide-on-small">
+								<span>{{ 'cart.table.product' | t }}</span>
+								<span>{{ 'cart.table.quantity' | t }}</span>
+								<span class="text-align--right">{{ 'cart.table.total' | t }}</span>
+							</div>
+							{%- for item in cart.items -%}
+								{%- liquid
+									assign is_platter = false
+									assign is_freebie = false
+									
+									for tag in item.product.tags
+										if tag == '2025 JP Christmas Platter'
+											assign is_platter = true
+											break
+										endif
+									endfor
+									
+									if item.properties['_freebie'] == 'wellness-boost'
+										assign is_freebie = true
+									endif
+								-%}
+								{%- unless is_platter or is_freebie -%}
+									{%- render 'cart-form-item', item: item, iso_code: iso_code, line: forloop.index -%}
+								{%- endunless -%}
+							{%- endfor -%}
+						</div>
+					{%- endif -%}
+
+					{%- if has_freebie -%}
+						<div class="cart-items-group">
+							<div class="cart-items-group__header">
+								<span>🎁 Free Gift</span>
+							</div>
+							<div class="cart-block__head element--hide-on-small">
+								<span>{{ 'cart.table.product' | t }}</span>
+								<span>{{ 'cart.table.quantity' | t }}</span>
+								<span class="text-align--right">{{ 'cart.table.total' | t }}</span>
+							</div>
+							{%- for item in cart.items -%}
+								{%- if item.properties['_freebie'] == 'wellness-boost' -%}
+									{%- render 'cart-form-item', item: item, iso_code: iso_code, line: forloop.index -%}
+								{%- endif -%}
+							{%- endfor -%}
+						</div>
+					{%- endif -%}
+
+					{%- unless has_platter or has_non_platter or has_freebie -%}
+						<div class="cart-block__head element--hide-on-small">
+							<span>{{ 'cart.table.product' | t }}</span>
+							<span>{{ 'cart.table.quantity' | t }}</span>
+							<span class="text-align--right">{{ 'cart.table.total' | t }}</span>
+						</div>
+						{%- for item in cart.items -%}
+							{%- render 'cart-form-item', item: item, iso_code: iso_code, line: forloop.index -%}
+						{%- endfor -%}
+					{%- endunless -%}
+
+				{%- else -%}
+
+					{{ 'cart.empty' | t }}
+					<div class="gutter-top--regular">
+						<a href="{{ routes.all_products_collection_url }}" class="button button--solid button--large">
+							{{ 'cart.continue_browsing' | t }}
+						</a>
+					</div>
+
+				{%- endif -%}
+
+			</div>
+
+		</div>
+
+	</form>
+
+	{%- comment -%} WellnessBoost Buy 2 Get 1 Free Promotion - Freebie Selection Section {%- endcomment -%}
+	{%- liquid
+		assign wellness_boost_count = 0
+		assign has_wellness_boost_freebie = false
+		assign non_freebie_item_count = 0
+		assign wellness_boost_collection = collections['wellness-boost']
+		
+		for item in cart.items
+			assign is_wellness_boost = false
+			assign is_freebie_item = false
+			
+			# Check if item is a freebie
+			if item.properties['_freebie'] == 'wellness-boost'
+				assign is_freebie_item = true
+			endif
+			
+			# Count non-freebie items
+			unless is_freebie_item
+				assign non_freebie_item_count = non_freebie_item_count | plus: item.quantity
+			endunless
+			
+			# Check by tag
+			for tag in item.product.tags
+				if tag == 'WellnessBoost'
+					assign is_wellness_boost = true
+					break
+				endif
+			endfor
+			
+			# Also check if product is in wellness-boost collection (if collection exists)
+			unless is_wellness_boost
+				if wellness_boost_collection != blank
+					for collection_product in wellness_boost_collection.products
+						if collection_product.id == item.product.id
+							assign is_wellness_boost = true
+							break
+						endif
+					endfor
+				endif
+			endunless
+			
+			if is_wellness_boost
+				assign wellness_boost_count = wellness_boost_count | plus: item.quantity
+			endif
+		endfor
+		
+		# Check if customer already has a freebie in cart
+		assign selected_freebie_item = null
+		for item in cart.items
+			if item.properties['_freebie'] == 'wellness-boost'
+				assign has_wellness_boost_freebie = true
+				assign selected_freebie_item = item
+				break
+			endif
+		endfor
+		
+		# Set freebie product handles (MANUALLY CONFIGURE THESE)
+		# Replace the handles below with your actual freebie product handles
+		# Example: assign freebie_product_1_handle = 'my-freebie-product-1'
+		assign freebie_product_1_handle = 'sea-salt-celery-and-cucumber-powershot-juice'
+		assign freebie_product_2_handle = 'papaya-orange-and-carrot-powershot-juice'
+		
+		# Get freebie products
+		assign freebie_product_1 = all_products[freebie_product_1_handle]
+		assign freebie_product_2 = all_products[freebie_product_2_handle]
+	-%}
+	
+	{%- comment -%}
+	  Only show freebie selection section if:
+	  - Customer has at least 2 WellnessBoost items AND
+	  - There are at least 2 non-freebie items AND
+	  - Customer has NOT already selected a freebie
+	{%- endcomment -%}
+	{%- if wellness_boost_count >= 2 and non_freebie_item_count >= 2 and has_wellness_boost_freebie == false -%}
+			<div class="cart-freebie-section cart-block element--has-border--body element--border-radius element--no-border-on-small margin-bottom--regular" data-wellness-boost-count="{{ wellness_boost_count }}">
+			<div class="cart-items-group">
+				<div class="cart-items-group__header">
+					<span>🎁 Buy 2 Get 1 Free - Select Your Freebie</span>
+				</div>
+				
+				{%- if freebie_product_1 != blank and freebie_product_1.id != blank and freebie_product_2 != blank and freebie_product_2.id != blank -%}
+						<div class="cart-freebie__options">
+							<div class="cart-freebie__description text-size--small text-color--opacity margin-bottom--regular">
+								You've added {{ wellness_boost_count }} WellnessBoost item(s). Choose one free product below:
+							</div>
+							
+							<div class="cart-freebie__products">
+								{%- if freebie_product_1.available -%}
+									<div class="cart-freebie__product" data-product-id="{{ freebie_product_1.id }}" data-variant-id="{{ freebie_product_1.selected_or_first_available_variant.id }}" data-product-handle="{{ freebie_product_1.handle }}">
+										<div class="cart-freebie__product-inner" data-js-freebie-select>
+											<a href="{{ freebie_product_1.url }}" class="cart-freebie__thumbnail element--border-width-clamped element--border-radius">
+												{%- render 'lazy-image-small', image: freebie_product_1.featured_image, aspect_ratio: settings.cart_image_ratio, fit: settings.cart_image_fit -%}
+											</a>
+											<a href="{{ freebie_product_1.url }}" class="cart-freebie__title text-weight--bold">
+												{{ freebie_product_1.title }}
+											</a>
+											<div class="cart-freebie__price text-size--small text-color--opacity">
+												<del>{{ freebie_product_1.selected_or_first_available_variant.price | money | append: iso_code }}</del>
+												<span class="text-weight--bold text-color--accent">FREE</span>
+											</div>
+											<button type="button" class="button button--solid button--regular cart-freebie__select-btn">
+												Select This Freebie
+											</button>
+										</div>
+									</div>
+								{%- endif -%}
+								
+								{%- if freebie_product_2.available -%}
+									<div class="cart-freebie__product" data-product-id="{{ freebie_product_2.id }}" data-variant-id="{{ freebie_product_2.selected_or_first_available_variant.id }}" data-product-handle="{{ freebie_product_2.handle }}">
+										<div class="cart-freebie__product-inner" data-js-freebie-select>
+											<a href="{{ freebie_product_2.url }}" class="cart-freebie__thumbnail element--border-width-clamped element--border-radius">
+												{%- render 'lazy-image-small', image: freebie_product_2.featured_image, aspect_ratio: settings.cart_image_ratio, fit: settings.cart_image_fit -%}
+											</a>
+											<a href="{{ freebie_product_2.url }}" class="cart-freebie__title text-weight--bold">
+												{{ freebie_product_2.title }}
+											</a>
+											<div class="cart-freebie__price text-size--small text-color--opacity">
+												<del>{{ freebie_product_2.selected_or_first_available_variant.price | money | append: iso_code }}</del>
+												<span class="text-weight--bold text-color--accent">FREE</span>
+											</div>
+											<button type="button" class="button button--solid button--regular cart-freebie__select-btn">
+												Select This Freebie
+											</button>
+										</div>
+									</div>
+								{%- endif -%}
+							</div>
+						</div>
+					{%- else -%}
+						<div class="cart-freebie__options" style="padding: var(--gutter-regular);">
+							<div class="alert alert--warning text-size--small">
+								<strong>Configuration Required:</strong> Please set the freebie product handles in <code>snippets/cart-form-page.liquid</code> (lines 254-255). Currently wellness_boost_count: {{ wellness_boost_count }}, product 1: {% if freebie_product_1 != blank %}{{ freebie_product_1.title }}{% else %}not set{% endif %}, product 2: {% if freebie_product_2 != blank %}{{ freebie_product_2.title }}{% else %}not set{% endif %}
+							</div>
+						</div>
+					{%- endif -%}
+					
+			</div>
+		</div>
+	{%- endif -%}
+
+	{%- liquid
+		# Calculate adjusted total excluding freebie items
+		assign freebie_total = 0
+		for item in cart.items
+			if item.properties['_freebie'] == 'wellness-boost'
+				assign freebie_total = freebie_total | plus: item.final_line_price
+			endif
+		endfor
+		assign adjusted_total = cart.total_price | minus: freebie_total
+	-%}
+	<span class="cart__count hidden" aria-hidden="true" data-cart-count>{{ cart.item_count }}</span>
+	<span class="cart__total hidden" aria-hidden="true" data-cart-total>{{ adjusted_total | money | append: iso_code }}</span>
+
+</cart-form>
+
+{%- render 'cart-gift-wrapping', class: 'cart-wrapping--page' -%}
+
+<noscript>
+	<button type="submit" class="button button--outline button--regular" form="cart">
+		{{ 'cart.update' | t }}
+	</button>
+</noscript>
+
+<script src="{{ 'component-datetime-slot-picker.js' | asset_url }}" defer></script>
+
+<script type="text/javascript">
+	// Function to automatically apply discount code for freebie items
+	// IMPORTANT: You need to create an automatic discount in Shopify Admin:
+	// 1. Go to Discounts > Create discount
+	// 2. Choose "Automatic discount"
+	// 3. Set it to "100% off" for items with property "_freebie" equals "wellness-boost"
+	// OR create a discount code that does the same and replace 'WELLNESSBOOSTFREE' below
+	const FREEBIE_DISCOUNT_CODE = 'WELLNESSBOOSTFREE'; // Change this to your discount code, or leave empty to use automatic discount
+	
+	function applyFreebieDiscount() {
+		// Check if cart has freebie items
+		fetch(`${KROWN.settings.routes.cart_url}.js`)
+			.then(response => response.json())
+			.then(cart => {
+				const hasFreebie = cart.items.some(item => {
+					if (!item.properties) return false;
+					// Check both object format and array format
+					if (typeof item.properties === 'object' && !Array.isArray(item.properties)) {
+						return item.properties._freebie === 'wellness-boost';
+					}
+					// Handle array format
+					const freebieProp = item.properties.find(p => p[0] === '_freebie');
+					return freebieProp && freebieProp[1] === 'wellness-boost';
+				});
+				
+				if (hasFreebie && FREEBIE_DISCOUNT_CODE) {
+					// Check if discount is already applied
+					const hasDiscount = cart.discount_codes && cart.discount_codes.some(code => 
+						code.code === FREEBIE_DISCOUNT_CODE
+					);
+					
+					if (!hasDiscount) {
+						// Apply discount code
+						fetch(`${KROWN.settings.routes.cart_update_url}`, {
+							method: 'POST',
+							headers: { 
+								'Content-Type': 'application/json', 
+								'Accept': 'application/json'
+							},
+							body: JSON.stringify({ discount: FREEBIE_DISCOUNT_CODE })
+						}).then(response => response.json())
+						.then(data => {
+							if (data.errors) {
+								console.warn('Could not apply freebie discount:', data.errors);
+							}
+						})
+						.catch(error => {
+							console.warn('Could not apply freebie discount:', error);
+						});
+					}
+				}
+			})
+			.catch(error => {
+				console.warn('Could not check cart for freebie items:', error);
+			});
+	}
+	
+	// Apply discount when page loads if freebie items are present
+	document.addEventListener('DOMContentLoaded', function() {
+		applyFreebieDiscount();
+	});
+	
+	// Also apply when cart is updated
+	document.querySelector('cart-form')?.addEventListener('cart-updated', function() {
+		setTimeout(applyFreebieDiscount, 500);
+		// Refresh freebie section dynamically
+		refreshFreebieSection();
+	});
+	
+	document.querySelector('cart-form').addEventListener('cart-updated', ()=>{
+		const items = parseInt(document.querySelector('.cart-holder').getAttribute('data-items'));
+		if ( items == 0 ) {
+			document.querySelector('.cart-section').classList.add('cart-section--empty');
+		} else {
+			document.querySelector('.cart-section').classList.remove('cart-section--empty');
+		}
+	});
+	
+	// Function to dynamically refresh the freebie section
+	function refreshFreebieSection() {
+		// Check cart to determine if freebie section should be visible
+		fetch(`${KROWN.settings.routes.cart_url}.js`)
+			.then(response => response.json())
+			.then(cart => {
+				// Count non-freebie items and track any existing freebie items
+				let nonFreebieCount = 0;
+				const freebieLines = [];
+				
+				cart.items.forEach((item, index) => {
+					const isFreebie = item.properties && (
+						(typeof item.properties === 'object' && !Array.isArray(item.properties) && item.properties._freebie === 'wellness-boost') ||
+						(Array.isArray(item.properties) && item.properties.find(p => p[0] === '_freebie' && p[1] === 'wellness-boost'))
+					);
+					
+					if (isFreebie) {
+						// Store cart line numbers (1-based) for potential removal
+						freebieLines.push(index + 1);
+					} else {
+						nonFreebieCount += item.quantity;
+					}
+				});
+				
+				const freebieSection = document.querySelector('.cart-freebie-section');
+				const wellnessBoostCount = freebieSection ? parseInt(freebieSection.dataset.wellnessBoostCount || '0') : 0;
+				const isEligibleForFreebie = wellnessBoostCount >= 2 && nonFreebieCount >= 2;
+				
+				// If no longer eligible but a freebie is still in the cart, remove the freebie line item(s)
+				if (!isEligibleForFreebie && freebieLines.length > 0) {
+					const removalPromises = freebieLines.map(line =>
+						fetch(`${KROWN.settings.routes.cart_change_url}`, {
+							method: 'POST',
+							headers: { 'Content-Type': 'application/json' },
+							body: JSON.stringify({ line, quantity: 0 })
+						})
+					);
+					
+					Promise.all(removalPromises)
+						.then(() => {
+							// Refresh cart UI after removing the freebie
+							// On the cart page, do a full reload so both the page cart and cart drawer markup stay in sync.
+							if (document.body.classList.contains('template-cart') || document.querySelector('.cart-section')) {
+								window.location.reload();
+								return;
+							}
+							
+							// On other templates, use the AJAX cart refresher if available.
+							if (window.refreshCart) {
+								window.refreshCart();
+							} else {
+								window.location.reload();
+							}
+						})
+						.catch(error => {
+							console.warn('Could not remove ineligible freebie item(s):', error);
+						});
+					
+					// We've handled the state change via cart_change; no further UI toggling needed here
+					return;
+				}
+				
+				const shouldShow = isEligibleForFreebie;
+				
+				// Show or hide the freebie section
+				if (freebieSection) {
+					if (shouldShow) {
+						freebieSection.style.display = '';
+						// Re-initialize handlers if section was hidden before
+						setTimeout(() => {
+							initFreebieHandlers();
+						}, 50);
+					} else {
+						freebieSection.style.display = 'none';
+					}
+				} else if (nonFreebieCount >= 2) {
+					// If section doesn't exist but we have 2+ items, reload page to get server-rendered version
+					// (since we can't determine wellness boost count from cart JSON alone)
+					window.location.reload();
+				}
+			})
+			.catch(error => {
+				console.warn('Could not refresh freebie section:', error);
+			});
+	}
+	
+	// Re-initialize freebie handlers after dynamic update
+	function initFreebieHandlers() {
+		const freebieSection = document.querySelector('.cart-freebie-section');
+		if (!freebieSection) return;
+		
+		const freebieProducts = freebieSection.querySelectorAll('[data-js-freebie-select]');
+		
+		freebieProducts.forEach(function(productEl) {
+			const productCard = productEl.closest('.cart-freebie__product');
+			const selectBtn = productCard.querySelector('.cart-freebie__select-btn');
+			
+			if (!selectBtn || selectBtn.dataset.initialized) return;
+			selectBtn.dataset.initialized = 'true';
+			
+			// Handle click on product card or button
+			function handleFreebieSelect(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				
+				if (selectBtn.disabled) return;
+				
+				const productId = productCard.dataset.productId;
+				const variantId = productCard.dataset.variantId;
+				
+				if (!variantId) {
+					console.error('Variant ID not found');
+					return;
+				}
+				
+				// Disable all buttons
+				freebieSection.querySelectorAll('.cart-freebie__select-btn').forEach(function(btn) {
+					btn.disabled = true;
+					btn.textContent = 'Adding...';
+				});
+				
+				// Check if freebie already exists in cart and remove it first
+				fetch(`${KROWN.settings.routes.cart_url}.js`)
+					.then(response => response.json())
+					.then(cart => {
+						// Find existing freebie items and remove them
+						const freebiePromises = [];
+						cart.items.forEach((item, index) => {
+							const isFreebie = item.properties && (
+								(typeof item.properties === 'object' && !Array.isArray(item.properties) && item.properties._freebie === 'wellness-boost') ||
+								(Array.isArray(item.properties) && item.properties.find(p => p[0] === '_freebie' && p[1] === 'wellness-boost'))
+							);
+							if (isFreebie) {
+								freebiePromises.push(
+									fetch(`${KROWN.settings.routes.cart_change_url}`, {
+										method: 'POST',
+										headers: { 'Content-Type': 'application/json' },
+										body: JSON.stringify({ line: index + 1, quantity: 0 })
+									})
+								);
+							}
+						});
+						
+						// Wait for all removals, then add new freebie
+						return Promise.all(freebiePromises).then(() => {
+							// Add freebie to cart with property (quantity always 1)
+							const formData = new FormData();
+							formData.append('id', variantId);
+							formData.append('quantity', '1');
+							formData.append('properties[_freebie]', 'wellness-boost');
+							
+							return fetch(`${KROWN.settings.routes.cart_add_url}.js`, {
+								method: 'POST',
+								body: formData,
+								headers: {
+									'X-Requested-With': 'XMLHttpRequest'
+								}
+							});
+						});
+					})
+					.then(response => response.json())
+					.then(data => {
+						if (data.status === 422) {
+						alert(data.description || data.message || 'Unable to add freebie to cart');
+						freebieSection.querySelectorAll('.cart-freebie__select-btn').forEach(function(btn) {
+							btn.disabled = false;
+							btn.textContent = 'Select This Freebie';
+						});
+					} else {
+						// Apply discount code for freebie items
+						applyFreebieDiscount();
+						// Refresh cart dynamically
+						if (window.refreshCart) {
+							window.refreshCart();
+						} else {
+							window.location.reload();
+						}
+					}
+				})
+				.catch(error => {
+					console.error('Error adding freebie:', error);
+					alert('Error adding freebie to cart. Please try again.');
+					freebieSection.querySelectorAll('.cart-freebie__select-btn').forEach(function(btn) {
+						btn.disabled = false;
+						btn.textContent = 'Select This Freebie';
+					});
+				});
+			}
+			
+			selectBtn.addEventListener('click', handleFreebieSelect);
+			
+			// Optional: Allow clicking the whole card (but not the links)
+			productEl.addEventListener('click', function(e) {
+				if (e.target.tagName === 'A') return;
+				handleFreebieSelect(e);
+			});
+		});
+		// Once handlers are initialized, make sure selector is hidden if freebie is already chosen
+		hideFreebieSelectorIfSelected();
+	}
+
+	// Hide the freebie selector if a wellness-boost freebie is already in the cart
+	function hideFreebieSelectorIfSelected() {
+		const freebieSection = document.querySelector('.cart-freebie-section');
+		if (!freebieSection) return;
+
+		// Check cart JSON for an existing freebie item
+		fetch(`${KROWN.settings.routes.cart_url}.js`)
+			.then(response => response.json())
+			.then(cart => {
+				const hasFreebie = cart.items.some(item => {
+					if (!item.properties) return false;
+					if (typeof item.properties === 'object' && !Array.isArray(item.properties)) {
+						return item.properties._freebie === 'wellness-boost';
+					}
+					const freebieProp = Array.isArray(item.properties)
+						? item.properties.find(p => p[0] === '_freebie' && p[1] === 'wellness-boost')
+						: null;
+					return !!freebieProp;
+				});
+
+				if (hasFreebie) {
+					freebieSection.style.display = 'none';
+				}
+			})
+			.catch(() => {
+				// Fail silently if cart check fails
+			});
+	}
+
+	// Format date and time for display
+	function formatDateTime(dateValue, timeValue) {
+		if (!dateValue || !timeValue) return null;
+		
+		const dateObj = new Date(dateValue + 'T00:00:00');
+		const formattedDate = dateObj.toLocaleDateString('en-US', { 
+			weekday: 'long', 
+			month: 'long', 
+			day: 'numeric' 
+		});
+		return `${formattedDate} at ${timeValue}`;
+	}
+	
+	// Update hidden input fields and cart attributes whenever date/time changes
+	function updateCartDateTimeAttributes() {
+		const platterPicker = document.querySelector('datetime-slot-picker[data-is-platter="true"]');
+		const nonPlatterPicker = document.querySelector('datetime-slot-picker[data-is-platter="false"]');
+		
+		const platterAttrInput = document.getElementById('platter-datetime-attr');
+		const nonPlatterAttrInput = document.getElementById('non-platter-datetime-attr');
+		
+		let attributes = {};
+		
+		// Get platter date and time
+		if (platterPicker) {
+			const platterDateInput = platterPicker.querySelector('#platter-date');
+			const platterTimeSelect = platterPicker.querySelector('#platter-time');
+			const platterDate = platterDateInput?.value;
+			const platterTime = platterTimeSelect?.selectedOptions[0]?.text || platterTimeSelect?.value;
+			
+			if (platterDate && platterTime) {
+				const formattedDateTime = formatDateTime(platterDate, platterTime);
+				if (formattedDateTime && platterAttrInput) {
+					platterAttrInput.value = formattedDateTime;
+					attributes['Pre-Orders Pickup Date'] = formattedDateTime;
+				}
+			} else if (platterAttrInput) {
+				platterAttrInput.value = '';
+			}
+		}
+		
+		// Get non-platter date and time
+		if (nonPlatterPicker) {
+			const nonPlatterDateInput = nonPlatterPicker.querySelector('#non-platter-date');
+			const nonPlatterTimeSelect = nonPlatterPicker.querySelector('#non-platter-time');
+			const nonPlatterDate = nonPlatterDateInput?.value;
+			const nonPlatterTime = nonPlatterTimeSelect?.selectedOptions[0]?.text || nonPlatterTimeSelect?.value;
+			
+			if (nonPlatterDate && nonPlatterTime) {
+				const formattedDateTime = formatDateTime(nonPlatterDate, nonPlatterTime);
+				if (formattedDateTime && nonPlatterAttrInput) {
+					nonPlatterAttrInput.value = formattedDateTime;
+					attributes['Click and Collect Pickup Date'] = formattedDateTime;
+				}
+			} else if (nonPlatterAttrInput) {
+				nonPlatterAttrInput.value = '';
+			}
+		}
+		
+		// Update cart attributes via API whenever they change (not just on checkout)
+		if (Object.keys(attributes).length > 0) {
+			const updateData = { attributes: attributes };
+			
+			fetch(`${KROWN.settings.routes.cart_update_url}`, {
+				method: 'POST',
+				headers: { 
+					'Content-Type': 'application/json', 
+					'Accept': 'application/json'
+				},
+				body: JSON.stringify(updateData)
+			}).catch((error) => {
+				console.warn('Error updating cart attributes:', error);
+			});
+		}
+	}
+	
+	// Handle checkout - ensure attributes are saved before redirecting
+	document.addEventListener('DOMContentLoaded', function() {
+		const checkoutButton = document.querySelector('button[type="submit"][name="checkout"]');
+		const cartForm = document.querySelector('form#cart');
+		
+		if (!cartForm) {
+			console.warn('Cart form not found');
+			return;
+		}
+		
+		// Watch for date/time changes and update attributes immediately
+		const platterPicker = document.querySelector('datetime-slot-picker[data-is-platter="true"]');
+		const nonPlatterPicker = document.querySelector('datetime-slot-picker[data-is-platter="false"]');
+		
+		// Listen for changes on date inputs and time selects
+		function setupDateTimeListeners() {
+			if (platterPicker) {
+				const platterDateInput = platterPicker.querySelector('#platter-date');
+				const platterTimeSelect = platterPicker.querySelector('#platter-time');
+				if (platterDateInput) {
+					platterDateInput.addEventListener('change', updateCartDateTimeAttributes);
+				}
+				if (platterTimeSelect) {
+					platterTimeSelect.addEventListener('change', updateCartDateTimeAttributes);
+				}
+			}
+			
+			if (nonPlatterPicker) {
+				const nonPlatterDateInput = nonPlatterPicker.querySelector('#non-platter-date');
+				const nonPlatterTimeSelect = nonPlatterPicker.querySelector('#non-platter-time');
+				if (nonPlatterDateInput) {
+					nonPlatterDateInput.addEventListener('change', updateCartDateTimeAttributes);
+				}
+				if (nonPlatterTimeSelect) {
+					nonPlatterTimeSelect.addEventListener('change', updateCartDateTimeAttributes);
+				}
+			}
+		}
+		
+		// Setup listeners after a short delay to ensure datetime-slot-picker is initialized
+		setTimeout(setupDateTimeListeners, 500);
+		
+		// Also watch for changes using MutationObserver in case elements are added dynamically
+		const observer = new MutationObserver(function() {
+			setupDateTimeListeners();
+		});
+		
+		if (platterPicker) {
+			observer.observe(platterPicker, { childList: true, subtree: true });
+		}
+		if (nonPlatterPicker) {
+			observer.observe(nonPlatterPicker, { childList: true, subtree: true });
+		}
+		
+		// On form submit, ensure attributes are up to date and wait for API update before redirecting
+		if (checkoutButton && cartForm) {
+			cartForm.addEventListener('submit', function(e) {
+				// Check if this is a checkout submission
+				const isCheckout = (e.submitter && e.submitter.name === 'checkout') || 
+								  (checkoutButton && document.activeElement === checkoutButton);
+				
+				if (isCheckout) {
+					// Update attributes one final time before checkout
+					updateCartDateTimeAttributes();
+					
+					// Apply freebie discount before checkout
+					applyFreebieDiscount();
+					
+					// Get the current attribute values from hidden inputs
+					const platterAttrInput = document.getElementById('platter-datetime-attr');
+					const nonPlatterAttrInput = document.getElementById('non-platter-datetime-attr');
+					
+					// Ensure hidden inputs have the latest values
+					let attributes = {};
+					if (platterAttrInput && platterAttrInput.value) {
+						attributes['Pre-Orders Pickup Date'] = platterAttrInput.value;
+					}
+					if (nonPlatterAttrInput && nonPlatterAttrInput.value) {
+						attributes['Click and Collect Pickup Date'] = nonPlatterAttrInput.value;
+					}
+					
+					// Always update cart attributes via API to ensure they're saved before checkout
+					// This ensures attributes persist even if form submission has issues
+					if (Object.keys(attributes).length > 0) {
+						e.preventDefault();
+						
+						// Retry function to handle 409 conflicts
+						const updateCartWithRetry = (retries = 3, delay = 500) => {
+							const updateData = { attributes: attributes };
+							
+							console.log('🔄 Updating cart attributes before checkout:', attributes);
+							
+							fetch(`${KROWN.settings.routes.cart_update_url}`, {
+								method: 'POST',
+								headers: { 
+									'Content-Type': 'application/json', 
+									'Accept': 'application/json'
+								},
+								body: JSON.stringify(updateData)
+							}).then((response) => {
+								if (response.ok) {
+									// Try to verify attributes were saved by checking cart data (if available)
+									response.json().then((cartData) => {
+										// Verify the attributes are in the cart
+										if (cartData && cartData.attributes) {
+											const savedAttributes = cartData.attributes || {};
+											const hasPlatterAttr = savedAttributes['Pre-Orders Pickup Date'] || savedAttributes['Platter Pickup Date'];
+											const hasOtherAttr = savedAttributes['Click and Collect Pickup Date'] || savedAttributes['Other Items Pickup Date'];
+											
+											if (hasPlatterAttr || hasOtherAttr) {
+												console.log('✅ Cart attributes verified in response:', savedAttributes);
+											}
+										}
+									}).catch(() => {
+										// Response might not be JSON, that's okay
+										console.log('✅ Cart attributes update successful (could not verify response)');
+									});
+									
+									// Wait longer to ensure the update is fully processed by Shopify
+									// Increase wait time to allow Shopify to persist the attributes
+									setTimeout(() => {
+										// Redirect to checkout - attributes should now be saved in cart
+										window.location.href = '/checkout';
+									}, 500);
+								} else if (response.status === 409 && retries > 0) {
+									// 409 Conflict - retry after delay (PickEasy might be updating)
+									console.warn('Cart update conflict, retrying...', retries);
+									setTimeout(() => updateCartWithRetry(retries - 1, delay), delay);
+								} else {
+									console.error('Error updating cart:', response.statusText);
+									// Still redirect to checkout even if API update fails
+									// The hidden inputs in the form might help, but we prevented default so they won't be sent
+									console.log('⚠️ API update failed, redirecting anyway (attributes may be missing)...');
+									window.location.href = '/checkout';
+								}
+							}).catch((error) => {
+								if (retries > 0) {
+									console.warn('Cart update error, retrying...', retries);
+									setTimeout(() => updateCartWithRetry(retries - 1, delay), delay);
+								} else {
+									console.error('Error updating cart:', error);
+									// Still redirect to checkout even if API update fails
+									console.log('⚠️ API update failed after retries, redirecting anyway (attributes may be missing)...');
+									window.location.href = '/checkout';
+								}
+							});
+						};
+						
+						updateCartWithRetry();
+					} else {
+						// No attributes to update, but still apply freebie discount
+						// Allow form to submit normally
+						console.log('ℹ️ No pickup date attributes to save, proceeding with normal checkout');
+					}
+				}
+			});
+		}
+	});
+	
+	// Initialize WellnessBoost freebie handlers once DOM is ready
+	document.addEventListener('DOMContentLoaded', function() {
+		initFreebieHandlers();
+	});
+	
+	// Hide only the "When would you like to get this order?" date picker in cart subtotal widget
+	function hidePickupDateField() {
+		const subtotalWidget = document.querySelector('.cart__subtotal-widget');
+		if (!subtotalWidget) return;
+
+		// Find labels containing "When would you like" text
+		const labels = subtotalWidget.querySelectorAll('label');
+		labels.forEach(function(label) {
+			const labelText = label.textContent || '';
+			if (labelText.toLowerCase().includes('when would you like to get this order') ||
+				labelText.toLowerCase().includes('when would you like')) {
+				// Hide only the form field container, not the whole widget
+				const formField = label.closest('.form-field');
+				if (formField) {
+					formField.style.display = 'none';
+				} else {
+					// If no form-field wrapper, just hide the label and its associated input
+					label.style.display = 'none';
+					const associatedInput = document.querySelector('input[id="' + label.getAttribute('for') + '"]');
+					if (associatedInput) {
+						associatedInput.style.display = 'none';
+					}
+				}
+			}
+		});
+
+		// Hide any date inputs in subtotal widget that aren't our datetime-slot-picker
+		const dateInputs = subtotalWidget.querySelectorAll('input[type="date"]');
+		dateInputs.forEach(function(input) {
+			if (input.id !== 'platter-date' && input.id !== 'non-platter-date') {
+				const formField = input.closest('.form-field');
+				if (formField) {
+					formField.style.display = 'none';
+				} else {
+					input.style.display = 'none';
+				}
+			}
+		});
+	}
+
+	// Run immediately and also on DOMContentLoaded
+	hidePickupDateField();
+	document.addEventListener('DOMContentLoaded', hidePickupDateField);
+
+	// Watch for dynamically added elements only in subtotal widget
+	const observer = new MutationObserver(function(mutations) {
+		hidePickupDateField();
+	});
+
+	// Start observing when DOM is ready
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', function() {
+			const subtotalWidget = document.querySelector('.cart__subtotal-widget');
+			if (subtotalWidget) {
+				observer.observe(subtotalWidget, {
+					childList: true,
+					subtree: true
+				});
+			}
+		});
+	} else {
+		const subtotalWidget = document.querySelector('.cart__subtotal-widget');
+		if (subtotalWidget) {
+			observer.observe(subtotalWidget, {
+				childList: true,
+				subtree: true
+			});
+		}
+	}
+</script>

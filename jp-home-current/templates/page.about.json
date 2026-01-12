@@ -1,0 +1,167 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "custom_css": [
+        ".title.h2 {display: none;}"
+      ],
+      "settings": {
+        "center": false
+      }
+    },
+    "rich_text_yM4iVU": {
+      "type": "rich-text",
+      "blocks": {
+        "title_FWqYKN": {
+          "type": "title",
+          "settings": {
+            "title": "Welcome to Joel’s Place",
+            "title_size": "h2",
+            "seo_h_tag": "h2"
+          }
+        },
+        "text_pPAH9b": {
+          "type": "text",
+          "settings": {
+            "text": "<h4><strong>Where Good Food Meets Great Taste</strong></h4><p><br/>The inspiration for Joel’s Place began with a desire to create a new kind of retail experience – one that would evoke discovery and learning, delight the senses, and nourish the mind, body, and soul.</p><p><br/>Combining the modern grocery, specialty store, and restaurant, Joel’s Place is a new lifestyle food concept. It is a contemporary grocerant that celebrates food through storytelling and unique experiences.</p><p><br/>Our mission is to make everyday luxuries accessible in a friendly, joyful, and contemporary Filipino setting where a community comes together to meet, shop, and eat.</p><p></p><p></p><p></p><h5><em>Founders Donnie Tantoco & Christopher Tantoco, 2023.</em></h5>",
+            "text_size": "large"
+          }
+        }
+      },
+      "block_order": [
+        "title_FWqYKN",
+        "text_pPAH9b"
+      ],
+      "name": "t:sections.rich-text.name",
+      "settings": {
+        "height": "regular",
+        "image": "shopify://shop_images/joels-place-rockwell-founders-launch.jpg",
+        "image_position": "right",
+        "image_crop": false,
+        "width": "100",
+        "text_alignment": "horizontal-center",
+        "text_alignment_vertical": "middle",
+        "spacing": "large",
+        "is_fullwidth": false,
+        "section_background_color": "rgba(0,0,0,0)",
+        "section_background_gradient": "",
+        "remove_margin": false,
+        "color_background_main": "rgba(0,0,0,0)",
+        "color_text_main": "rgba(0,0,0,0)",
+        "color_accent_main": "rgba(0,0,0,0)",
+        "color_borders_main": "rgba(0,0,0,0)",
+        "color_shadow_main": "rgba(0,0,0,0)",
+        "color_hide_borders": false,
+        "color_hide_shadow": false
+      }
+    },
+    "flex_slideshow_V7zpHN": {
+      "type": "flex-slideshow",
+      "blocks": {
+        "slide_image_ziPakr": {
+          "type": "_slide-image",
+          "settings": {
+            "image": "shopify://shop_images/what-is-a-grocerant-joels-place-proscenium-cover.jpg",
+            "mobile_image": "shopify://shop_images/what-is-a-grocerant-joels-place-proscenium-cover.jpg",
+            "link": "",
+            "open_in_new_window": false,
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)"
+          },
+          "blocks": {}
+        },
+        "slide_image_p6gtDd": {
+          "type": "_slide-image",
+          "settings": {
+            "image": "shopify://shop_images/joels-place-rockwell-the-sommelier.jpg",
+            "mobile_image": "shopify://shop_images/joels-place-rockwell-the-sommelier.jpg",
+            "link": "",
+            "open_in_new_window": false,
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)"
+          },
+          "blocks": {}
+        },
+        "slide_image_k4mYW7": {
+          "type": "_slide-image",
+          "name": "t:sections.local-extra-words.sections.slideshow.block.name",
+          "settings": {
+            "image": "shopify://shop_images/joels-place-rockwell-the-deli-and-the-fishmonger.jpg",
+            "mobile_image": "shopify://shop_images/joels-place-rockwell-the-deli-and-the-fishmonger.jpg",
+            "link": "",
+            "open_in_new_window": false,
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)"
+          },
+          "blocks": {}
+        },
+        "slide_image_aVwJJa": {
+          "type": "_slide-image",
+          "name": "t:sections.local-extra-words.sections.slideshow.block.name",
+          "settings": {
+            "image": "shopify://shop_images/Makati-Store-Locator-4.jpg",
+            "mobile_image": "shopify://shop_images/Makati-Store-Locator-4.jpg",
+            "link": "",
+            "open_in_new_window": false,
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)"
+          },
+          "blocks": {}
+        },
+        "slide_image_VMDUgx": {
+          "type": "_slide-image",
+          "name": "t:sections.local-extra-words.sections.slideshow.block.name",
+          "settings": {
+            "image": "shopify://shop_images/Makati-Store-Locator-5.jpg",
+            "mobile_image": "shopify://shop_images/Makati-Store-Locator-5.jpg",
+            "link": "",
+            "open_in_new_window": false,
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "slide_image_ziPakr",
+        "slide_image_p6gtDd",
+        "slide_image_k4mYW7",
+        "slide_image_aVwJJa",
+        "slide_image_VMDUgx"
+      ],
+      "name": "t:theme_blocks.sections.flex-slideshow.name",
+      "settings": {
+        "desktop_height": "60vh",
+        "mobile_height": "60vh",
+        "is_auto_height": false,
+        "autorotate_enable": false,
+        "autorotate_interval": 5,
+        "alignment": "horizontal-left align-content--vertical-bottom",
+        "width": "100",
+        "spacing": "large",
+        "is_fullwidth": false,
+        "section_background_color": "rgba(0,0,0,0)",
+        "section_background_gradient": "",
+        "section_heading_color": "rgba(0,0,0,0)",
+        "remove_margin": false,
+        "color_hide_borders": false,
+        "color_hide_shadow": true,
+        "disable_parallax": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rich_text_yM4iVU",
+    "flex_slideshow_V7zpHN"
+  ]
+}
