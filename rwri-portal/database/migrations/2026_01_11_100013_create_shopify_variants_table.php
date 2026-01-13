@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('shopify_product_id')->constrained('shopify_products')->onDelete('cascade');
             
             // Shopify variant data
-            $table->string('shopify_variant_id')->index();
+            $table->string('shopify_variant_id')->index('shopify_variants_variant_id_idx');
             $table->string('shopify_inventory_item_id')->nullable();
             $table->string('title')->nullable(); // e.g., "Small / Red"
             $table->string('sku')->nullable();
@@ -40,9 +40,9 @@ return new class extends Migration
             $table->timestamp('pulled_at')->nullable();
             $table->timestamps();
             
-            $table->unique(['shopify_store_id', 'shopify_variant_id']);
-            $table->index('sku');
-            $table->index('barcode');
+            $table->unique(['shopify_store_id', 'shopify_variant_id'], 'shopify_variants_store_variant_unique');
+            $table->index('sku', 'shopify_variants_sku_idx');
+            $table->index('barcode', 'shopify_variants_barcode_idx');
         });
     }
 

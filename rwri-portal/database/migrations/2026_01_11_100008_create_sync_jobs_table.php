@@ -43,9 +43,9 @@ return new class extends Migration
             $table->json('options')->nullable(); // Additional sync options
             $table->timestamps();
             
-            $table->index(['shopify_store_id', 'type', 'status']);
-            $table->index('status');
-            $table->index('created_at');
+            $table->index(['shopify_store_id', 'type', 'status'], 'sync_jobs_store_type_status_idx');
+            $table->index('status', 'sync_jobs_status_idx');
+            $table->index('created_at', 'sync_jobs_created_at_idx');
         });
     }
 

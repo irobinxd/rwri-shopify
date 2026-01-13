@@ -2,8 +2,8 @@
 <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
 	<!--begin::Logo image-->
 	<a href="{{ route('dashboard') }}" style="display: inline-block; background-color: white; padding: 8px; border-radius: 4px;">
-		<img alt="RWRI Portal" src="{{ image('logos/Royal-logo.avif') }}" class="h-25px app-sidebar-logo-default" />
-		<img alt="RWRI Portal" src="{{ image('logos/Royal-logo.avif') }}" class="h-20px app-sidebar-logo-minimize" />
+		<img alt="RWRI Portal" src="{{ image('logos/royal-logo.avif') }}" class="h-25px app-sidebar-logo-default" />
+		<img alt="RWRI Portal" src="{{ image('logos/royal-logo.avif') }}" class="h-20px app-sidebar-logo-minimize" />
 	</a>
 	<!--end::Logo image-->
 	<!--begin::Sidebar toggle-->

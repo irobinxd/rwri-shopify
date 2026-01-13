@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('shopify_store_id')->constrained()->onDelete('cascade');
             
             // Shopify location data
-            $table->string('shopify_location_id')->index();
+            $table->string('shopify_location_id')->index('shopify_locations_location_id_idx');
             $table->string('name');
             $table->string('address1')->nullable();
             $table->string('address2')->nullable();
@@ -34,7 +34,7 @@ return new class extends Migration
             $table->timestamp('pulled_at')->nullable();
             $table->timestamps();
             
-            $table->unique(['shopify_store_id', 'shopify_location_id']);
+            $table->unique(['shopify_store_id', 'shopify_location_id'], 'shopify_locations_store_location_unique');
         });
     }
 

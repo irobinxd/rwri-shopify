@@ -183,6 +183,27 @@ class WebStoresModuleSeeder extends Seeder
             );
         }
 
+        // Assign modules to all users (with null department, location, group for universal access)
+        $users = \App\Models\User::all();
+        foreach ($users as $user) {
+            // Check if user already has the module assigned
+            if (!$user->modules()->where('modules.id', $webStoresModule->id)->exists()) {
+                $user->modules()->attach($webStoresModule->id, [
+                    'department_id' => null,
+                    'location_id' => null,
+                    'group_id' => null,
+                ]);
+            }
+            
+            if (!$user->modules()->where('modules.id', $royalStoreModule->id)->exists()) {
+                $user->modules()->attach($royalStoreModule->id, [
+                    'department_id' => null,
+                    'location_id' => null,
+                    'group_id' => null,
+                ]);
+            }
+        }
+
         $this->command->info('Web Stores module and Royal Store sub-module seeded successfully.');
     }
 }

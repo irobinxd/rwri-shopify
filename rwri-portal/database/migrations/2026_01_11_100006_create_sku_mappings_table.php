@@ -37,8 +37,8 @@ return new class extends Migration
             $table->timestamps();
             
             $table->unique(['erp_connection_id', 'erp_sku'], 'unique_erp_sku');
-            $table->index(['shopify_store_id', 'shopify_variant_id']);
-            $table->index('erp_barcode');
+            $table->index(['shopify_store_id', 'shopify_variant_id'], 'sku_mappings_store_variant_idx');
+            $table->index('erp_barcode', 'sku_mappings_barcode_idx');
         });
     }
 

@@ -45,7 +45,10 @@
 							<!--begin:Menu link-->
 							<span class="menu-link">
 								@if($module->icon)
-									<span class="menu-icon">{!! $module->icon !!}</span>
+									@php
+										$iconName = str_replace('ki-', '', $module->icon);
+									@endphp
+									<span class="menu-icon">{!! getIcon($iconName, 'fs-2') !!}</span>
 								@else
 									<span class="menu-icon">{!! getIcon('abstract-28', 'fs-2') !!}</span>
 								@endif

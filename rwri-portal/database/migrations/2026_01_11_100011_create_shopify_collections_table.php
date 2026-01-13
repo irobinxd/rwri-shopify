@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('shopify_store_id')->constrained()->onDelete('cascade');
             
             // Shopify collection data
-            $table->string('shopify_collection_id')->index();
+            $table->string('shopify_collection_id')->index('shopify_collections_collection_id_idx');
             $table->string('collection_type'); // 'smart' or 'custom'
             $table->string('handle');
             $table->string('title');
@@ -30,8 +30,8 @@ return new class extends Migration
             $table->timestamp('pulled_at')->nullable();
             $table->timestamps();
             
-            $table->unique(['shopify_store_id', 'shopify_collection_id']);
-            $table->index(['shopify_store_id', 'handle']);
+            $table->unique(['shopify_store_id', 'shopify_collection_id'], 'shopify_collections_store_collection_unique');
+            $table->index(['shopify_store_id', 'handle'], 'shopify_collections_store_handle_idx');
         });
     }
 

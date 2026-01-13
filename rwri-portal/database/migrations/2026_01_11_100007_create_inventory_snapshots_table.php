@@ -29,12 +29,12 @@ return new class extends Migration
             // Sync tracking
             $table->boolean('sync_required')->default(false);
             $table->timestamp('synced_at')->nullable();
-            $table->foreignId('sync_job_id')->nullable()->constrained()->onDelete('set null');
+            $table->unsignedBigInteger('sync_job_id')->nullable();
             
             $table->timestamps();
             
             $table->index(['sku_mapping_id', 'store_location_mapping_id'], 'inventory_sku_location_idx');
-            $table->index('sync_required');
+            $table->index('sync_required', 'inventory_snapshots_sync_required_idx');
         });
     }
 

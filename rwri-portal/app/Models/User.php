@@ -148,7 +148,7 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         return Menu::whereIn('module_id', $moduleIds)
-            ->where(function ($query) {
+            ->where(function ($query) use ($moduleIds) {
                 // Menus assigned directly to user with proper scoping
                 $query->whereHas('users', function ($q) {
                     $q->where('menu_user.user_id', $this->id)

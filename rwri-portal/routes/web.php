@@ -5,6 +5,8 @@ use App\Http\Controllers\Apps\RoleManagementController;
 use App\Http\Controllers\Apps\UserManagementController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\WebStoresController;
+use App\Http\Controllers\RoyalStoreController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,6 +40,33 @@ Route::middleware(['auth'])->group(function () {
 
     Route::name('menus.')->group(function () {
         Route::resource('/menus', \App\Http\Controllers\MenuController::class);
+    });
+
+    // Web Stores routes
+    Route::name('web-stores.')->group(function () {
+        Route::get('/web-stores/dashboard', [WebStoresController::class, 'dashboard'])->name('dashboard');
+        Route::get('/web-stores/stores', [WebStoresController::class, 'storesIndex'])->name('stores.index');
+        Route::get('/web-stores/shopify-pull', [WebStoresController::class, 'shopifyPullIndex'])->name('shopify-pull.index');
+        Route::get('/web-stores/locations', [WebStoresController::class, 'locationsIndex'])->name('locations.index');
+        Route::get('/web-stores/categories', [WebStoresController::class, 'categoriesIndex'])->name('categories.index');
+        Route::get('/web-stores/products', [WebStoresController::class, 'productsIndex'])->name('products.index');
+        Route::get('/web-stores/inventory', [WebStoresController::class, 'inventoryIndex'])->name('inventory.index');
+        Route::get('/web-stores/sku-mappings', [WebStoresController::class, 'skuMappingsIndex'])->name('sku-mappings.index');
+        Route::get('/web-stores/sync-jobs', [WebStoresController::class, 'syncJobsIndex'])->name('sync-jobs.index');
+        Route::get('/web-stores/sync-logs', [WebStoresController::class, 'syncLogsIndex'])->name('sync-logs.index');
+        Route::get('/web-stores/settings', [WebStoresController::class, 'settings'])->name('settings');
+    });
+
+    // Royal Store routes
+    Route::name('royal-store.')->group(function () {
+        Route::get('/royal-store/dashboard', [RoyalStoreController::class, 'dashboard'])->name('dashboard');
+        Route::get('/royal-store/jda-connection', [RoyalStoreController::class, 'jdaConnection'])->name('jda-connection');
+        Route::get('/royal-store/shopify-pull', [RoyalStoreController::class, 'shopifyPull'])->name('shopify-pull');
+        Route::get('/royal-store/locations', [RoyalStoreController::class, 'locations'])->name('locations');
+        Route::get('/royal-store/products', [RoyalStoreController::class, 'products'])->name('products');
+        Route::get('/royal-store/inventory', [RoyalStoreController::class, 'inventory'])->name('inventory');
+        Route::get('/royal-store/prices', [RoyalStoreController::class, 'prices'])->name('prices');
+        Route::get('/royal-store/sync-history', [RoyalStoreController::class, 'syncHistory'])->name('sync-history');
     });
 });
 

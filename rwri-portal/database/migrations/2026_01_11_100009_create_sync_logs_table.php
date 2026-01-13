@@ -42,9 +42,9 @@ return new class extends Migration
             
             $table->timestamps();
             
-            $table->index(['sync_job_id', 'status']);
-            $table->index(['entity_type', 'erp_identifier']);
-            $table->index('created_at');
+            $table->index(['sync_job_id', 'status'], 'sync_logs_job_status_idx');
+            $table->index(['entity_type', 'erp_identifier'], 'sync_logs_entity_erp_idx');
+            $table->index('created_at', 'sync_logs_created_at_idx');
         });
     }
 

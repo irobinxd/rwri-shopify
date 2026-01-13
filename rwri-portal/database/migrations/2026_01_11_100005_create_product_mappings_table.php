@@ -38,7 +38,7 @@ return new class extends Migration
             $table->timestamps();
             
             $table->unique(['erp_connection_id', 'erp_product_code'], 'unique_erp_product');
-            $table->index(['shopify_store_id', 'shopify_product_id']);
+            $table->index(['shopify_store_id', 'shopify_product_id'], 'product_mappings_store_product_idx');
         });
     }
 

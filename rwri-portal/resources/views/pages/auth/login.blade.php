@@ -8,7 +8,7 @@
             <!--begin::Logo-->
             <div class="mb-5">
                 <div style="display: inline-block; background-color: white; padding: 12px; border-radius: 8px;">
-                    <img alt="RWRI Portal" src="{{ image('logos/Royal-logo.avif') }}" class="h-50px mb-3" />
+                    <img alt="RWRI Portal" src="{{ image('logos/royal-logo.avif') }}" class="h-50px mb-3" />
                 </div>
             </div>
             <!--end::Logo-->

@@ -29,7 +29,7 @@ return new class extends Migration
             $table->timestamps();
             
             $table->unique(['shopify_location_id', 'shopify_variant_id'], 'unique_location_variant');
-            $table->index('inventory_item_id');
+            $table->index('inventory_item_id', 'shopify_inventory_levels_item_id_idx');
         });
     }
 

@@ -90,6 +90,83 @@
             "slide-2-content-group-1"
           ]
         },
+        "slide_image_KPfirg": {
+          "type": "_slide-image",
+          "name": "t:sections.local-extra-words.sections.slideshow.block.name",
+          "settings": {
+            "image": "shopify://shop_images/Homepage-FeaturedCollection_BreakfastOnTheGo.jpg",
+            "link": "",
+            "open_in_new_window": false,
+            "color_background_main": "#3b3b3b",
+            "color_text_main": "rgba(0,0,0,0)"
+          },
+          "blocks": {
+            "caption_jE37TF": {
+              "type": "caption",
+              "settings": {
+                "caption": "Shop Click and Collect or visit our bakery windows",
+                "text_size": "regular",
+                "text_background_color": "rgba(0,0,0,0)",
+                "text_color": "#ffffff"
+              },
+              "blocks": {}
+            },
+            "heading_YFpQrM": {
+              "type": "heading",
+              "settings": {
+                "heading": "Breakfast on the Go",
+                "title_size": "h2",
+                "line_height": "default",
+                "text_color": "#ffffff",
+                "seo_h_tag": "h3"
+              },
+              "blocks": {}
+            },
+            "content_group_J8wiaA": {
+              "type": "content-group",
+              "settings": {
+                "spacing": "small"
+              },
+              "blocks": {
+                "button_ttGGLL": {
+                  "type": "button",
+                  "settings": {
+                    "button_label": "Shop Now",
+                    "link": "shopify://collections/breakfast-on-the-go-1",
+                    "open_in_new_window": false,
+                    "button_size": "regular",
+                    "button_style": "solid",
+                    "color_text_buttons": "#ffffff",
+                    "color_accent_buttons": "rgba(0,0,0,0)"
+                  },
+                  "blocks": {}
+                },
+                "button_PEYBWD": {
+                  "type": "button",
+                  "settings": {
+                    "button_label": "Bakery Window",
+                    "link": "shopify://blogs/in-store-now/in-store-now-bakery-window-at-joels-place",
+                    "open_in_new_window": false,
+                    "button_size": "regular",
+                    "button_style": "outline",
+                    "color_text_buttons": "#ffffff",
+                    "color_accent_buttons": "rgba(0,0,0,0)"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "button_ttGGLL",
+                "button_PEYBWD"
+              ]
+            }
+          },
+          "block_order": [
+            "caption_jE37TF",
+            "heading_YFpQrM",
+            "content_group_J8wiaA"
+          ]
+        },
         "slide_image_gb6fPh": {
           "type": "_slide-image",
           "settings": {
@@ -309,91 +386,14 @@
             "slide-1-heading-1",
             "slide-1-content-group-1"
           ]
-        },
-        "slide_image_KPfirg": {
-          "type": "_slide-image",
-          "name": "t:sections.local-extra-words.sections.slideshow.block.name",
-          "settings": {
-            "image": "shopify://shop_images/Homepage-FeaturedCollection_BreakfastOnTheGo.jpg",
-            "link": "",
-            "open_in_new_window": false,
-            "color_background_main": "#3b3b3b",
-            "color_text_main": "rgba(0,0,0,0)"
-          },
-          "blocks": {
-            "caption_jE37TF": {
-              "type": "caption",
-              "settings": {
-                "caption": "Shop Click and Collect or visit our bakery windows",
-                "text_size": "regular",
-                "text_background_color": "rgba(0,0,0,0)",
-                "text_color": "#ffffff"
-              },
-              "blocks": {}
-            },
-            "heading_YFpQrM": {
-              "type": "heading",
-              "settings": {
-                "heading": "Breakfast on the Go",
-                "title_size": "h2",
-                "line_height": "default",
-                "text_color": "#ffffff",
-                "seo_h_tag": "h3"
-              },
-              "blocks": {}
-            },
-            "content_group_J8wiaA": {
-              "type": "content-group",
-              "settings": {
-                "spacing": "small"
-              },
-              "blocks": {
-                "button_ttGGLL": {
-                  "type": "button",
-                  "settings": {
-                    "button_label": "Shop Now",
-                    "link": "shopify://collections/breakfast-on-the-go-1",
-                    "open_in_new_window": false,
-                    "button_size": "regular",
-                    "button_style": "solid",
-                    "color_text_buttons": "#ffffff",
-                    "color_accent_buttons": "rgba(0,0,0,0)"
-                  },
-                  "blocks": {}
-                },
-                "button_PEYBWD": {
-                  "type": "button",
-                  "settings": {
-                    "button_label": "Bakery Window",
-                    "link": "shopify://blogs/in-store-now/in-store-now-bakery-window-at-joels-place",
-                    "open_in_new_window": false,
-                    "button_size": "regular",
-                    "button_style": "outline",
-                    "color_text_buttons": "#ffffff",
-                    "color_accent_buttons": "rgba(0,0,0,0)"
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "button_ttGGLL",
-                "button_PEYBWD"
-              ]
-            }
-          },
-          "block_order": [
-            "caption_jE37TF",
-            "heading_YFpQrM",
-            "content_group_J8wiaA"
-          ]
         }
       },
       "block_order": [
         "slide-2",
+        "slide_image_KPfirg",
         "slide_image_gb6fPh",
         "slide_image_pDaktm",
-        "slide-1",
-        "slide_image_KPfirg"
+        "slide-1"
       ],
       "settings": {
         "desktop_height": "50vh",
@@ -566,14 +566,14 @@
         "heading": "NEW YEAR POWER-UP",
         "subheading": "Fill Up on Our Healthy Bowls and Enjoy a Free Powershot Juice",
         "section_heading_layout": "section-heading--left",
-        "image": "shopify://shop_images/Wellness-boost-article-cover.jpg",
+        "image": "shopify://shop_images/Wellness-boost-landing-page-shop-guides-card.jpg",
         "product_list": [
-          "lemongrass-chicken-grain-bowl",
-          "salad-nicoise",
-          "cobb-salad",
+          "caesar-salad",
           "joels-place-falafel-grain-bowl",
+          "cobb-salad",
           "adlai-seafood-paella",
-          "caesar-salad"
+          "lemongrass-chicken-grain-bowl",
+          "salad-nicoise"
         ],
         "color_background_main": "rgba(0,0,0,0)",
         "color_borders_main": "rgba(0,0,0,0)",
@@ -634,25 +634,6 @@
     "blog_promotion_cards_YHWhNr": {
       "type": "blog-promotion-cards",
       "blocks": {
-        "card_U7aMiE": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/Wellness-boost-landing-page-shop-guides-card.jpg",
-            "caption": "SHOP ONLINE",
-            "title": "Wellness Boost Online Exclusive Promo",
-            "subtitle": "Enjoy a FREE Powershot juice when you order any two Wellness Boost salads or grain bowls online via joelsplace.com from January 8 to 31, 2026.",
-            "link": "https://joelsplace.com/blogs/in-store-now/wellness-boost-at-joelsplace-com",
-            "button_label": "Read Now",
-            "color_background_main": "rgba(0,0,0,0)",
-            "color_text_main": "rgba(0,0,0,0)",
-            "color_accent_main": "rgba(0,0,0,0)",
-            "color_borders_main": "rgba(0,0,0,0)",
-            "color_shadow_main": "rgba(0,0,0,0)",
-            "color_hide_borders": false,
-            "color_hide_shadow": false,
-            "seo_h_tag": "h3"
-          }
-        },
         "card_Gc4nwJ": {
           "type": "card",
           "settings": {
@@ -672,8 +653,28 @@
             "seo_h_tag": "h3"
           }
         },
+        "card_U7aMiE": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Wellness-boost-mobile-hero.jpg",
+            "caption": "SHOP ONLINE",
+            "title": "Wellness Boost Online Exclusive Promo",
+            "subtitle": "Enjoy a FREE Powershot juice when you order any two Wellness Boost salads or grain bowls online via joelsplace.com from January 8 to 31, 2026.",
+            "link": "https://joelsplace.com/blogs/in-store-now/wellness-boost-at-joelsplace-com",
+            "button_label": "Read Now",
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)",
+            "color_accent_main": "rgba(0,0,0,0)",
+            "color_borders_main": "rgba(0,0,0,0)",
+            "color_shadow_main": "rgba(0,0,0,0)",
+            "color_hide_borders": false,
+            "color_hide_shadow": false,
+            "seo_h_tag": "h3"
+          }
+        },
         "card_DEXJ3q": {
           "type": "card",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/espresso-based-coffee-guide-joels-place-homepage-card.jpg",
             "caption": "SHOPPING GUIDE",
@@ -693,7 +694,6 @@
         },
         "card_HrxxHW": {
           "type": "card",
-          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/a-snackers-guide-to-movie-nights-at-home-cover.jpg",
             "caption": "SHOPPING GUIDE",
@@ -853,8 +853,8 @@
         }
       },
       "block_order": [
-        "card_U7aMiE",
         "card_Gc4nwJ",
+        "card_U7aMiE",
         "card_DEXJ3q",
         "card_HrxxHW",
         "card_6neAf8",
@@ -888,46 +888,6 @@
     "165406738229739f4d": {
       "type": "promotion-cards",
       "blocks": {
-        "card_atmyV3": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/joels-place-bakery-window-coffee-in-article.jpg",
-            "caption": "IN-STORE SERVICE",
-            "title": "Visit Our Bakery Window",
-            "subtitle": "Our convenient to-go windows open from 7 a.m. to 9 a.m. at both our Proscenium and Glorietta 4 stores.",
-            "link": "shopify://blogs/in-store-now/in-store-now-bakery-window-at-joels-place",
-            "open_in_new_window": false,
-            "button_label": "Learn More",
-            "color_background_main": "#a08362",
-            "color_text_main": "#ffffff",
-            "color_accent_main": "rgba(0,0,0,0)",
-            "color_borders_main": "rgba(0,0,0,0)",
-            "color_shadow_main": "rgba(0,0,0,0)",
-            "color_hide_borders": false,
-            "color_hide_shadow": false,
-            "seo_h_tag": "h3"
-          }
-        },
-        "16540673826052f668-2": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/Special-Order-Card-Block.jpg",
-            "caption": "IN-STORE SERVICE",
-            "title": "Joel's Place Special Orders",
-            "subtitle": "Enjoy Joel’s Place signature charcuterie platters, bakery boxes, and specialty items anywhere when you place Special Orders.",
-            "link": "shopify://blogs/in-store-now/special-orders-at-joels-place",
-            "open_in_new_window": false,
-            "button_label": "Learn More",
-            "color_background_main": "#70a062",
-            "color_text_main": "#ffffff",
-            "color_accent_main": "rgba(0,0,0,0)",
-            "color_borders_main": "#e1e1e1",
-            "color_shadow_main": "rgba(0,0,0,0)",
-            "color_hide_borders": true,
-            "color_hide_shadow": false,
-            "seo_h_tag": "h3"
-          }
-        },
         "card_RcNRD3": {
           "type": "card",
           "settings": {
@@ -944,6 +904,26 @@
             "color_borders_main": "rgba(0,0,0,0)",
             "color_shadow_main": "rgba(0,0,0,0)",
             "color_hide_borders": false,
+            "color_hide_shadow": false,
+            "seo_h_tag": "h3"
+          }
+        },
+        "16540673826052f668-0": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/table-reservations-cover.webp",
+            "caption": "IN-STORE NEWS",
+            "title": "Call Ahead and Reserve a Table",
+            "subtitle": "Enjoy your Joel’s Place favorites sans the hassle of looking for a table by reserving ahead by phone. Available in both stores.",
+            "link": "shopify://blogs/in-store-now/joels-place-table-reservations",
+            "open_in_new_window": false,
+            "button_label": "Learn More",
+            "color_background_main": "#324687",
+            "color_text_main": "#ffffff",
+            "color_accent_main": "rgba(0,0,0,0)",
+            "color_borders_main": "#e1e1e1",
+            "color_shadow_main": "rgba(0,0,0,0)",
+            "color_hide_borders": true,
             "color_hide_shadow": false,
             "seo_h_tag": "h3"
           }
@@ -968,18 +948,38 @@
             "seo_h_tag": "h3"
           }
         },
-        "16540673826052f668-0": {
+        "card_atmyV3": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/joels-place-bakery-window-coffee-in-article.jpg",
+            "caption": "IN-STORE SERVICE",
+            "title": "Visit Our Bakery Window",
+            "subtitle": "Our convenient to-go windows open from 7 a.m. to 9 a.m. at both our Proscenium and Glorietta 4 stores.",
+            "link": "shopify://blogs/in-store-now/in-store-now-bakery-window-at-joels-place",
+            "open_in_new_window": false,
+            "button_label": "Learn More",
+            "color_background_main": "#a08362",
+            "color_text_main": "#ffffff",
+            "color_accent_main": "rgba(0,0,0,0)",
+            "color_borders_main": "rgba(0,0,0,0)",
+            "color_shadow_main": "rgba(0,0,0,0)",
+            "color_hide_borders": false,
+            "color_hide_shadow": false,
+            "seo_h_tag": "h3"
+          }
+        },
+        "16540673826052f668-2": {
           "type": "card",
           "disabled": true,
           "settings": {
-            "image": "shopify://shop_images/table-reservations-cover.webp",
-            "caption": "IN-STORE NEWS",
-            "title": "Call Ahead and Reserve a Table",
-            "subtitle": "Enjoy your Joel’s Place favorites sans the hassle of looking for a table by reserving ahead by phone. Available in both stores.",
-            "link": "shopify://blogs/in-store-now/joels-place-table-reservations",
+            "image": "shopify://shop_images/Special-Order-Card-Block.jpg",
+            "caption": "IN-STORE SERVICE",
+            "title": "Joel's Place Special Orders",
+            "subtitle": "Enjoy Joel’s Place signature charcuterie platters, bakery boxes, and specialty items anywhere when you place Special Orders.",
+            "link": "shopify://blogs/in-store-now/special-orders-at-joels-place",
             "open_in_new_window": false,
             "button_label": "Learn More",
-            "color_background_main": "#324687",
+            "color_background_main": "#70a062",
             "color_text_main": "#ffffff",
             "color_accent_main": "rgba(0,0,0,0)",
             "color_borders_main": "#e1e1e1",
@@ -1012,11 +1012,11 @@
         }
       },
       "block_order": [
+        "card_RcNRD3",
+        "16540673826052f668-0",
+        "card_HVDJjW",
         "card_atmyV3",
         "16540673826052f668-2",
-        "card_RcNRD3",
-        "card_HVDJjW",
-        "16540673826052f668-0",
         "16540673826052f668-1"
       ],
       "name": "MEET In-Store",
@@ -1043,6 +1043,23 @@
     "16551074833cdf378e": {
       "type": "media-with-text-overlay",
       "blocks": {
+        "16551074836af554cd-0": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/the-city-wakes-up-illustration-cover.jpg",
+            "caption": "ESSAY",
+            "title": "The City Wakes Up",
+            "subtitle": "We rarely see the bakers, cooks, and taho vendors  preparing under the pre-dawn sky. But their echoing calls remind everyone that breakfast—and a new day—is here.",
+            "link": "shopify://blogs/joels-journal/the-city-wakes-up",
+            "open_in_new_window": false,
+            "button_label": "",
+            "color_background_main": "#3d3d3d",
+            "color_text_main": "#ffffff",
+            "color_hide_borders": true,
+            "color_hide_shadow": false,
+            "seo_h_tag": "h3"
+          }
+        },
         "16551074836af554cd-1": {
           "type": "image",
           "settings": {
@@ -1059,28 +1076,11 @@
             "color_hide_shadow": false,
             "seo_h_tag": "h3"
           }
-        },
-        "16551074836af554cd-0": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/a-nations-remedy-cover-dated.jpg",
-            "caption": "ESSAY",
-            "title": "A Nation's Remedy",
-            "subtitle": "With the discovery that fermenting fresh ingredients results in distinct flavors and significant health benefits, Koreans transformed adversity into an opportunity for culinary creativity.",
-            "link": "shopify://blogs/joels-journal/a-nations-remedy",
-            "open_in_new_window": false,
-            "button_label": "",
-            "color_background_main": "#3d3d3d",
-            "color_text_main": "#ffffff",
-            "color_hide_borders": true,
-            "color_hide_shadow": false,
-            "seo_h_tag": "h3"
-          }
         }
       },
       "block_order": [
-        "16551074836af554cd-1",
-        "16551074836af554cd-0"
+        "16551074836af554cd-0",
+        "16551074836af554cd-1"
       ],
       "name": "LONG READS Essays",
       "settings": {
@@ -1106,6 +1106,15 @@
     "16553621956de397b6": {
       "type": "testimonials",
       "blocks": {
+        "testimonial_UXLtNP": {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Daily Tribune ",
+            "author_title": "Luis Espiritu",
+            "quote": "<p>Serving all that is good in food right in the heart of Makati.</p>",
+            "image": "shopify://shop_images/Daily-tribune-logo.png"
+          }
+        },
         "16553621951e01132c-0": {
           "type": "testimonial",
           "settings": {
@@ -1132,22 +1141,13 @@
             "quote": "<p>[T]heir range of specialty grocery finds is hard to beat, and their grab-and-go items make daily lunch decisions a breeze.</p>",
             "image": "shopify://shop_images/spot-ph-logo.jpg"
           }
-        },
-        "testimonial_UXLtNP": {
-          "type": "testimonial",
-          "settings": {
-            "author_name": "Daily Tribune ",
-            "author_title": "Luis Espiritu",
-            "quote": "<p>Serving all that is good in food right in the heart of Makati.</p>",
-            "image": "shopify://shop_images/Daily-tribune-logo.png"
-          }
         }
       },
       "block_order": [
+        "testimonial_UXLtNP",
         "16553621951e01132c-0",
         "16553621951e01132c-1",
-        "testimonial_waVW68",
-        "testimonial_UXLtNP"
+        "testimonial_waVW68"
       ],
       "settings": {
         "heading": "AS SEEN IN",
