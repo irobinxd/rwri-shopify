@@ -462,7 +462,7 @@
       locationsHTML += '</div>';
       
       warningContainer.innerHTML = `
-        <div class="warning-title">⚠️ Items from Different Locations</div>
+        <div class="warning-title">Items from Different Locations</div>
         <div class="warning-message">
           Your cart contains items that are only available at different branches. 
           Shopify requires all items to be available at a single pickup location. 
@@ -533,13 +533,13 @@
         <line x1="12" y1="17" x2="12.01" y2="17"></line>
       </svg>
       <div style="flex: 1;">
-        <strong style="display: block; margin-bottom: 0.5rem; color: #856404; font-size: 1.1rem;">⚠️ Pickup Location Conflict</strong>
+        <strong style="display: block; margin-bottom: 0.5rem; color: #856404; font-size: 1.1rem;">Pickup Location Conflict</strong>
         <p style="margin: 0 0 1rem 0; color: #856404; font-size: 0.95rem; line-height: 1.6;">
           Your cart contains items that <strong>cannot all be picked up from a single location</strong>. 
-          To proceed with checkout, please select a pickup location below. Items not available at that location will be removed.
+          To proceed with checkout, please select a pickup location below. Item/s not available at that location will be removed.
         </p>
         <div id="cart-conflict-details" style="background: rgba(133, 100, 4, 0.1); padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.9rem; color: #856404;"></div>
-        <button type="button" id="cart-resolve-conflict-btn" style="background: #856404; color: white; border: none; padding: 0.6rem 1.25rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.95rem; position: relative;">
+        <button type="button" id="cart-resolve-conflict-btn" style="background: #70a062; color: white; border: none; padding: 0.6rem 1.25rem; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 0.95rem; position: relative; transition: all 0.2s;">
           <span class="btn-text">Select Pickup Location</span>
           <span class="btn-loading" style="display: none;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite; vertical-align: middle; margin-right: 0.5rem;">
@@ -1029,6 +1029,22 @@
       function setupResolveButton() {
         const resolveBtn = document.getElementById('cart-resolve-conflict-btn');
         if (resolveBtn) {
+          // Add hover effects
+          resolveBtn.addEventListener('mouseenter', () => {
+            if (!resolveBtn.disabled) {
+              resolveBtn.style.background = '#5a8a4e';
+              resolveBtn.style.transform = 'translateY(-1px)';
+              resolveBtn.style.boxShadow = '0 4px 12px rgba(112, 160, 98, 0.4)';
+            }
+          });
+          resolveBtn.addEventListener('mouseleave', () => {
+            if (!resolveBtn.disabled) {
+              resolveBtn.style.background = '#70a062';
+              resolveBtn.style.transform = 'translateY(0)';
+              resolveBtn.style.boxShadow = 'none';
+            }
+          });
+          
           resolveBtn.addEventListener('click', function() {
             // Show loading state
             const btnText = resolveBtn.querySelector('.btn-text');
@@ -1412,10 +1428,10 @@
             </p>
             
             <div style="display: flex; gap: 1rem;">
-              <button type="button" id="keep-current-location" style="flex: 1; padding: 0.875rem; background: #e5e5e5; color: #333; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: all 0.2s;">
+              <button type="button" id="keep-current-location" style="flex: 1; padding: 0.875rem; background: #e5e5e5; color: #333; border: none; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: all 0.2s;">
                 Continue with ${selectedStoreItemCount} Items
               </button>
-              <button type="button" id="switch-to-better-location" style="flex: 1; padding: 0.875rem; background: #28a745; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: all 0.2s; box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);">
+              <button type="button" id="switch-to-better-location" style="flex: 1; padding: 0.875rem; background: #70a062; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: all 0.2s; box-shadow: 0 2px 8px rgba(112, 160, 98, 0.3);">
                 Switch to ${betterStoreItemCount} Items
               </button>
             </div>
@@ -1436,14 +1452,14 @@
         });
         
         switchBtn.addEventListener('mouseenter', () => {
-          switchBtn.style.background = '#218838';
+          switchBtn.style.background = '#5a8a4e';
           switchBtn.style.transform = 'translateY(-1px)';
-          switchBtn.style.boxShadow = '0 4px 12px rgba(40, 167, 69, 0.4)';
+          switchBtn.style.boxShadow = '0 4px 12px rgba(112, 160, 98, 0.4)';
         });
         switchBtn.addEventListener('mouseleave', () => {
-          switchBtn.style.background = '#28a745';
+          switchBtn.style.background = '#70a062';
           switchBtn.style.transform = 'translateY(0)';
-          switchBtn.style.boxShadow = '0 2px 8px rgba(40, 167, 69, 0.3)';
+          switchBtn.style.boxShadow = '0 2px 8px rgba(112, 160, 98, 0.3)';
         });
         
         // Keep current location - directly remove unavailable items
@@ -1579,17 +1595,17 @@
           <div style="background: white; padding: 2rem; border-radius: 12px; max-width: 500px; width: 90%;">
             <h3 style="margin: 0 0 1rem 0; color: #856404;">📍 ${decodeHtml(storeName)} Selected</h3>
             <p style="margin: 0 0 1rem 0; color: #333;">
-              The following items are <strong>not available</strong> at this location and will be removed:
+              The following item/s are <strong>not available</strong> at this location and will be removed:
             </p>
             <ul style="background: #f8f8f8; padding: 1rem 1rem 1rem 2rem; border-radius: 6px; margin: 0 0 1rem 0;">
               ${unavailableItems.map(item => `<li>${item.product_title}</li>`).join('')}
             </ul>
             <div style="display: flex; gap: 1rem;">
-              <button type="button" id="cancel-removal" style="flex: 1; padding: 0.75rem; background: #e5e5e5; color: #333; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+              <button type="button" id="cancel-removal" style="flex: 1; padding: 0.75rem; background: #e5e5e5; color: #333; border: none; border-radius: 50px; cursor: pointer; font-weight: 600;">
                 Choose Different Location
               </button>
-              <button type="button" id="confirm-removal" style="flex: 1; padding: 0.75rem; background: #dc3545; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
-                Remove & Continue
+              <button type="button" id="confirm-removal" style="flex: 1; padding: 0.75rem; background:rgb(212, 64, 14); color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: 600;">
+                Remove and Continue
               </button>
             </div>
           </div>
