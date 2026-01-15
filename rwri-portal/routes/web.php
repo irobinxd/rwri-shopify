@@ -67,6 +67,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/royal-store/inventory', [RoyalStoreController::class, 'inventory'])->name('inventory');
         Route::get('/royal-store/prices', [RoyalStoreController::class, 'prices'])->name('prices');
         Route::get('/royal-store/sync-history', [RoyalStoreController::class, 'syncHistory'])->name('sync-history');
+        Route::get('/royal-store/settings', [RoyalStoreController::class, 'settings'])->name('settings');
+        Route::post('/royal-store/settings', [RoyalStoreController::class, 'updateSettings'])->name('settings.update');
+        Route::post('/royal-store/query/execute', [RoyalStoreController::class, 'executeQuery'])->name('query.execute');
+        Route::get('/royal-store/query/tables', [RoyalStoreController::class, 'getTables'])->name('query.tables');
+        Route::get('/royal-store/query/columns', [RoyalStoreController::class, 'getTableColumns'])->name('query.columns');
+        Route::post('/royal-store/query/export', [RoyalStoreController::class, 'exportQueryResults'])->name('query.export');
     });
 });
 

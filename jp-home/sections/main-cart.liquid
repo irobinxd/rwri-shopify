@@ -149,7 +149,6 @@
     function hidePickupDateField() {
       const subtotalWidget = document.querySelector('.cart__subtotal-widget');
       if (!subtotalWidget) {
-        console.warn('Cart: subtotal widget not found');
         return;
       }
       
@@ -192,7 +191,6 @@
     function alignWhenWouldYouLike() {
       const subtotalWidget = document.querySelector('.cart__subtotal-widget');
       if (!subtotalWidget) {
-        console.warn('Cart: subtotal widget not found for alignment');
         return;
       }
       
@@ -315,7 +313,6 @@
         
         return locations;
       } catch (error) {
-        console.warn('Error fetching variant availability:', error);
         return null;
       }
     }
@@ -333,7 +330,6 @@
           cartData = await response.json();
         }
       } catch (error) {
-        console.warn('Error fetching cart data:', error);
         return;
       }
       
@@ -462,11 +458,11 @@
       locationsHTML += '</div>';
       
       warningContainer.innerHTML = `
-        <div class="warning-title">Items from Different Locations</div>
+        <div class="warning-title">Item/s from Different Locations</div>
         <div class="warning-message">
-          Your cart contains items that are only available at different branches. 
-          Shopify requires all items to be available at a single pickup location. 
-          You may need to place separate orders or remove items to proceed with checkout.
+          Your cart contains item/s that are only available at different branches. 
+          Shopify requires all item/s to be available at a single pickup location. 
+          You may need to place separate orders or remove item/s to proceed with checkout.
         </div>
         ${locationsHTML}
       `;
@@ -535,7 +531,7 @@
       <div style="flex: 1;">
         <strong style="display: block; margin-bottom: 0.5rem; color: #856404; font-size: 1.1rem;">Pickup Location Conflict</strong>
         <p style="margin: 0 0 1rem 0; color: #856404; font-size: 0.95rem; line-height: 1.6;">
-          Your cart contains items that <strong>cannot all be picked up from a single location</strong>. 
+          Your cart contains item/s that <strong>cannot all be picked up from a single location</strong>. 
           To proceed with checkout, please select a pickup location below. Item/s not available at that location will be removed.
         </p>
         <div id="cart-conflict-details" style="background: rgba(133, 100, 4, 0.1); padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.9rem; color: #856404;"></div>
@@ -637,18 +633,15 @@
         
         // If stores already loaded, return
         if (config.stores && Object.keys(config.stores).length > 0) {
-          console.log(`🔍 [CART VALIDATION] Stores already loaded: ${Object.keys(config.stores).length} store(s)`);
           return true;
         }
         
         // Try to load from JSON script tag
         const locationsScript = document.getElementById('shopify-locations-data');
-        console.log(`🔍 [CART VALIDATION] Looking for shopify-locations-data script tag...`, locationsScript ? 'Found' : 'Not found');
         
         if (locationsScript) {
           try {
             const locations = JSON.parse(locationsScript.textContent);
-            console.log(`🔍 [CART VALIDATION] Found ${locations.length} location(s) in JSON script tag`);
             
             // Initialize CONFIG if it doesn't exist
             if (!window.JoelsStoreSelectorConfig) {
@@ -672,13 +665,10 @@
               };
             });
             
-            console.log(`✅ [CART VALIDATION] Loaded ${Object.keys(window.JoelsStoreSelectorConfig.stores).length} store(s) from JSON script`);
             return true;
           } catch (e) {
-            console.error('🔍 [CART VALIDATION] Error parsing locations JSON:', e);
+            // Error parsing locations JSON
           }
-        } else {
-          console.log('🔍 [CART VALIDATION] No shopify-locations-data script tag found');
         }
         
         return false;
@@ -686,7 +676,6 @@
       
       // Main function: Check if ANY single location can fulfill ALL cart items
       async function checkForLocationConflict() {
-        console.log('🔍 [CART VALIDATION] Starting location conflict check...');
         initAttempts++;
         
         // Try to load stores from JSON script tag first (synchronous)
@@ -695,51 +684,37 @@
         // Wait for store config to load
         const config = window.JoelsStoreSelectorConfig || {};
         if (!config.stores || Object.keys(config.stores).length === 0) {
-          console.log(`🔍 [CART VALIDATION] No stores loaded yet (attempt ${initAttempts}/${maxAttempts})`);
           if (initAttempts < maxAttempts) {
             setTimeout(checkForLocationConflict, 500);
-          } else {
-            console.warn('🔍 [CART VALIDATION] Store config not loaded after max attempts - validation skipped');
           }
           return;
         }
         
-        console.log(`🔍 [CART VALIDATION] Store config loaded: ${Object.keys(config.stores).length} store(s)`, Object.keys(config.stores));
-        
         // Get cart data
         const cartData = await fetchCartData();
-        console.log('🔍 [CART VALIDATION] Cart data:', cartData);
         
         if (!cartData || !cartData.items || cartData.items.length < 2) {
-          console.log(`🔍 [CART VALIDATION] No conflict check needed: ${cartData?.items?.length || 0} item(s) in cart`);
           // No conflict possible with 0-1 items - hide warning and enable checkout
           hideConflictWarning();
           setCheckoutButtonState(true);
           return;
         }
         
-        console.log(`🔍 [CART VALIDATION] Checking ${cartData.items.length} item(s) against ${Object.keys(config.stores).length} store(s)`);
-        
         // Check if ANY single location can fulfill ALL items
         const storeHandles = Object.keys(config.stores);
         let foundStoreWithAllItems = false;
         
         for (const storeHandle of storeHandles) {
-          console.log(`🔍 [CART VALIDATION] Checking store: ${storeHandle}`);
           let allAvailable = true;
           
           for (const item of cartData.items) {
             if (!item.variant_id) {
-              console.log(`🔍 [CART VALIDATION] Skipping item (no variant_id):`, item.product_title);
               continue;
             }
-            console.log(`🔍 [CART VALIDATION] Checking item "${item.product_title}" (variant: ${item.variant_id}) at store "${storeHandle}"`);
             const isAvailable = await checkItemAvailabilityAtStore(item.variant_id, storeHandle);
-            console.log(`🔍 [CART VALIDATION] Item "${item.product_title}" available at "${storeHandle}": ${isAvailable}`);
             
             if (!isAvailable) {
               allAvailable = false;
-              console.log(`🔍 [CART VALIDATION] Store "${storeHandle}" cannot fulfill all items (missing: ${item.product_title})`);
               break;
             }
           }
@@ -747,19 +722,16 @@
           if (allAvailable) {
             // Found a store that can fulfill all items - NO CONFLICT
             foundStoreWithAllItems = true;
-            console.log(`✅ [CART VALIDATION] Store "${storeHandle}" can fulfill ALL items - NO CONFLICT`);
             break;
           }
         }
         
         if (foundStoreWithAllItems) {
           // No conflict - hide warning and enable checkout
-          console.log('✅ [CART VALIDATION] Result: NO CONFLICT - hiding warning, enabling checkout');
           hideConflictWarning();
           setCheckoutButtonState(true);
         } else {
           // CONFLICT: No single location can fulfill all items - show warning and disable checkout
-          console.log('⚠️ [CART VALIDATION] Result: CONFLICT - no single store can fulfill all items - showing warning, disabling checkout');
           showConflictWarning(cartData.items, config.stores);
           setCheckoutButtonState(false);
         }
@@ -768,20 +740,13 @@
       // Fetch cart data
       async function fetchCartData() {
         try {
-          console.log('🔍 [CART VALIDATION] Fetching cart data from /cart.js...');
           const response = await fetch('/cart.js');
           if (response.ok) {
             const data = await response.json();
-            console.log('🔍 [CART VALIDATION] Cart data fetched:', {
-              itemCount: data.items?.length || 0,
-              items: data.items?.map(i => ({ title: i.product_title, variant_id: i.variant_id })) || []
-            });
             return data;
-          } else {
-            console.warn('🔍 [CART VALIDATION] Failed to fetch cart data:', response.status, response.statusText);
           }
         } catch (error) {
-          console.error('🔍 [CART VALIDATION] Error fetching cart data:', error);
+          // Error fetching cart data
         }
         return null;
       }
@@ -792,8 +757,6 @@
           const baseUrl = window.Shopify?.routes?.root_url || '/';
           const url = `${baseUrl}variants/${variantId}/?section_id=helper-pickup-availability-compact`;
           
-          console.log(url, `🔍 [CART VALIDATION] Fetching variant availability: ${url}`);
-          
           let response;
           try {
             response = await fetch(url, {
@@ -802,7 +765,6 @@
             });
           } catch (fetchError) {
             // CORS or network error - return false (item not available) as safe fallback
-            console.error(`🔍 [CART VALIDATION] Fetch error for variant ${variantId}:`, fetchError);
             if (fetchError.name === 'TypeError' || fetchError.message.includes('CORS') || fetchError.message.includes('Failed to fetch')) {
               return false;
             }
@@ -810,14 +772,10 @@
           }
           
           if (!response.ok) {
-            console.warn(`🔍 [CART VALIDATION] Variant ${variantId} fetch not OK:`, response.status, response.statusText);
             return false;
           }
           
           const html = await response.text();
-          
-          // Log raw HTML to debug translation/rendering issues
-          console.log(`🔍 [CART VALIDATION] Raw HTML response (first 500 chars):`, html.substring(0, 500));
           
           const parser = new DOMParser();
           const doc = parser.parseFromString(html, 'text/html');
@@ -825,7 +783,6 @@
           // Try to find the section element
           const sectionElement = doc.querySelector('.shopify-section');
           if (!sectionElement) {
-            console.warn(`🔍 [CART VALIDATION] No .shopify-section found in response. Full HTML:`, html);
             return false;
           }
           
@@ -833,36 +790,20 @@
           const storeInfo = config.stores && config.stores[storeHandle];
           
           if (!storeInfo || !storeInfo.patterns) {
-            console.warn(`🔍 [CART VALIDATION] Store info not found for "${storeHandle}" or no patterns defined`);
             return false;
           }
           
-          console.log(`🔍 [CART VALIDATION] Store "${storeHandle}" patterns:`, storeInfo.patterns);
-          
           // Search for alerts within the section element
           const alerts = sectionElement.querySelectorAll('.pickup-availability-alert');
-          console.log(`🔍 [CART VALIDATION] Found ${alerts.length} availability alert(s) in response`);
-          
-          // Log all alert HTML for debugging
-          alerts.forEach((alert, index) => {
-            console.log(`🔍 [CART VALIDATION] Alert ${index + 1}:`, {
-              outerHTML: alert.outerHTML,
-              dataStore: alert.getAttribute('data-store'),
-              hasDefaultUnavailable: alert.hasAttribute('data-default-unavailable'),
-              hasDefaultStore: alert.hasAttribute('data-default-store')
-            });
-          });
           
           for (const alert of alerts) {
             // Skip default/unavailable placeholders
             if (alert.hasAttribute('data-default-unavailable') || alert.hasAttribute('data-default-store')) {
-              console.log(`🔍 [CART VALIDATION] Skipping default/unavailable alert`);
               continue;
             }
             
             const storeNameEl = alert.querySelector('.pickup-availability-alert-store');
             if (!storeNameEl) {
-              console.log(`🔍 [CART VALIDATION] Alert missing store name element`);
               continue;
             }
             
@@ -872,14 +813,11 @@
             // The alert span should have EITHER alert--success (available) OR alert--note (unavailable)
             const alertSpan = alert.querySelector('.alert');
             if (!alertSpan) {
-              console.log(`🔍 [CART VALIDATION] Alert missing .alert span element`);
               continue;
             }
             
             const hasSuccessClass = alertSpan.classList.contains('alert--success');
             const hasNoteClass = alertSpan.classList.contains('alert--note');
-            const alertText = alertSpan.textContent.trim();
-            const allClasses = Array.from(alertSpan.classList);
             
             // CRITICAL: Only available if it has alert--success AND does NOT have alert--note
             // Shopify shows ALL locations with pickup enabled, even if inventory is 0
@@ -891,17 +829,6 @@
             // Additional safety: if alert--note exists at all, treat as unavailable
             // (even if alert--success also exists, which shouldn't happen but let's be safe)
             const isDefinitelyUnavailable = hasNoteClass === true;
-            
-            console.log(`🔍 [CART VALIDATION] Alert location: "${locationName}"`, {
-              hasSuccessClass: hasSuccessClass,
-              hasNoteClass: hasNoteClass,
-              isAvailable: isAvailable,
-              isDefinitelyUnavailable: isDefinitelyUnavailable,
-              allClasses: allClasses,
-              alertClasses: alertSpan.className,
-              alertText: alertText.substring(0, 50),
-              fullAlertHTML: alert.outerHTML.substring(0, 300)
-            });
             
             // Check if this location matches the store we're checking
             // CRITICAL: Use EXACT handle matching only - no pattern matching to avoid false positives
@@ -927,82 +854,51 @@
             const normalizedLocationHandle = normalizeHandle(locationHandleRaw);
             const normalizedStoreHandle = normalizeHandle(storeHandle);
             
-            console.log(`🔍 [CART VALIDATION] Comparing handles (EXACT MATCH ONLY):`, {
-              locationHandleRaw: locationHandleRaw,
-              locationHandleNormalized: normalizedLocationHandle,
-              storeHandleRaw: storeHandle,
-              storeHandleNormalized: normalizedStoreHandle,
-              locationName: locationName,
-              dataStoreAttr: dataStoreAttr,
-              exactMatch: normalizedLocationHandle === normalizedStoreHandle
-            });
-            
             // EXACT match required - store handles must match EXACTLY character-by-character after normalization
             // This ensures "curbside-pickup" doesn't match "in-store-pickup"
             // NO pattern matching, NO substring matching - only exact normalized handle match
             const matches = normalizedLocationHandle === normalizedStoreHandle;
             
-            console.log(`🔍 [CART VALIDATION] Location matching check:`, {
-              locationHandle: normalizedLocationHandle,
-              storeHandle: normalizedStoreHandle,
-              matches: matches,
-              storePatterns: storeInfo.patterns
-            });
-            
             if (!matches) {
               // Location doesn't match - continue to next alert
-              console.log(`🔍 [CART VALIDATION] Location "${locationName}" does not match store "${storeHandle}" - skipping`);
               continue;
             }
             
             // Location matches - now check availability
             if (isDefinitelyUnavailable) {
               // Location matches but item is definitely NOT available (has alert--note)
-              console.log(`❌ [CART VALIDATION] Variant ${variantId} is NOT available at store "${storeHandle}" - location exists but NO INVENTORY (has alert--note class)`);
               // Don't return here - continue checking other locations for this variant
-              // But log clearly that this specific location match failed due to no inventory
               continue;
             }
             
             if (isAvailable) {
               // Item IS available at this location (has inventory)
-              console.log(`✅ [CART VALIDATION] Variant ${variantId} IS available at store "${storeHandle}" - CONFIRMED: has alert--success, no alert--note`);
               return true;
             } else {
               // Location matches but unclear availability status - treat as unavailable for safety
-              console.log(`❌ [CART VALIDATION] Variant ${variantId} is NOT available at store "${storeHandle}" - location exists but missing alert--success or has unclear status`);
               // Don't return here - continue checking other locations
               continue;
             }
           }
-          
-          console.log(`❌ [CART VALIDATION] Variant ${variantId} NOT available at store "${storeHandle}" - checked all alerts, none had alert--success for this store`);
         } catch (error) {
-          console.error(`🔍 [CART VALIDATION] Error checking variant ${variantId} at store "${storeHandle}":`, error);
+          // Error checking variant
         }
         return false;
       }
       
       // Show the conflict warning
       function showConflictWarning(cartItems, stores) {
-        console.log('⚠️ [CART VALIDATION] showConflictWarning called with:', {
-          itemCount: cartItems.length,
-          items: cartItems.map(i => i.product_title),
-          stores: Object.keys(stores)
-        });
-        
         const conflictDiv = document.getElementById('cart-location-conflict');
         const detailsDiv = document.getElementById('cart-conflict-details');
         
         if (!conflictDiv) {
-          console.error('⚠️ [CART VALIDATION] Conflict div not found in DOM!');
           return;
         }
         
-        // Build details about items
+        // Build details about item/s
         if (detailsDiv) {
           detailsDiv.innerHTML = `
-            <strong>Items in your cart:</strong>
+            <strong>Item/s in your cart:</strong>
             <ul style="margin: 0.5rem 0 0 1.5rem; padding: 0;">
               ${cartItems.map(item => `<li>${item.product_title}</li>`).join('')}
             </ul>
@@ -1010,18 +906,13 @@
         }
         
         conflictDiv.style.display = 'block';
-        console.log('✅ [CART VALIDATION] Conflict warning displayed');
       }
       
       // Hide the conflict warning
       function hideConflictWarning() {
-        console.log('🔍 [CART VALIDATION] hideConflictWarning called');
         const conflictDiv = document.getElementById('cart-location-conflict');
         if (conflictDiv) {
           conflictDiv.style.display = 'none';
-          console.log('✅ [CART VALIDATION] Conflict warning hidden');
-        } else {
-          console.warn('🔍 [CART VALIDATION] Conflict div not found when trying to hide');
         }
       }
       
@@ -1228,7 +1119,7 @@
       }
       
       // Create and show loading modal
-      function showLoadingModal(message = 'Checking item availability...') {
+      function showLoadingModal(message = 'Checking item/s availability...') {
         // Remove existing loading modal if any
         const existingModal = document.getElementById('cart-loading-modal');
         if (existingModal) existingModal.remove();
@@ -1273,10 +1164,8 @@
         
         if (!cartData || !cartData.items || cartData.items.length === 0) return;
         
-        console.log(`🔍 [CART VALIDATION] Store selected: ${selectedStore}, checking item availability...`);
-        
         // Show loading modal
-        const loadingModal = showLoadingModal('Checking item availability...');
+        const loadingModal = showLoadingModal('Checking item/s availability...');
         
         try {
           // Check availability at selected store
@@ -1297,7 +1186,7 @@
             }
           }
           
-          // Check availability at ALL stores to find which has most items (by quantity)
+          // Check availability at ALL stores to find which has most item/s (by quantity)
           const config = window.JoelsStoreSelectorConfig || {};
           const allStores = Object.keys(config.stores || {});
           const storeItemCounts = {};
@@ -1314,7 +1203,7 @@
             storeItemCounts[storeHandle] = availableQuantity;
           }
           
-          // Find store with most available items (by quantity)
+          // Find store with most available item/s (by quantity)
           let maxItemsStore = null;
           let maxItemsCount = selectedStoreQuantity;
           
@@ -1328,14 +1217,10 @@
           // Hide loading modal before showing dialogs
           hideLoadingModal();
           
-          console.log(`🔍 [CART VALIDATION] Available quantity at ${selectedStore}: ${selectedStoreQuantity}/${totalCartQuantity}, Max quantity at any store: ${maxItemsCount}`);
-          
-          // Show warning if another store has more items (by quantity)
+          // Show warning if another store has more item/s (by quantity)
           if (maxItemsStore && maxItemsStore !== selectedStore && maxItemsCount > selectedStoreQuantity) {
             const maxItemsStoreName = config.stores[maxItemsStore]?.name || maxItemsStore;
             const selectedStoreName = config.stores[selectedStore]?.name || selectedStore;
-            
-            console.log(`⚠️ [CART VALIDATION] Better location found: ${maxItemsStoreName} (${maxItemsCount} items) vs ${selectedStoreName} (${selectedStoreQuantity} items)`);
             
             // Show friendly modal asking to switch to better location
             showBetterLocationModal(
@@ -1352,10 +1237,10 @@
           }
           
           if (unavailableItems.length > 0) {
-            // Show confirmation to remove items
+            // Show confirmation to remove item/s
             showRemovalConfirmation(unavailableItems, selectedStore);
           } else {
-            // All items available - check conflict again and reload
+            // All item/s available - check conflict again and reload
             // This will enable checkout if no conflict remains
             setTimeout(async () => {
               await checkForLocationConflict();
@@ -1363,9 +1248,8 @@
             }, 500);
           }
         } catch (error) {
-          console.error('Error checking item availability:', error);
           hideLoadingModal();
-          alert('An error occurred while checking item availability. Please try again.');
+          alert('An error occurred while checking item/s availability. Please try again.');
         }
       });
       
@@ -1408,31 +1292,31 @@
                 </svg>
               </div>
               <div>
-                <h3 style="margin: 0 0 0.25rem 0; color: #333; font-size: 1.25rem;">More Items Available!</h3>
+                <h3 style="margin: 0 0 0.25rem 0; color: #333; font-size: 1.25rem;">More Item/s Available!</h3>
                 <p style="margin: 0; color: #666; font-size: 0.9rem;">We found a better pickup location for you</p>
               </div>
             </div>
             
             <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #856404;">
               <p style="margin: 0 0 1rem 0; color: #333; line-height: 1.6;">
-                <strong style="color: #856404;">${decodeHtml(selectedStoreName)}</strong> has <strong>${selectedStoreItemCount} of ${totalItems} items</strong> available.
+                <strong style="color: #856404;">${decodeHtml(selectedStoreName)}</strong> has <strong>${selectedStoreItemCount} of ${totalItems} item/s</strong> available.
               </p>
               <p style="margin: 0; color: #333; line-height: 1.6;">
-                <strong style="color: #28a745;">✓ ${decodeHtml(betterStoreName)}</strong> has <strong style="color: #28a745;">${betterStoreItemCount} of ${totalItems} items</strong> available 
-                (<strong>+${itemDifference} more item${itemDifference > 1 ? 's' : ''}</strong>)!
+                <strong style="color: #28a745;">✓ ${decodeHtml(betterStoreName)}</strong> has <strong style="color: #28a745;">${betterStoreItemCount} of ${totalItems} item/s</strong> available 
+                (<strong>+${itemDifference} more item/s</strong>)!
               </p>
             </div>
             
             <p style="margin: 0 0 1.5rem 0; color: #666; font-size: 0.95rem; line-height: 1.5;">
-              Would you like to switch to <strong>${decodeHtml(betterStoreName)}</strong> to get more items from your cart?
+              Would you like to switch to <strong>${decodeHtml(betterStoreName)}</strong> to get more item/s from your cart?
             </p>
             
             <div style="display: flex; gap: 1rem;">
               <button type="button" id="keep-current-location" style="flex: 1; padding: 0.875rem; background: #e5e5e5; color: #333; border: none; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: all 0.2s;">
-                Continue with ${selectedStoreItemCount} Items
+                Continue with ${selectedStoreItemCount} Item/s
               </button>
               <button type="button" id="switch-to-better-location" style="flex: 1; padding: 0.875rem; background: #70a062; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: all 0.2s; box-shadow: 0 2px 8px rgba(112, 160, 98, 0.3);">
-                Switch to ${betterStoreItemCount} Items
+                Switch to ${betterStoreItemCount} Item/s
               </button>
             </div>
           </div>
@@ -1462,10 +1346,8 @@
           switchBtn.style.boxShadow = '0 2px 8px rgba(112, 160, 98, 0.3)';
         });
         
-        // Keep current location - directly remove unavailable items
+        // Keep current location - directly remove unavailable item/s
         keepBtn.addEventListener('click', async () => {
-          console.log(`👤 User chose to keep ${selectedStore} with ${selectedStoreItemCount} items`);
-          
           // Disable buttons and show loading state
           keepBtn.disabled = true;
           switchBtn.disabled = true;
@@ -1480,11 +1362,11 @@
                 <animate attributeName="stroke-dashoffset" dur="2s" values="0;-15.708;-31.416;-31.416" repeatCount="indefinite"/>
               </circle>
             </svg>
-            Removing items...
+            Removing item/s...
           `;
           
           try {
-            // Remove unavailable items from cart if any
+            // Remove unavailable item/s from cart if any
             if (unavailableItems.length > 0) {
               for (const item of unavailableItems) {
                 await fetch('/cart/change.js', {
@@ -1498,20 +1380,17 @@
             modal.remove();
             window.location.reload();
           } catch (error) {
-            console.error('Error removing items:', error);
             keepBtn.innerHTML = originalHTML;
             keepBtn.disabled = false;
             switchBtn.disabled = false;
             switchBtn.style.opacity = '1';
             switchBtn.style.cursor = 'pointer';
-            alert('An error occurred while removing items. Please try again.');
+            alert('An error occurred while removing item/s. Please try again.');
           }
         });
         
-        // Switch to better location - switch and remove unavailable items
+        // Switch to better location - switch and remove unavailable item/s
         switchBtn.addEventListener('click', async () => {
-          console.log(`👤 User switched to ${betterStore} with ${betterStoreItemCount} items`);
-          
           // Disable buttons and show loading state
           switchBtn.disabled = true;
           keepBtn.disabled = true;
@@ -1547,7 +1426,7 @@
               }
             }
             
-            // Remove unavailable items at the new location
+            // Remove unavailable item/s at the new location
             if (itemsToRemove.length > 0) {
               for (const item of itemsToRemove) {
                 await fetch('/cart/change.js', {
@@ -1561,7 +1440,6 @@
             modal.remove();
             window.location.reload();
           } catch (error) {
-            console.error('Error switching location:', error);
             switchBtn.innerHTML = originalHTML;
             switchBtn.disabled = false;
             keepBtn.disabled = false;
@@ -1640,7 +1518,7 @@
           `;
           
           try {
-            // Remove unavailable items from cart
+            // Remove unavailable item/s from cart
             for (const item of unavailableItems) {
               await fetch('/cart/change.js', {
                 method: 'POST',
@@ -1651,41 +1529,32 @@
             modal.remove();
             window.location.reload();
           } catch (error) {
-            console.error('Error removing items:', error);
             confirmBtn.innerHTML = originalHTML;
             confirmBtn.disabled = false;
             cancelBtn.disabled = false;
             cancelBtn.style.opacity = '1';
             cancelBtn.style.cursor = 'pointer';
-            alert('An error occurred while removing items. Please try again.');
+            alert('An error occurred while removing item/s. Please try again.');
           }
         });
       }
       
       // Initialize on page load
-      console.log('🔍 [CART VALIDATION] Script initialized, readyState:', document.readyState);
-      
       // Disable checkout button initially until conflict check completes
       setCheckoutButtonState(false);
       
       if (document.readyState === 'loading') {
-        console.log('🔍 [CART VALIDATION] Waiting for DOMContentLoaded...');
         document.addEventListener('DOMContentLoaded', () => {
-          console.log('🔍 [CART VALIDATION] DOMContentLoaded fired - setting up validation');
           setupResolveButton();
-          console.log('🔍 [CART VALIDATION] Scheduling conflict check in 1 second...');
           setTimeout(checkForLocationConflict, 1000);
         });
       } else {
-        console.log('🔍 [CART VALIDATION] DOM already loaded - setting up validation immediately');
         setupResolveButton();
-        console.log('🔍 [CART VALIDATION] Scheduling conflict check in 1 second...');
         setTimeout(checkForLocationConflict, 1000);
       }
       
       // Re-check when cart updates
       document.addEventListener('cart-updated', function() {
-        console.log('🔍 [CART VALIDATION] Cart updated event received - re-checking in 1 second...');
         setTimeout(checkForLocationConflict, 1000);
       });
     })();
