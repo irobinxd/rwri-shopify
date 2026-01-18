@@ -2,51 +2,72 @@
   Renders a product icon with a label.
   
   Accepts:
-  - icon: {Object} the image object.
+  - icon: {Object} the image object or URL string.
   - label: {String} label text.
   - style: {String} icon style (tooltip, compact).
   
   Usage:
   {% render 'product-icon-label', icon: product.icon, label: product.title, style: 'tooltip' %}
+  
+  Icon images are auto-loaded by label name from:
+  1. Content > Files (e.g., "glutten-free.png" for label "Glutten-free")
+  2. Theme assets folder as fallback
 {%- endcomment -%}
 
 {%- liquid
   
-  if icon == blank
+  assign icon_source = blank
+  assign icon_from_files = blank
+  assign icon_from_assets = blank
+  
+  if icon != blank
+    assign icon_source = icon
+  elsif label != blank
     assign icon_name = label | handle | append: '.png'
-    assign icon_image = images[icon_name] 
-    if icon_image != blank  
-      assign icon = icon_image
+    assign icon_from_files = images[icon_name]
+    if icon_from_files != blank
+      assign icon_source = icon_from_files
+    else
+      assign icon_from_assets = icon_name | asset_url
     endif
   endif
   
   assign show_icon = true
-  if style == 'tooltip' and icon == blank
+  if style == 'tooltip' and icon_source == blank and icon_from_assets == blank and label == blank
     assign show_icon = false
-  elsif style == 'compact' and icon == blank and label == blank
+  elsif style == 'compact' and icon_source == blank and icon_from_assets == blank and label == blank
     assign show_icon = false
   endif 
   
 -%}
 
-{%- if show_icon -%}
+{%- if show_icon and label != blank -%}
 
   <span class="text-with-icon text-with-icon--large text-with-icon--{{ style }}" 
-    {% if style == 'tooltop ' %} {% unless label == blank %}style="cursor:pointer"{% endunless %} {% endif %}
+    {% if style == 'tooltip' %} {% unless label == blank %}style="cursor:pointer"{% endunless %} {% endif %}
   >
 
-    {%- if icon != blank -%}
+    {%- if icon_source != blank -%}
       <span class="text-with-icon__icon" aria-hidden="true">
-        <img src="{{ icon | image_url: width: 32, height: 32, crop: 'center' }}"
+        <img src="{{ icon_source | image_url: width: 32, height: 32, crop: 'center' }}"
           srcset="
-            {{ icon | image_url: width: 32, height: 32, crop: 'center' }} 32w,
-            {{ icon | image_url: width: 64, height: 64, crop: 'center' }} 64w,
-            {{ icon | image_url: width: 96, height: 96, crop: 'center' }} 96w,
-            {{ icon | image_url: width: 144, height: 144, crop: 'center' }} 144w
+            {{ icon_source | image_url: width: 32, height: 32, crop: 'center' }} 32w,
+            {{ icon_source | image_url: width: 64, height: 64, crop: 'center' }} 64w,
+            {{ icon_source | image_url: width: 96, height: 96, crop: 'center' }} 96w,
+            {{ icon_source | image_url: width: 144, height: 144, crop: 'center' }} 144w
           "
           sizes="{%- if labels_style == 'grid' -%} 48px {%- else -%} 32px {%- endif -%}" width="32" height="32"
           loading="lazy"
-          alt="{{ icon.alt | escape }}"
+          alt="{{ label | escape }}"
+        />
+      </span>
+    {%- elsif icon_from_assets != blank -%}
+      <span class="text-with-icon__icon" aria-hidden="true">
+        <img src="{{ icon_from_assets }}"
+          width="32" height="32"
+          loading="lazy"
+          alt="{{ label | escape }}"
+          onerror="this.parentElement.style.display='none'"
         />
       </span>
     {%- endif -%}

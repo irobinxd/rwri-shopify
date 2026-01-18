@@ -592,13 +592,13 @@
 
         {%- when 'price' -%}
 
-          <div class="text-size--xlarge" {{ block.shopify_attributes }} data-update-block="price-compact">
+          <div class="text-size--heading" {{ block.shopify_attributes }} data-update-block="price-compact">
             <span class="show-block-if-variant-selected">
-              {%- render 'product-price', variant: current_variant, target: current_variant, id: section.id -%}
+              {%- render 'product-price', variant: current_variant, target: current_variant, text_size_class: 'text-size--heading', show_saving: true, id: section.id -%}
             </span>
             {%- unless default_to_first_variant -%}
               <span class="show-block-if-variant-not-selected-yet">
-                {%- render 'product-price', variant: current_variant, target: product, product_price_varies: product.price_varies, id: section.id -%}
+                {%- render 'product-price', variant: current_variant, target: product, product_price_varies: product.price_varies, text_size_class: 'text-size--heading', show_saving: true, id: section.id -%}
               </span>
             {%- endunless -%}
           </div>
@@ -1153,29 +1153,117 @@
 
           {%- liquid
             assign show_block = true
-            if block.settings.hide_block_if == true and block.settings.icon_1_image == blank and block.settings.icon_1_label == blank
+            
+            comment
+              Get icons from metafields (same as product cards, but show 5 icons on product page)
+            endcomment
+            
+            assign icon_1_image = blank
+            assign icon_1_label = blank
+            if settings.product_icon_1_image != blank
+              assign image_keys = settings.product_icon_1_image | split: '.'
+              if image_keys.size == 2
+                assign icon_1_image = product.metafields[image_keys[0]][image_keys[1]]
+              endif
+            endif
+            if settings.product_icon_1_label != blank
+              assign label_keys = settings.product_icon_1_label | split: '.'
+              if label_keys.size == 2
+                assign icon_1_label = product.metafields[label_keys[0]][label_keys[1]]
+              endif
+            endif
+            
+            assign icon_2_image = blank
+            assign icon_2_label = blank
+            if settings.product_icon_2_image != blank
+              assign image_keys = settings.product_icon_2_image | split: '.'
+              if image_keys.size == 2
+                assign icon_2_image = product.metafields[image_keys[0]][image_keys[1]]
+              endif
+            endif
+            if settings.product_icon_2_label != blank
+              assign label_keys = settings.product_icon_2_label | split: '.'
+              if label_keys.size == 2
+                assign icon_2_label = product.metafields[label_keys[0]][label_keys[1]]
+              endif
+            endif
+            
+            assign icon_3_image = blank
+            assign icon_3_label = blank
+            if settings.product_icon_3_image != blank
+              assign image_keys = settings.product_icon_3_image | split: '.'
+              if image_keys.size == 2
+                assign icon_3_image = product.metafields[image_keys[0]][image_keys[1]]
+              endif
+            endif
+            if settings.product_icon_3_label != blank
+              assign label_keys = settings.product_icon_3_label | split: '.'
+              if label_keys.size == 2
+                assign icon_3_label = product.metafields[label_keys[0]][label_keys[1]]
+              endif
+            endif
+            
+            assign icon_4_image = blank
+            assign icon_4_label = blank
+            if settings.product_icon_4_image != blank
+              assign image_keys = settings.product_icon_4_image | split: '.'
+              if image_keys.size == 2
+                assign icon_4_image = product.metafields[image_keys[0]][image_keys[1]]
+              endif
+            endif
+            if settings.product_icon_4_label != blank
+              assign label_keys = settings.product_icon_4_label | split: '.'
+              if label_keys.size == 2
+                assign icon_4_label = product.metafields[label_keys[0]][label_keys[1]]
+              endif
+            endif
+            
+            assign icon_5_image = blank
+            assign icon_5_label = blank
+            if settings.product_icon_5_image != blank
+              assign image_keys = settings.product_icon_5_image | split: '.'
+              if image_keys.size == 2
+                assign icon_5_image = product.metafields[image_keys[0]][image_keys[1]]
+              endif
+            endif
+            if settings.product_icon_5_label != blank
+              assign label_keys = settings.product_icon_5_label | split: '.'
+              if label_keys.size == 2
+                assign icon_5_label = product.metafields[label_keys[0]][label_keys[1]]
+              endif
+            endif
+            
+            assign has_any_icon = false
+            if icon_1_label != blank or icon_2_label != blank or icon_3_label != blank or icon_4_label != blank or icon_5_label != blank
+              assign has_any_icon = true
+            endif
+            
+            if block.settings.hide_block_if == true and has_any_icon == false
               assign show_block = false
             endif
           -%}
 
-          {%- if show_block -%}
+          {%- if show_block and has_any_icon -%}
           
-            {% capture block_content %}
-              <div class="product-labels product-labels--style-{{ block.settings.labels_style }}">
-                {%- liquid
-                  render 'product-icon-label', icon: block.settings.icon_1_image, label: block.settings.icon_1_label, style: 'compact', layout: block.settings.labels_style
-                  render 'product-icon-label', icon: block.settings.icon_2_image, label: block.settings.icon_2_label, style: 'compact', layout: block.settings.labels_style
-                  render 'product-icon-label', icon: block.settings.icon_3_image, label: block.settings.icon_3_label, style: 'compact', layout: block.settings.labels_style
-                  render 'product-icon-label', icon: block.settings.icon_4_image, label: block.settings.icon_4_label, style: 'compact', layout: block.settings.labels_style
-                  render 'product-icon-label', icon: block.settings.icon_5_image, label: block.settings.icon_5_label, style: 'compact', layout: block.settings.labels_style
-                  render 'product-icon-label', icon: block.settings.icon_6_image, label: block.settings.icon_6_label, style: 'compact', layout: block.settings.labels_style
-                  render 'product-icon-label', icon: block.settings.icon_7_image, label: block.settings.icon_7_label, style: 'compact', layout: block.settings.labels_style
-                  render 'product-icon-label', icon: block.settings.icon_8_image, label: block.settings.icon_8_label, style: 'compact', layout: block.settings.labels_style
-                -%}
-              </div>
-            {% endcapture %}
-
-            {%- render 'product-block', title: block.settings.title, subtitle: block.settings.subtitle, text_color: block.settings.text_color, collapsible: block.settings.collapsible, background_color: block.settings.bg_color, darken_header: block.settings.darken_header, block_id: block.id, opened_by_default: block.settings.opened_by_default, image: block.settings.image, tooltip_info: block.settings.tooltip_info, layout: block.settings.layout, content: block_content, css_class: "card-widget--no-padding", shopify_attributes: block.shopify_attributes -%}
+            <div class="product-item__icons" {{ block.shopify_attributes }}>
+              {%- liquid
+                if icon_1_label != blank or icon_1_image != blank
+                  render 'product-icon-label', icon: icon_1_image, label: icon_1_label, style: 'tooltip'
+                endif
+                if icon_2_label != blank or icon_2_image != blank
+                  render 'product-icon-label', icon: icon_2_image, label: icon_2_label, style: 'tooltip'
+                endif
+                if icon_3_label != blank or icon_3_image != blank
+                  render 'product-icon-label', icon: icon_3_image, label: icon_3_label, style: 'tooltip'
+                endif
+                if icon_4_label != blank or icon_4_image != blank
+                  render 'product-icon-label', icon: icon_4_image, label: icon_4_label, style: 'tooltip'
+                endif
+                if icon_5_label != blank or icon_5_image != blank
+                  render 'product-icon-label', icon: icon_5_image, label: icon_5_label, style: 'tooltip'
+                endif
+              -%}
+            </div>
 
           {%- endif -%}
 

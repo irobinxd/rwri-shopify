@@ -16,7 +16,26 @@
 
 {%- assign product_variant = product.selected_or_first_available_variant -%}
 
-<div id="product-item-{{ product.id }}" class="product-item card" data-js-product-item data-product-id="{{ product.id }}" data-variant-id="{{ product_variant.id }}">
+{%- liquid
+  # Collect icon labels for filtering
+  assign all_icon_labels = ''
+  for i in (1..5)
+    assign label_setting = 'product_icon_' | append: i | append: '_label'
+    if settings[label_setting] != blank
+      assign label_keys = settings[label_setting] | split: '.'
+      if label_keys.size == 2
+        assign label_value = product.metafields[label_keys[0]][label_keys[1]]
+        if label_value != blank
+          if all_icon_labels != ''
+            assign all_icon_labels = all_icon_labels | append: '|'
+          endif
+          assign all_icon_labels = all_icon_labels | append: label_value
+        endif
+      endif
+    endif
+  endfor
+-%}
+<div id="product-item-{{ product.id }}" class="product-item card" data-js-product-item data-product-id="{{ product.id }}" data-variant-id="{{ product_variant.id }}" data-icon-labels="{{ all_icon_labels | escape }}">
 
   {%- liquid
     
@@ -171,52 +190,77 @@
             {%- liquid
 
               if settings.product_icon_1_image != blank or settings.product_icon_1_label != blank
-                assign image_metafield_keys = settings.product_icon_1_image | split: '.'
-                assign icon_1_image = product.metafields[image_metafield_keys[0]][image_metafield_keys[1]] | image_url
-                assign label_metafield_keys = settings.product_icon_1_label | split: '.'
-                assign icon_1_image_label = product.metafields[label_metafield_keys[0]][label_metafield_keys[1]]
-                render 'product-icon-label', icon: icon_1_image, label: icon_1_image_label, style: 'tooltip'
+                assign icon_1_image = blank
+                if settings.product_icon_1_image != blank
+                  assign image_metafield_keys = settings.product_icon_1_image | split: '.'
+                  if image_metafield_keys.size == 2
+                    assign icon_1_image = product.metafields[image_metafield_keys[0]][image_metafield_keys[1]]
+                    if icon_1_image != blank
+                      assign icon_1_image = icon_1_image | image_url
+                    endif
+                  endif
+                endif
+                assign icon_1_image_label = blank
+                if settings.product_icon_1_label != blank
+                  assign label_metafield_keys = settings.product_icon_1_label | split: '.'
+                  if label_metafield_keys.size == 2
+                    assign icon_1_image_label = product.metafields[label_metafield_keys[0]][label_metafield_keys[1]]
+                  endif
+                endif
+                if icon_1_image != blank or icon_1_image_label != blank
+                  render 'product-icon-label', icon: icon_1_image, label: icon_1_image_label, style: 'tooltip'
+                endif
               endif
 
               if settings.product_icon_2_image != blank or settings.product_icon_2_label != blank
-                assign image_metafield_keys = settings.product_icon_2_image | split: '.'
-                assign icon_2_image = product.metafields[image_metafield_keys[0]][image_metafield_keys[1]] | image_url
-                assign label_metafield_keys = settings.product_icon_2_label | split: '.'
-                assign icon_2_image_label = product.metafields[label_metafield_keys[0]][label_metafield_keys[1]]
-                render 'product-icon-label', icon: icon_2_image, label: icon_2_image_label, style: 'tooltip'
+                assign icon_2_image = blank
+                if settings.product_icon_2_image != blank
+                  assign image_metafield_keys = settings.product_icon_2_image | split: '.'
+                  if image_metafield_keys.size == 2
+                    assign icon_2_image = product.metafields[image_metafield_keys[0]][image_metafield_keys[1]]
+                    if icon_2_image != blank
+                      assign icon_2_image = icon_2_image | image_url
+                    endif
+                  endif
+                endif
+                assign icon_2_image_label = blank
+                if settings.product_icon_2_label != blank
+                  assign label_metafield_keys = settings.product_icon_2_label | split: '.'
+                  if label_metafield_keys.size == 2
+                    assign icon_2_image_label = product.metafields[label_metafield_keys[0]][label_metafield_keys[1]]
+                  endif
+                endif
+                if icon_2_image != blank or icon_2_image_label != blank
+                  render 'product-icon-label', icon: icon_2_image, label: icon_2_image_label, style: 'tooltip'
+                endif
               endif
 
               if settings.product_icon_3_image != blank or settings.product_icon_3_label != blank
-                assign image_metafield_keys = settings.product_icon_3_image | split: '.'
-                assign icon_3_image = product.metafields[image_metafield_keys[0]][image_metafield_keys[1]] | image_url
-                assign label_metafield_keys = settings.product_icon_3_label | split: '.'
-                assign icon_3_image_label = product.metafields[label_metafield_keys[0]][label_metafield_keys[1]]
-                render 'product-icon-label', icon: icon_3_image, label: icon_3_image_label, style: 'tooltip'
+                assign icon_3_image = blank
+                if settings.product_icon_3_image != blank
+                  assign image_metafield_keys = settings.product_icon_3_image | split: '.'
+                  if image_metafield_keys.size == 2
+                    assign icon_3_image = product.metafields[image_metafield_keys[0]][image_metafield_keys[1]]
+                    if icon_3_image != blank
+                      assign icon_3_image = icon_3_image | image_url
+                    endif
+                  endif
+                endif
+                assign icon_3_image_label = blank
+                if settings.product_icon_3_label != blank
+                  assign label_metafield_keys = settings.product_icon_3_label | split: '.'
+                  if label_metafield_keys.size == 2
+                    assign icon_3_image_label = product.metafields[label_metafield_keys[0]][label_metafield_keys[1]]
+                  endif
+                endif
+                if icon_3_image != blank or icon_3_image_label != blank
+                  render 'product-icon-label', icon: icon_3_image, label: icon_3_image_label, style: 'tooltip'
+                endif
               endif
 
-              if settings.product_icon_4_image != blank or settings.product_icon_4_label != blank
-                assign image_metafield_keys = settings.product_icon_4_image | split: '.'
-                assign icon_4_image = product.metafields[image_metafield_keys[0]][image_metafield_keys[1]] | image_url
-                assign label_metafield_keys = settings.product_icon_4_label | split: '.'
-                assign icon_4_image_label = product.metafields[label_metafield_keys[0]][label_metafield_keys[1]]
-                render 'product-icon-label', icon: icon_4_image, label: icon_4_image_label, style: 'tooltip'
-              endif
-
-              if settings.product_icon_5_image != blank or settings.product_icon_5_label != blank
-                assign image_metafield_keys = settings.product_icon_5_image | split: '.'
-                assign icon_5_image = product.metafields[image_metafield_keys[0]][image_metafield_keys[1]] | image_url
-                assign label_metafield_keys = settings.product_icon_5_label | split: '.'
-                assign icon_5_image_label = product.metafields[label_metafield_keys[0]][label_metafield_keys[1]]
-                render 'product-icon-label', icon: icon_5_image, label: icon_5_image_label, style: 'tooltip'
-              endif
-
-              if settings.product_icon_6_image != blank or settings.product_icon_6_label != blank
-                assign image_metafield_keys = settings.product_icon_6_image | split: '.'
-                assign icon_6_image = product.metafields[image_metafield_keys[0]][image_metafield_keys[1]] | image_url
-                assign label_metafield_keys = settings.product_icon_6_label | split: '.'
-                assign icon_6_image_label = product.metafields[label_metafield_keys[0]][label_metafield_keys[1]]
-                render 'product-icon-label', icon: icon_6_image, label: icon_6_image_label, style: 'tooltip'
-              endif
+              comment
+                Product cards show only 3 icons (icons 4-5 are shown only on product page)
+              endcomment
 
             -%}
             {% # theme-check-enable VariableName %}

@@ -504,6 +504,10 @@
           "type": "title",
           "settings": {}
         },
+        "icons_home1": {
+          "type": "icons",
+          "settings": {}
+        },
         "price_PGk4CY": {
           "type": "price",
           "settings": {}
@@ -515,6 +519,7 @@
       },
       "block_order": [
         "title_9y3zVH",
+        "icons_home1",
         "price_PGk4CY",
         "quick_buy_aCwUp4"
       ],
@@ -556,6 +561,10 @@
           "type": "title",
           "settings": {}
         },
+        "icons_home2": {
+          "type": "icons",
+          "settings": {}
+        },
         "price_fVyRdW": {
           "type": "price",
           "settings": {}
@@ -567,6 +576,7 @@
       },
       "block_order": [
         "title_CQCeWT",
+        "icons_home2",
         "price_fVyRdW",
         "quick_buy_FbPCYd"
       ],
@@ -771,6 +781,10 @@
           "type": "title",
           "settings": {}
         },
+        "icons_stl": {
+          "type": "icons",
+          "settings": {}
+        },
         "price_k776ei": {
           "type": "price",
           "settings": {}
@@ -782,6 +796,7 @@
       },
       "block_order": [
         "title_ETkTY4",
+        "icons_stl",
         "price_k776ei",
         "quick_buy_jwDACX"
       ],
@@ -815,6 +830,10 @@
           "type": "title",
           "settings": {}
         },
+        "icons_home3": {
+          "type": "icons",
+          "settings": {}
+        },
         "price_H3iqEL": {
           "type": "price",
           "settings": {}
@@ -826,6 +845,7 @@
       },
       "block_order": [
         "title_xDYKii",
+        "icons_home3",
         "price_H3iqEL",
         "quick_buy_wyKyPh"
       ],

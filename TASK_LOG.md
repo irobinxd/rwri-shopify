@@ -1,6 +1,6 @@
 # Task Log
 
-**Last Updated:** January 11, 2026
+**Last Updated:** January 18, 2026
 
 ## December 22, 2025 - Store Selector Initial Implementation
 Initial setup and implementation of store selector functionality. Created base store selector modal structure and store selection logic. Set up store configuration system to handle multiple pickup locations.
@@ -253,6 +253,159 @@ Created comprehensive database schema and Eloquent models for the Royal Store Sh
 - `TIMELINE_ROYAL_SHOPIFY_JDA_INTEGRATION.csv`
 
 **Date Completed:** January 11, 2026
+
+---
+
+## January 12, 2026 - Product Icon Labels Display Fix & Configuration
+
+**Shopify Theme - Product Icon Labels Initial Fix:**
+- Investigated product icon labels not displaying on product cards despite correct asset files and metafield setup
+- Identified that theme expected metafield references in theme settings, not direct label text
+- Fixed `product-item.liquid` to correctly parse metafield references for icon labels
+- Updated `product-icon-label.liquid` to load images from Shopify's `Content > Files` with fallback to `assets` folder
+- Ensured icon labels display correctly on product cards when metafield is properly configured
+
+**Files:**
+- `jp-home/snippets/product-item.liquid`
+- `jp-home/snippets/product-icon-label.liquid`
+
+**Date Completed:** January 12, 2026
+
+---
+
+## January 13, 2026 - RWRI Portal: Database Schema Optimization & Product Icon Labels Display Limits
+
+**RWRI Portal - Database Schema Optimization:**
+- Reviewed and optimized database migrations for the Shopify x JDA integration
+- Added proper index naming conventions to improve query performance and database management
+- Updated foreign key constraints and unique indexes across all Shopify data pull tables
+
+**Shopify Theme - Icon Display Limits & Collection Page Integration:**
+- Implemented display limit of 3 icon labels on product cards (homepage/collection pages) while showing all 5 on product detail page
+- Added icon count logic to prevent displaying more than 3 icons per product card
+- Updated collection page template to include `icons` block in product grid
+- Updated homepage templates to include `icons` block in featured collections and shop-the-look sections
+- Fixed missing icon blocks in `collection.json` and `index.json` templates
+
+**Files:**
+- `rwri-portal/database/migrations/2026_01_11_100010_create_shopify_locations_table.php`
+- `rwri-portal/database/migrations/2026_01_11_100011_create_shopify_collections_table.php`
+- `rwri-portal/database/migrations/2026_01_11_100012_create_shopify_products_table.php`
+- `rwri-portal/database/migrations/2026_01_11_100013_create_shopify_variants_table.php`
+- `rwri-portal/database/migrations/2026_01_11_100014_create_shopify_inventory_levels_table.php`
+- `jp-home/snippets/product-item.liquid`
+- `jp-home/templates/collection.json`
+- `jp-home/templates/index.json`
+
+**Date Completed:** January 13, 2026
+
+---
+
+## January 14, 2026 - RWRI Portal Module Access, Cart UI Improvements & Product Page Icon Labels
+
+**RWRI Portal - Module Access Control:**
+- Updated `WebStoresModuleSeeder` to automatically assign Web Stores and Royal Store modules to all users
+- Implemented universal access by setting department_id, location_id, and group_id to null
+- Added duplicate check to prevent multiple module assignments per user
+- Ensured all administrators have access to the new Web Stores integration features
+
+**Shopify Theme - Cart Modal UI Refinements:**
+- Updated cart modal styling for consistent design language across all dialogs
+- Changed all modal buttons to pillbox shape (`border-radius: 50px`) for modern appearance
+- Implemented Joel's Place green (`#70a062`) color scheme for primary action buttons
+- Removed duplicate warning icons (⚠️ emoji) - kept only SVG icons for cleaner, less alarming UI
+- Updated button text for better clarity: "Items" → "Item/s", "Remove & Continue" → "Remove and Continue"
+- Changed "Remove and Continue" button color to warning red (`rgb(212, 64, 14)`) for better visual hierarchy
+- Added hover effects with transform and shadow for improved interactivity
+- Implemented consistent button styling across all cart conflict resolution modals
+
+**Shopify Theme - Product Page Icon Labels Repositioning & CSV Template:**
+- Moved icon labels list on product view page to appear below price and above quantity/add to cart button
+- Changed icon display style to icon-only with tooltips on product page (matching product cards)
+- Fixed duplicate price display issue by disabling price in `buy_buttons` block
+- Maintained original price size using `text-size--heading` class
+- Created CSV template with 5 metafield columns for product icon labels import
+
+**Files:**
+- `rwri-portal/database/seeders/WebStoresModuleSeeder.php`
+- `jp-home/sections/main-cart.liquid`
+- `jp-home/sections/main-product.liquid`
+- `jp-home/templates/product.json`
+- `jp-home/CSV template with metafields.csv`
+
+**Date Completed:** January 14, 2026
+
+---
+
+## January 15, 2026 - Custom Icon Label Filter Initial Implementation
+
+**Shopify Theme - Custom Collection Filter Development:**
+- Created custom client-side JavaScript filter for product icon labels on collection pages
+- Built filter that scans products on page to dynamically generate filter options with product counts
+- Implemented filter UI matching Shopify's native filter styling with checkboxes and counts
+- Added filter to sidebar in `facets.liquid` snippet alongside native Shopify filters
+- Filter works independently without requiring Shopify Admin filter configuration
+
+**Files:**
+- `jp-home/snippets/custom-icon-filter.liquid`
+- `jp-home/snippets/facets.liquid`
+- `jp-home/snippets/product-item.liquid` (added `data-icon-labels` attribute)
+
+**Date Completed:** January 15, 2026
+
+---
+
+## January 16, 2026 - Custom Filter Event Handling & State Management
+
+**Shopify Theme - Filter Functionality Improvements:**
+- Fixed custom filter checkboxes preventing Shopify's form submission by removing `name` attribute
+- Implemented event propagation blocking to prevent conflicts with Shopify's native filters
+- Added global state management (`window.customIconFilterState`) to persist filter selections across AJAX updates
+- Created MutationObserver to re-apply filters after Shopify's AJAX product grid updates
+- Fixed filter state restoration after page reloads and AJAX navigation
+
+**Files:**
+- `jp-home/snippets/custom-icon-filter.liquid`
+- `jp-home/assets/custom-icon-filter.js` (separated JavaScript logic)
+
+**Date Completed:** January 16, 2026
+
+---
+
+## January 17, 2026 - Active Filter Tags & Styling Refinement
+
+**Shopify Theme - Active Tags Display:**
+- Implemented active filter tags display next to "Clear all" button matching Shopify's native filter tags
+- Created tags that show selected icon labels as removable pills with × icon
+- Styled tags to match Shopify's `active-facets__button` classes exactly
+- Fixed font size and icon size to match native filter tags precisely
+- Changed filter tag element from `<button>` to `<a>` tag for consistency with Shopify's implementation
+- Fixed label clickability by ensuring proper event handling and native label behavior
+
+**Files:**
+- `jp-home/assets/custom-icon-filter.js`
+- `jp-home/snippets/custom-icon-filter.liquid`
+
+**Date Completed:** January 17, 2026
+
+---
+
+## January 18, 2026 - Filter Blinking Fix & Observer Optimization
+
+**Shopify Theme - Filter Performance & Stability:**
+- Fixed blinking issue on hover for custom filter tags caused by MutationObserver triggering recursive updates
+- Added `updatingTags` flag to prevent recursive tag updates during DOM changes
+- Optimized MutationObserver to ignore changes in `active-facets` containers to prevent infinite update loops
+- Wrapped DOM updates in `requestAnimationFrame` to batch updates and prevent visual flashing
+- Fixed syntax error (missing closing brace) in `custom-icon-filter.js` that caused filter to disappear
+- Removed `updateActiveTags()` from grid observer - tags now only update when labels actually change
+- Implemented smart update check to prevent unnecessary tag re-rendering
+
+**Files:**
+- `jp-home/assets/custom-icon-filter.js`
+- `jp-home/snippets/custom-icon-filter.liquid`
+
+**Date Completed:** January 18, 2026
 
 ---
 

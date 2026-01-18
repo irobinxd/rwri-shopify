@@ -28,6 +28,10 @@
           "type": "title",
           "settings": {}
         },
+        "icons": {
+          "type": "icons",
+          "settings": {}
+        },
         "price": {
           "type": "price",
           "settings": {}
@@ -39,6 +43,7 @@
       },
       "block_order": [
         "title",
+        "icons",
         "price",
         "quick_buy"
       ],

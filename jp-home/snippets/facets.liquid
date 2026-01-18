@@ -60,6 +60,9 @@
             <p class="facets__heading body-text-sm {% if type == 'mobile' %} visually-hidden {% endif %}">{{ 'collections.filter_by_label' | t }}</p>
           {%- endunless -%}
 
+          {%- comment -%} Custom Icon Label Filter {%- endcomment -%}
+          {%- render 'custom-icon-filter', filters_default_status: filters_default_status -%}
+
           {%- for filter in results.filters -%}
 
             {%- assign total_active_values = total_active_values | plus: filter.active_values.size -%}
