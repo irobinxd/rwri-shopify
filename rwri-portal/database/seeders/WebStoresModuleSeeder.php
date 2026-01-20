@@ -126,21 +126,21 @@ class WebStoresModuleSeeder extends Seeder
                 'order' => 1,
             ],
             [
+                'name' => 'Products',
+                'route_name' => 'royal-store.products',
+                'icon' => 'ki-package',
+                'order' => 2,
+            ],
+            [
                 'name' => 'Pull Shopify Data',
                 'route_name' => 'royal-store.shopify-pull',
                 'icon' => 'ki-cloud-download',
-                'order' => 2,
+                'order' => 3,
             ],
             [
                 'name' => 'Location Mapping',
                 'route_name' => 'royal-store.locations',
                 'icon' => 'ki-geolocation',
-                'order' => 3,
-            ],
-            [
-                'name' => 'Product Sync',
-                'route_name' => 'royal-store.products',
-                'icon' => 'ki-package',
                 'order' => 4,
             ],
             [

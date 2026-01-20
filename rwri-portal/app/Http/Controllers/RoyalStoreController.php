@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Module;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use Illuminate\Support\Str;
 
 class RoyalStoreController extends Controller
 {
@@ -30,7 +33,32 @@ class RoyalStoreController extends Controller
 
     public function products()
     {
-        return view('pages.royal-store.products');
+        // Get products from Shopify left join with JDA SKUs staging
+        $products = DB::table('shopify_products as sp')
+            ->leftJoin('jda_skus_staging as jda', function($join) {
+                $join->on('sp.shopify_product_id', '=', DB::raw("CAST(jda.shopify_product_id AS CHAR)"));
+            })
+            ->select(
+                'sp.id',
+                'sp.shopify_product_id',
+                'sp.title',
+                'sp.handle',
+                'sp.status',
+                'sp.vendor',
+                'sp.product_type',
+                'sp.variants_count',
+                'sp.pulled_at',
+                'jda.sku as jda_sku',
+                'jda.product_name as jda_product_name',
+                'jda.price as jda_price',
+                'jda.inventory_quantity as jda_inventory',
+                'jda.status as jda_status',
+                'jda.shopify_variant_id as jda_variant_id'
+            )
+            ->orderBy('sp.title')
+            ->paginate(25);
+
+        return view('pages.royal-store.products', compact('products'));
     }
 
     public function inventory()
@@ -1000,6 +1028,391 @@ class RoyalStoreController extends Controller
         );
 
         return $query;
+    }
+
+    /**
+     * Pull products from Shopify API
+     */
+    public function pullFromShopify(Request $request)
+    {
+        try {
+            $module = Module::where('slug', 'royal-store')->first();
+            if (!$module) {
+                return response()->json(['success' => false, 'message' => 'Royal Store module not found'], 404);
+            }
+
+            // Get Shopify credentials
+            $store = $module->getSetting('shopify.store');
+            $apiKey = $module->getSetting('shopify.api_key');
+            $apiSecret = $module->getSetting('shopify.api_secret');
+            $apiVersion = $module->getSetting('shopify.api_version') ?? '2024-01';
+
+            if (!$store || !$apiKey || !$apiSecret) {
+                return response()->json(['success' => false, 'message' => 'Shopify credentials not configured'], 400);
+            }
+
+            // Remove https:// and trailing slash
+            $store = preg_replace('/^https?:\/\//', '', $store);
+            $store = rtrim($store, '/');
+
+            $url = "https://{$store}/admin/api/{$apiVersion}/products.json";
+            
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                "X-Shopify-Access-Token: {$apiKey}"
+            ]);
+
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            if ($httpCode !== 200) {
+                return response()->json(['success' => false, 'message' => 'Failed to fetch products from Shopify'], $httpCode);
+            }
+
+            $data = json_decode($response, true);
+            if (!isset($data['products'])) {
+                return response()->json(['success' => false, 'message' => 'Invalid response from Shopify'], 400);
+            }
+
+            // Get or create shopify_store_id (assuming default store for now)
+            $shopifyStoreId = DB::table('shopify_stores')->where('domain', $store)->value('id');
+            if (!$shopifyStoreId) {
+                $shopifyStoreId = DB::table('shopify_stores')->insertGetId([
+                    'domain' => $store,
+                    'name' => $store,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            $imported = 0;
+            foreach ($data['products'] as $product) {
+                DB::table('shopify_products')->updateOrInsert(
+                    [
+                        'shopify_store_id' => $shopifyStoreId,
+                        'shopify_product_id' => $product['id'],
+                    ],
+                    [
+                        'handle' => $product['handle'],
+                        'title' => $product['title'],
+                        'body_html' => $product['body_html'] ?? null,
+                        'vendor' => $product['vendor'] ?? null,
+                        'product_type' => $product['product_type'] ?? null,
+                        'status' => $product['status'] ?? 'active',
+                        'tags' => !empty($product['tags']) ? json_encode(explode(',', $product['tags'])) : null,
+                        'options' => !empty($product['options']) ? json_encode($product['options']) : null,
+                        'image_url' => !empty($product['image']) ? $product['image']['src'] : null,
+                        'variants_count' => count($product['variants'] ?? []),
+                        'published_at' => isset($product['published_at']) ? date('Y-m-d H:i:s', strtotime($product['published_at'])) : null,
+                        'pulled_at' => now(),
+                        'updated_at' => now(),
+                        'created_at' => DB::raw('COALESCE(created_at, NOW())'),
+                    ]
+                );
+                $imported++;
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => "Successfully pulled {$imported} products from Shopify",
+                'count' => $imported
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Import SKUs from Excel file
+     */
+    public function importSkus(Request $request)
+    {
+        try {
+            $request->validate([
+                'file' => 'required|file|mimes:xlsx,xls|max:10240', // 10MB max
+            ]);
+
+            $file = $request->file('file');
+            $spreadsheet = IOFactory::load($file->getRealPath());
+            $sheet = $spreadsheet->getActiveSheet();
+            $rows = $sheet->toArray();
+
+            if (count($rows) < 2) {
+                return response()->json(['success' => false, 'message' => 'Excel file is empty or has no data rows'], 400);
+            }
+
+            // Get headers (first row)
+            $headers = array_map('strtolower', array_map('trim', $rows[0]));
+            
+            // Map common column names to our database fields
+            $columnMap = [
+                'sku' => ['sku', 'item code', 'item_code', 'product code', 'product_code'],
+                'product_name' => ['product name', 'product_name', 'title', 'name', 'item name', 'item_name'],
+                'description' => ['description', 'desc', 'details'],
+                'price' => ['price', 'selling price', 'selling_price', 'retail price', 'retail_price'],
+                'compare_at_price' => ['compare at price', 'compare_at_price', 'msrp', 'list price', 'list_price'],
+                'vendor' => ['vendor', 'brand', 'manufacturer'],
+                'product_type' => ['product type', 'product_type', 'category', 'type'],
+                'tags' => ['tags', 'tag'],
+                'barcode' => ['barcode', 'upc', 'ean', 'gtin'],
+                'weight' => ['weight', 'weight (kg)', 'weight_kg'],
+                'weight_unit' => ['weight unit', 'weight_unit', 'unit'],
+                'inventory_quantity' => ['inventory', 'quantity', 'qty', 'stock', 'inventory quantity', 'inventory_quantity'],
+                'option1_name' => ['option1 name', 'option1_name', 'size', 'variant1'],
+                'option1_value' => ['option1 value', 'option1_value', 'size value', 'variant1 value'],
+                'option2_name' => ['option2 name', 'option2_name', 'color', 'variant2'],
+                'option2_value' => ['option2 value', 'option2_value', 'color value', 'variant2 value'],
+                'option3_name' => ['option3 name', 'option3_name', 'variant3'],
+                'option3_value' => ['option3 value', 'option3_value', 'variant3 value'],
+                'image_url' => ['image', 'image url', 'image_url', 'image link', 'image_link'],
+            ];
+
+            // Find column indices
+            $columnIndices = [];
+            foreach ($columnMap as $dbField => $possibleNames) {
+                foreach ($possibleNames as $name) {
+                    $index = array_search($name, $headers);
+                    if ($index !== false) {
+                        $columnIndices[$dbField] = $index;
+                        break;
+                    }
+                }
+            }
+
+            if (!isset($columnIndices['sku'])) {
+                return response()->json(['success' => false, 'message' => 'SKU column not found in Excel file'], 400);
+            }
+
+            $module = Module::where('slug', 'royal-store')->first();
+            $store = $module->getSetting('shopify.store');
+            $apiKey = $module->getSetting('shopify.api_key');
+            $apiSecret = $module->getSetting('shopify.api_secret');
+            $apiVersion = $module->getSetting('shopify.api_version') ?? '2024-01';
+
+            if (!$store || !$apiKey || !$apiSecret) {
+                return response()->json(['success' => false, 'message' => 'Shopify credentials not configured'], 400);
+            }
+
+            $store = preg_replace('/^https?:\/\//', '', $store);
+            $store = rtrim($store, '/');
+
+            $imported = 0;
+            $updated = 0;
+            $errors = [];
+
+            // Process data rows (skip header)
+            for ($i = 1; $i < count($rows); $i++) {
+                $row = $rows[$i];
+                
+                // Skip empty rows
+                if (empty($row[$columnIndices['sku']])) {
+                    continue;
+                }
+
+                $skuData = [
+                    'sku' => $row[$columnIndices['sku']],
+                    'product_name' => $columnIndices['product_name'] !== null ? ($row[$columnIndices['product_name']] ?? null) : null,
+                    'description' => $columnIndices['description'] !== null ? ($row[$columnIndices['description']] ?? null) : null,
+                    'price' => $columnIndices['price'] !== null ? ($row[$columnIndices['price']] ?? null) : null,
+                    'compare_at_price' => $columnIndices['compare_at_price'] !== null ? ($row[$columnIndices['compare_at_price']] ?? null) : null,
+                    'vendor' => $columnIndices['vendor'] !== null ? ($row[$columnIndices['vendor']] ?? null) : null,
+                    'product_type' => $columnIndices['product_type'] !== null ? ($row[$columnIndices['product_type']] ?? null) : null,
+                    'tags' => $columnIndices['tags'] !== null ? ($row[$columnIndices['tags']] ?? null) : null,
+                    'barcode' => $columnIndices['barcode'] !== null ? ($row[$columnIndices['barcode']] ?? null) : null,
+                    'weight' => $columnIndices['weight'] !== null ? ($row[$columnIndices['weight']] ?? null) : null,
+                    'weight_unit' => $columnIndices['weight_unit'] !== null ? ($row[$columnIndices['weight_unit']] ?? 'kg') : 'kg',
+                    'inventory_quantity' => $columnIndices['inventory_quantity'] !== null ? (int)($row[$columnIndices['inventory_quantity']] ?? 0) : 0,
+                    'option1_name' => $columnIndices['option1_name'] !== null ? ($row[$columnIndices['option1_name']] ?? null) : null,
+                    'option1_value' => $columnIndices['option1_value'] !== null ? ($row[$columnIndices['option1_value']] ?? null) : null,
+                    'option2_name' => $columnIndices['option2_name'] !== null ? ($row[$columnIndices['option2_name']] ?? null) : null,
+                    'option2_value' => $columnIndices['option2_value'] !== null ? ($row[$columnIndices['option2_value']] ?? null) : null,
+                    'option3_name' => $columnIndices['option3_name'] !== null ? ($row[$columnIndices['option3_name']] ?? null) : null,
+                    'option3_value' => $columnIndices['option3_value'] !== null ? ($row[$columnIndices['option3_value']] ?? null) : null,
+                    'image_url' => $columnIndices['image_url'] !== null ? ($row[$columnIndices['image_url']] ?? null) : null,
+                    'status' => 'pending',
+                    'raw_data' => json_encode($row),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+
+                // Check if SKU already exists in staging
+                $existingSku = DB::table('jda_skus_staging')->where('sku', $skuData['sku'])->first();
+                
+                if ($existingSku) {
+                    // Update existing
+                    DB::table('jda_skus_staging')->where('sku', $skuData['sku'])->update($skuData);
+                    $updated++;
+                } else {
+                    // Insert new
+                    DB::table('jda_skus_staging')->insert($skuData);
+                    $imported++;
+                }
+
+                // Create/Update product in Shopify if not exists
+                try {
+                    $this->createOrUpdateShopifyProduct($store, $apiKey, $apiVersion, $skuData);
+                } catch (\Exception $e) {
+                    $errors[] = "SKU {$skuData['sku']}: " . $e->getMessage();
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => "Import completed. Imported: {$imported}, Updated: {$updated}",
+                'imported' => $imported,
+                'updated' => $updated,
+                'errors' => $errors
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Create or update product in Shopify
+     */
+    private function createOrUpdateShopifyProduct($store, $apiKey, $apiVersion, $skuData)
+    {
+        // Check if product already exists by SKU
+        $existingVariant = DB::table('shopify_variants')
+            ->where('sku', $skuData['sku'])
+            ->first();
+
+        if ($existingVariant) {
+            // Product exists, update it
+            $productId = $existingVariant->shopify_product_id;
+            // Update logic here if needed
+            DB::table('jda_skus_staging')
+                ->where('sku', $skuData['sku'])
+                ->update([
+                    'shopify_product_id' => $productId,
+                    'shopify_variant_id' => $existingVariant->shopify_variant_id,
+                    'status' => 'processed',
+                    'processed_at' => now(),
+                ]);
+            return;
+        }
+
+        // Create new product
+        $productData = [
+            'title' => $skuData['product_name'] ?? $skuData['sku'],
+            'body_html' => $skuData['description'] ?? '',
+            'vendor' => $skuData['vendor'] ?? '',
+            'product_type' => $skuData['product_type'] ?? '',
+            'tags' => $skuData['tags'] ?? '',
+            'status' => 'active',
+        ];
+
+        // Build variants
+        $variants = [[
+            'sku' => $skuData['sku'],
+            'price' => $skuData['price'] ?? '0.00',
+            'compare_at_price' => $skuData['compare_at_price'] ?? null,
+            'inventory_quantity' => $skuData['inventory_quantity'] ?? 0,
+            'inventory_management' => 'shopify',
+            'inventory_policy' => 'deny',
+            'barcode' => $skuData['barcode'] ?? null,
+            'weight' => $skuData['weight'] ?? null,
+            'weight_unit' => $skuData['weight_unit'] ?? 'kg',
+        ]];
+
+        // Add options if provided
+        $options = [];
+        if (!empty($skuData['option1_name']) && !empty($skuData['option1_value'])) {
+            $options[] = ['name' => $skuData['option1_name'], 'values' => [$skuData['option1_value']]];
+        }
+        if (!empty($skuData['option2_name']) && !empty($skuData['option2_value'])) {
+            $options[] = ['name' => $skuData['option2_name'], 'values' => [$skuData['option2_value']]];
+        }
+        if (!empty($skuData['option3_name']) && !empty($skuData['option3_value'])) {
+            $options[] = ['name' => $skuData['option3_name'], 'values' => [$skuData['option3_value']]];
+        }
+
+        if (!empty($options)) {
+            $productData['options'] = $options;
+        }
+
+        // Add images if provided
+        if (!empty($skuData['image_url'])) {
+            $productData['images'] = [['src' => $skuData['image_url']]];
+        }
+
+        $productData['variants'] = $variants;
+
+        // Call Shopify API
+        $url = "https://{$store}/admin/api/{$apiVersion}/products.json";
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['product' => $productData]));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "Content-Type: application/json",
+            "X-Shopify-Access-Token: {$apiKey}"
+        ]);
+
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($httpCode !== 201) {
+            throw new \Exception("Failed to create product in Shopify: " . $response);
+        }
+
+        $result = json_decode($response, true);
+        $product = $result['product'] ?? null;
+
+        if ($product) {
+            // Update staging table with Shopify IDs
+            DB::table('jda_skus_staging')
+                ->where('sku', $skuData['sku'])
+                ->update([
+                    'shopify_product_id' => $product['id'],
+                    'shopify_variant_id' => $product['variants'][0]['id'] ?? null,
+                    'status' => 'processed',
+                    'processed_at' => now(),
+                ]);
+
+            // Save to shopify_products table
+            $shopifyStoreId = DB::table('shopify_stores')->where('domain', $store)->value('id');
+            if (!$shopifyStoreId) {
+                $shopifyStoreId = DB::table('shopify_stores')->insertGetId([
+                    'domain' => $store,
+                    'name' => $store,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            DB::table('shopify_products')->updateOrInsert(
+                [
+                    'shopify_store_id' => $shopifyStoreId,
+                    'shopify_product_id' => $product['id'],
+                ],
+                [
+                    'handle' => $product['handle'],
+                    'title' => $product['title'],
+                    'body_html' => $product['body_html'] ?? null,
+                    'vendor' => $product['vendor'] ?? null,
+                    'product_type' => $product['product_type'] ?? null,
+                    'status' => $product['status'] ?? 'active',
+                    'tags' => !empty($product['tags']) ? json_encode(explode(',', $product['tags'])) : null,
+                    'options' => !empty($product['options']) ? json_encode($product['options']) : null,
+                    'image_url' => !empty($product['images']) ? $product['images'][0]['src'] : null,
+                    'variants_count' => count($product['variants'] ?? []),
+                    'published_at' => isset($product['published_at']) ? date('Y-m-d H:i:s', strtotime($product['published_at'])) : null,
+                    'pulled_at' => now(),
+                    'updated_at' => now(),
+                    'created_at' => DB::raw('COALESCE(created_at, NOW())'),
+                ]
+            );
+        }
     }
 }
 
