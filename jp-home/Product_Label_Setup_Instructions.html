@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Setup Product Labels in Theme</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .email-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1a1a1a;
+            border-bottom: 3px solid #4a90e2;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #34495e;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .warning-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .info-box {
+            background-color: #d1ecf1;
+            border-left: 4px solid #0c5460;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .step {
+            background-color: #f8f9fa;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            border-left: 3px solid #4a90e2;
+        }
+        .step-number {
+            display: inline-block;
+            background-color: #4a90e2;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #e83e8c;
+        }
+        .example-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .example-table th,
+        .example-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .example-table th {
+            background-color: #4a90e2;
+            color: white;
+        }
+        .example-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        ul, ol {
+            margin: 10px 0;
+            padding-left: 30px;
+        }
+        li {
+            margin: 8px 0;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 0.9em;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            margin: 15px 0;
+            display: block;
+        }
+        .screenshot {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .screenshot-caption {
+            font-style: italic;
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .placeholder-image {
+            background-color: #f0f0f0;
+            border: 2px dashed #ccc;
+            padding: 40px;
+            text-align: center;
+            color: #999;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <h1>How to Setup Product Labels in Theme</h1>
+        
+        <p>This guide will walk you through setting up product labels in your Shopify theme. Product labels display icons and text on product cards and product pages based on metafield values.</p>
+        
+        <div class="warning-box">
+            <strong>⚠️ Important: Filename Convention</strong><br>
+            When uploading label images, you <strong>must</strong> use a specific filename format. Remove all special characters except hyphens (<code>-</code>), convert to lowercase, and use only letters, numbers, and hyphens. The filename must match the label text converted to a handle format.
+        </div>
+
+        <h2>Prerequisites</h2>
+        <ol>
+            <li>Product metafield definitions must be created in Shopify Admin (this is where you get the namespace.key)</li>
+            <li>Theme settings must be configured to reference the metafields</li>
+            <li>Label images must be uploaded with correct filenames</li>
+        </ol>
+
+        <h2>Step 1: Create Metafield Definitions</h2>
+        
+        <div class="info-box">
+            <strong>💡 Important:</strong> This is where you get the <code>namespace.key</code> that you'll use in the theme settings. The namespace and key are automatically generated when you create the metafield definition, and you'll need this exact format to configure the theme later.
+        </div>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong>Navigate to Metafields and metaobjects</strong>
+            <ul>
+                <li>Go to <strong>Settings → Metafields and metaobjects → Products</strong></li>
+                <li>Click <strong>"Add definition"</strong></li>
+            </ul>
+        </div>
+        <div class="screenshot">
+            <img src="metafields for product labels/metafields setup 1.png" alt="Screenshot showing Product Icon #1 Label metafield definition page in Shopify admin. The page shows the metafield name, system key (custom.product_icon_label_1), and type selection (Single line text).">
+            
+        </div>
+        <div class="step">
+            <span class="step-number">2</span>
+            <strong>Create Metafield Definition</strong>
+            <ul>
+                <li><strong>Name:</strong> "Product Icon #1 Label" (or #2, #3, #4, #5)</li>
+                <li><strong>Namespace and key:</strong> This will be automatically set to <code>custom.product_icon_label_1</code> (or <code>custom.product_icon_label_2</code>, etc.)</li>
+                <li><strong>📝 Note:</strong> The format <code>custom.product_icon_label_1</code> is your <code>namespace.key</code> - you'll need this exact value for theme settings configuration!</li>
+                <li><strong>Type:</strong> Select <strong>"Single line text"</strong> (make sure this is selected)</li>
+            </ul>
+        </div>
+
+       
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <strong>Configure Validation Settings</strong>
+            <ul>
+                <li>Under the <strong>"Validation"</strong> section, make sure <strong>"Unique values"</strong> is <strong>unchecked</strong></li>
+                <li>This allows multiple products to use the same label values (e.g., multiple products can have "Glutten-free")</li>
+                <li>Review all options to ensure they are configured correctly</li>
+            </ul>
+        </div>
+
+        <div class="screenshot">
+            <img src="metafields for product labels/metafields setup 2.png" alt="Screenshot showing the Validation section where Unique values should be unchecked, and all other options should be reviewed.">
+            <div class="screenshot-caption">Figure 2: Validation Settings - Ensure Unique values is unchecked</div>
+        </div>
+
+        <div class="screenshot">
+            <img src="metafields for product labels/metafields setup 3.png" alt="Screenshot showing all options reviewed and configured correctly for the metafield definition.">
+            <div class="screenshot-caption">Figure 3: Review All Options - Final Configuration</div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">4</span>
+            <strong>Copy the Namespace.Key and Save</strong>
+            <ul>
+                <li>After creating the metafield definition, you'll see the <strong>Namespace and key</strong> displayed</li>
+                <li>For Product Icon #1 Label, it will be: <code>custom.product_icon_label_1</code></li>
+                <li><strong>Save this value</strong> - you'll need it in the next step for theme configuration!</li>
+                <li>Click <strong>"Save"</strong> to save the metafield definition</li>
+                <li>Repeat for all 5 labels (#1 through #5)</li>
+            </ul>
+        </div>
+        <div class="screenshot">
+            <img src="metafields for product labels/metafields setup 4.png" alt="Screenshot showing Product Icon #1 Label metafield definition page in Shopify admin. The page shows the metafield name, system key (custom.product_icon_label_1), and type selection (Single line text).">
+            
+        </div>
+
+        <h2>Step 2: Configure Metafields in Theme Settings</h2>
+        
+        <div class="info-box">
+            <strong>💡 Note:</strong> Now that you've created the metafield definitions, you'll use the <code>namespace.key</code> format (e.g., <code>custom.product_icon_label_1</code>) that you copied from Step 1. The format is just <code>namespace.key</code> without the <code>product.metafields.</code> prefix.
+        </div>
+        
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong>Navigate to Theme Customizer</strong>
+            <ul>
+                <li>Go to <strong>Online Store → Themes</strong></li>
+                <li>Click <strong>"Edit Theme"</strong> on your active theme</li>
+            </ul>
+        </div>
+        <div class="screenshot">
+            <img src="metafields for product labels/setup in theme 1.png" alt="Screenshot showing Theme settings → Product card → Product icons section.">
+        </div>
+        <div class="step">
+            <span class="step-number">2</span>
+            <strong>Access Theme Settings</strong>
+            <ul>
+                <li>Click the <strong>"Theme settings"</strong> button (usually at the bottom of the left sidebar)</li>
+                <li>Scroll down to find the <strong>"Product card"</strong> section</li>
+                <li>Look for <strong>"Product icons"</strong> section</li>
+            </ul>
+        </div>
+
+        <div class="screenshot">
+            <img src="metafields for product labels/setup in theme 2.png" alt="Screenshot showing the Product Icon Label field where namespace.key should be entered.">
+            <div class="screenshot-caption">Figure 6: Entering namespace.key in Icon Label Field</div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <strong>Configure Product Icon Labels</strong>
+            <p>For each product icon (Icon 1, Icon 2, Icon 3, Icon 4, Icon 5), you'll see two fields:</p>
+            <ul>
+                <li><strong>Icon Image:</strong> Leave blank (images are auto-loaded based on label)</li>
+                <li><strong>Icon Label:</strong> Enter the <code>namespace.key</code> from Step 1 in format: <code>custom.product_icon_label_X</code></li>
+            </ul>
+            <p><strong>Example values (use the namespace.key you got from creating metafield definitions in Step 1):</strong></p>
+            <ul>
+                <li>Icon 1 Label: <code>custom.product_icon_label_1</code></li>
+                <li>Icon 2 Label: <code>custom.product_icon_label_2</code></li>
+                <li>Icon 3 Label: <code>custom.product_icon_label_3</code></li>
+                <li>Icon 4 Label: <code>custom.product_icon_label_4</code></li>
+                <li>Icon 5 Label: <code>custom.product_icon_label_5</code></li>
+            </ul>
+        </div>
+
+        
+
+        <div class="screenshot">
+            <img src="metafields for product labels/setup in theme 3.png" alt="Screenshot showing all Product Icon labels configured with their respective namespace.key values.">
+            <div class="screenshot-caption">Figure 7: All Product Icons Configured</div>
+        </div>
+
+        <h2>Step 3: Upload Label Images</h2>
+
+        <div class="warning-box">
+            <strong>⚠️ Critical: Filename Format Requirements</strong>
+            <ul>
+                <li>Remove all special characters <strong>except hyphens (-)</strong></li>
+                <li>Convert to lowercase</li>
+                <li>Spaces become hyphens</li>
+                <li>Apostrophes, quotes, and other special characters are removed</li>
+                <li>File extension must be <code>.png</code></li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong>Prepare Your Images</strong>
+            <ul>
+                <li>Create your label icons (recommended size: 32x32px to 144x144px)</li>
+                <li>Save as PNG files</li>
+                <li><strong>Rename files according to the filename convention</strong> (see examples below)</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <strong>Upload to Shopify Files</strong>
+            <ul>
+                <li>Go to <strong>Content → Files</strong></li>
+                <li>Click <strong>"Upload files"</strong></li>
+                <li>Upload your label image files</li>
+            </ul>
+        </div>
+
+        <div class="screenshot">
+            <img src="metafields for product labels/upload image.png" alt="Screenshot showing the Content → Files page where label images should be uploaded.">
+            <div class="screenshot-caption">Figure 4: Upload Label Images to Content → Files</div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <strong>Verify Filenames</strong>
+            <p>Ensure filenames match exactly (case-sensitive) with the label text converted to handle format:</p>
+        </div>
+
+        <table class="example-table">
+            <thead>
+                <tr>
+                    <th>Label Text (Metafield Value)</th>
+                    <th>Correct Filename</th>
+                    <th>Incorrect Examples</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Glutten-free</td>
+                    <td><code>glutten-free.png</code></td>
+                    <td><code>Glutten-free.png</code> ❌<br><code>glutten_free.png</code> ❌<br><code>Glutten Free.png</code> ❌</td>
+                </tr>
+                <tr>
+                    <td>Joel's Choice</td>
+                    <td><code>joels-choice.png</code></td>
+                    <td><code>Joel's Choice.png</code> ❌<br><code>joels-choice.PNG</code> ❌<br><code>joels_choice.png</code> ❌</td>
+                </tr>
+                <tr>
+                    <td>Vegan</td>
+                    <td><code>vegan.png</code></td>
+                    <td><code>Vegan.png</code> ❌<br><code>vegan.jpg</code> ❌</td>
+                </tr>
+                <tr>
+                    <td>Low Calorie</td>
+                    <td><code>low-calorie.png</code></td>
+                    <td><code>Low Calorie.png</code> ❌<br><code>low_calorie.png</code> ❌</td>
+                </tr>
+                <tr>
+                    <td>Sugar-Free</td>
+                    <td><code>sugar-free.png</code></td>
+                    <td><code>Sugar-Free.png</code> ❌<br><code>sugar free.png</code> ❌</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="info-box">
+            <strong>💡 How it Works:</strong> The theme automatically converts your label text (e.g., "Glutten-free") to a handle format (e.g., "glutten-free") and looks for a matching image file in your Content → Files. If found, it displays the image alongside the label text.
+        </div>
+
+        <h2>Step 4: Add Label Values to Products</h2>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong>Edit a Product</strong>
+            <ul>
+                <li>Go to <strong>Products</strong> in Shopify Admin</li>
+                <li>Click on a product to edit</li>
+                <li>Scroll down to the <strong>"Product metafields"</strong> section (or "Pinned" section if metafields are pinned)</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <strong>Enter Label Values</strong>
+            <ul>
+                <li>Find the metafield fields: "Product Icon #1 Label", "Product Icon #2 Label", etc.</li>
+                <li>Enter the label text exactly as you want it to appear (e.g., "Glutten-free", "Vegan")</li>
+                <li><strong>Important:</strong> The text must match your image filename format (see Step 3)</li>
+            </ul>
+        </div>
+
+        <div class="screenshot">
+            <img src="metafields for product labels/manual edit metafields.png" alt="Screenshot showing a product edit page with Product metafields section visible, displaying the pinned metafield input fields where label values can be entered.">
+            <div class="screenshot-caption">Figure 3: Product Edit Page - Entering Metafield Values</div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <strong>Save the Product</strong>
+            <ul>
+                <li>Click <strong>"Save"</strong></li>
+                <li>The labels will now appear on product cards and product pages</li>
+            </ul>
+        </div>
+
+        <h2>Step 5: Bulk Import via CSV </h2>
+
+        <p>To import label values for multiple products at once:</p>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong>Prepare Your CSV</strong>
+            <ul>
+                <li>Create a CSV file with columns: <code>Handle</code>, <code>Title</code>, and metafield columns</li>
+                <li>Metafield column format: <code>product.metafields.custom.product_icon_label_1</code></li>
+                <li>Enter label values in the corresponding rows</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <strong>Import Products</strong>
+            <ul>
+                <li>Go to <strong>Products</strong> → Click <strong>"Import"</strong></li>
+                <li>Upload your CSV file</li>
+                <li>Review the preview and click <strong>"Import products"</strong></li>
+            </ul>
+        </div>
+
+        <div class="screenshot">
+            <img src="metafields for product labels/upload excel.png" alt="Screenshot showing the CSV import interface in Shopify.">
+            <div class="screenshot-caption">Figure 8: CSV Import Interface</div>
+        </div>
+
+        <div class="info-box">
+            <strong>📝 CSV Column Format:</strong>
+            <ul>
+                <li>Column header: <code>product.metafields.custom.product_icon_label_1</code></li>
+                <li>Value: The label text (e.g., "Glutten-free", "Vegan")</li>
+            </ul>
+        </div>
+
+        <h2>Final Result - Preview</h2>
+
+        <div class="info-box">
+            <strong>✅ Success!</strong> If all the steps above have been correctly followed, your product labels should now be displayed on your products. The labels will appear with their corresponding icons (if images were uploaded) and will be filterable in collection pages.
+        </div>
+
+        <div class="step">
+            <strong>Product Labels Display</strong>
+            <p>Product labels will appear on:</p>
+            <ul>
+                <li><strong>Product Cards</strong> - Labels are shown on product listing pages (collections, search results, etc.)</li>
+                <li><strong>Product Pages</strong> - Labels appear on individual product detail pages</li>
+            </ul>
+        </div>
+
+        <div class="screenshot">
+            <img src="metafields for product labels/preview product card.png" alt="Screenshot showing product cards with labels displayed, such as Glutten-free, Vegan, etc. with their corresponding icons.">
+            <div class="screenshot-caption">Product Cards with Labels - Labels are visible on product cards in collection pages</div>
+        </div>
+
+        <div class="screenshot">
+            <img src="metafields for product labels/preview product page.png" alt="Screenshot showing a product detail page with product labels displayed.">
+            <div class="screenshot-caption">Product Page with Labels - Labels appear on individual product pages</div>
+        </div>
+
+        <div class="step">
+            <strong>Collection Filter</strong>
+            <p>Product labels are automatically added as filters in collection pages, allowing customers to filter products by label values (e.g., "Glutten-free", "Vegan", etc.).</p>
+        </div>
+
+        <div class="screenshot">
+            <img src="metafields for product labels/preview collection filter.png" alt="Screenshot showing collection page filters including product label filters that customers can use to filter products.">
+            <div class="screenshot-caption">Collection Page Filters - Product labels appear as filter options in collection pages</div>
+        </div>
+
+        <h2>Troubleshooting</h2>
+
+        <h3>Images Not Showing?</h3>
+        <ul>
+            <li>✓ Check that the filename matches exactly (case-sensitive, lowercase)</li>
+            <li>✓ Verify the image is uploaded to Content → Files</li>
+            <li>✓ Ensure the filename uses hyphens, not underscores or spaces</li>
+            <li>✓ Confirm the file extension is .png (lowercase)</li>
+        </ul>
+
+        <h3>Labels Not Displaying?</h3>
+        <ul>
+            <li>✓ Verify metafield definitions exist in Settings → Metafields and metaobjects → Products</li>
+            <li>✓ Check theme settings have metafield references configured</li>
+            <li>✓ Confirm products have metafield values entered</li>
+            <li>✓ Ensure you're viewing a product page or product card where labels are enabled</li>
+        </ul>
+
+        <div class="footer">
+            <p><strong>Need Help?</strong> If you encounter any issues, verify that:</p>
+            <ol>
+                <li>Metafield definitions are created and pinned</li>
+                <li>Theme settings reference the correct metafields</li>
+                <li>Image filenames follow the exact format specified above</li>
+                <li>Products have metafield values assigned</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>
