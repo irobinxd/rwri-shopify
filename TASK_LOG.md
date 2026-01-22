@@ -1,6 +1,6 @@
 # Task Log
 
-**Last Updated:** January 18, 2026
+**Last Updated:** January 22, 2026
 
 ## December 22, 2025 - Store Selector Initial Implementation
 Initial setup and implementation of store selector functionality. Created base store selector modal structure and store selection logic. Set up store configuration system to handle multiple pickup locations.
@@ -406,6 +406,98 @@ Created comprehensive database schema and Eloquent models for the Royal Store Sh
 - `jp-home/snippets/custom-icon-filter.liquid`
 
 **Date Completed:** January 18, 2026
+
+---
+
+## January 19, 2026 - Users List View & Role Modal Improvements
+
+**RWRI Portal - User Management Module:**
+- Created Users list view with DataTable integration for displaying user information
+- Fixed sidebar visibility to show "User Management" menu item for all authenticated users
+- Removed "Permissions" menu item from sidebar navigation
+- Enhanced role selection modal in Roles page with improved layout
+- Fixed "Select all" functionality in role modal to properly check/uncheck all permissions
+- Resolved "No permissions given" display issue in role list when permissions were assigned
+- Updated role modal to display "Menu Access" instead of permissions on the front
+- Added "Administrator Access" checkbox that disables all other checkboxes and automatically checks all menus when enabled
+
+**Files:**
+- `rwri-portal/resources/views/pages/apps/user-management/users/list.blade.php`
+- `rwri-portal/resources/views/pages/apps/user-management/roles/list.blade.php`
+- `rwri-portal/resources/views/livewire/permission/role-modal.blade.php`
+- `rwri-portal/app/Livewire/Permission/RoleModal.php`
+- `rwri-portal/resources/views/layout/partials/sidebar-layout/sidebar/_menu.blade.php`
+
+**Date Completed:** January 19, 2026
+
+---
+
+## January 20, 2026 - DataTable Initialization & Asset Loading Fixes
+
+**RWRI Portal - DataTable Implementation:**
+- Fixed Users DataTable not initializing by implementing native jQuery DataTable initialization
+- Resolved 404 errors for missing asset files (datatables.bundle.css, datatables.bundle.js, widgets.js, chat.js, etc.)
+- Fixed empty `datatables.bundle.js` file issue by switching to CDN-hosted DataTables
+- Implemented `waitForDataTables` function to ensure DataTables library is loaded before initialization
+- Added retry logic for table element availability before DataTable initialization
+- Fixed Roles DataTable not triggering/loading by correcting column definitions and AJAX route configuration
+- Updated `UsersDataTable.php` to filter users based on `is_super_admin` flag (only show super_admin users to super_admin users)
+- Fixed "Store Owner" role not displaying in Roles list by correcting DataTable query
+
+**Files:**
+- `rwri-portal/resources/views/pages/apps/user-management/users/list.blade.php`
+- `rwri-portal/resources/views/pages/apps/user-management/roles/list.blade.php`
+- `rwri-portal/app/DataTables/UsersDataTable.php`
+- `rwri-portal/app/DataTables/RolesDataTable.php`
+
+**Date Completed:** January 20, 2026
+
+---
+
+## January 21, 2026 - KTSearch Error Fixes & DataTable CDN Implementation
+
+**RWRI Portal - JavaScript Error Resolution:**
+- Fixed `scripts.bundle.js:7903 Uncaught TypeError: searchObject.on is not a function` error
+- Fixed `scripts.bundle.js:4285 Uncaught TypeError: Cannot read properties of null (reading 'addEventListener')` error
+- Implemented JavaScript stub in `master.blade.php` to prevent KTSearch initialization errors
+- Created Proxy object to intercept KTSearch property access and prevent null reference errors
+- Removed all `data-kt-search-*` attributes from search-related partials to prevent conflicts
+- Resolved Git worktree editing confusion by ensuring edits target correct working directory
+- Finalized DataTables CDN implementation for both Users and Roles pages
+
+**Files:**
+- `rwri-portal/resources/views/layout/master.blade.php`
+- `rwri-portal/resources/views/pages/apps/user-management/users/list.blade.php`
+- `rwri-portal/resources/views/pages/apps/user-management/roles/list.blade.php`
+
+**Date Completed:** January 21, 2026
+
+---
+
+## January 22, 2026 - User Edit Functionality & Password Management
+
+**RWRI Portal - User Management Enhancements:**
+- Implemented user edit functionality with edit button in users list actions menu
+- Added password change capability in edit user modal (optional - leave blank to keep current password)
+- Created migration to add `must_change_password` boolean field to users table
+- Added "User must change password on next login" switch toggle in user edit modal
+- Fixed name field handling to properly split full name into firstname, middlename, lastname
+- Implemented Livewire event handling for edit button clicks with proper loading sequence
+- Fixed Livewire "not defined" error by implementing wait functions for Livewire availability
+- Added DataTable refresh functionality after user updates
+- Updated `AddUserModal` component to support both create and edit modes
+- Enhanced user edit modal to display "Edit User" title when in edit mode
+
+**Files:**
+- `rwri-portal/database/migrations/2026_01_22_052904_add_must_change_password_to_users_table.php`
+- `rwri-portal/app/Models/User.php`
+- `rwri-portal/app/Livewire/User/AddUserModal.php`
+- `rwri-portal/resources/views/livewire/user/add-user-modal.blade.php`
+- `rwri-portal/resources/views/pages/apps/user-management/users/list.blade.php`
+- `rwri-portal/resources/views/pages/apps/user-management/users/columns/_actions.blade.php`
+- `rwri-portal/app/DataTables/UsersDataTable.php`
+
+**Date Completed:** January 22, 2026
 
 ---
 
