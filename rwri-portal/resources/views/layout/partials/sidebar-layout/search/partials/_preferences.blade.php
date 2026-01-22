@@ -1,5 +1,5 @@
 <!--begin::Preferences-->
-<form data-kt-search-element="preferences" class="pt-1 d-none">
+<form id="kt_search_preferences" class="pt-1 d-none">
 	<!--begin::Heading-->
 	<h3 class="fw-semibold text-gray-900 mb-7">Search Preferences</h3>
 	<!--end::Heading-->
@@ -45,7 +45,7 @@
 	<!--end::Input group-->
 	<!--begin::Actions-->
 	<div class="d-flex justify-content-end pt-7">
-		<button type="reset" class="btn btn-sm btn-light fw-bold btn-active-light-primary me-2" data-kt-search-element="preferences-dismiss">Cancel</button>
+		<button type="reset" class="btn btn-sm btn-light fw-bold btn-active-light-primary me-2" id="kt_search_preferences_dismiss">Cancel</button>
 		<button type="submit" class="btn btn-sm fw-bold btn-primary">Save Changes</button>
 	</div>
 	<!--end::Actions-->

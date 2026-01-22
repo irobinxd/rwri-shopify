@@ -36,10 +36,16 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $request->user()->update([
+        $user = $request->user();
+        $user->update([
             'last_login_at' => Carbon::now()->toDateTimeString(),
             'last_login_ip' => $request->getClientIp()
         ]);
+
+        // TODO: Check if user must change password and redirect to password change page
+        // if ($user->must_change_password) {
+        //     return redirect()->route('password.change')->with('must_change', true);
+        // }
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }

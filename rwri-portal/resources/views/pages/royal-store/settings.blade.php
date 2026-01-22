@@ -67,12 +67,30 @@
                                         <span class="path3"></span>
                                     </i>
                                     <div class="d-flex flex-column">
-                                        <h4 class="mb-1 text-info">Where to find credentials:</h4>
-                                        <span>Go to <strong>dev.shopify.com/dashboard</strong> → Select your app (<strong>rwri-portal</strong>) → Click <strong>"Settings"</strong> in the left sidebar → Under <strong>"Credentials"</strong> section, you'll find:</span>
-                                        <ul class="mt-2 mb-0">
-                                            <li><strong>Client ID</strong> - Copy this value to the "Client ID (API Key)" field below</li>
-                                            <li><strong>Secret</strong> - Click the eye icon to reveal, then copy to the "Client Secret (API Secret)" field below</li>
-                                        </ul>
+                                        <h4 class="mb-1 text-info">Shopify OAuth Setup</h4>
+                                        <p class="mb-2">To use Shopify Admin API, you need to create a public app in the <strong>Shopify Partners Dashboard</strong> and complete OAuth authorization.</p>
+                                        <h5 class="mt-3 mb-2">Step 1: Create App in Partners Dashboard</h5>
+                                        <ol class="mt-2 mb-0">
+                                            <li>Go to <a href="https://partners.shopify.com" target="_blank">partners.shopify.com</a> → Your Apps</li>
+                                            <li>Click <strong>"Create app"</strong> → <strong>"Create app manually"</strong></li>
+                                            <li>Configure your app:
+                                                <ul>
+                                                    <li><strong>App URL:</strong> <code>{{ url('/') }}</code></li>
+                                                    <li><strong>Allowed redirection URL(s):</strong> <code>{{ route('royal-store.shopify-oauth-callback') }}</code></li>
+                                                </ul>
+                                            </li>
+                                            <li>Under <strong>"Admin API integration"</strong>, configure scopes:
+                                                <ul>
+                                                    <li><code>read_products</code></li>
+                                                    <li><code>write_products</code></li>
+                                                    <li><code>read_inventory</code></li>
+                                                    <li><code>write_inventory</code></li>
+                                                </ul>
+                                            </li>
+                                            <li>Copy the <strong>Client ID</strong> and <strong>Client Secret</strong> from the "Credentials" section</li>
+                                        </ol>
+                                        <h5 class="mt-3 mb-2">Step 2: Enter Credentials Below</h5>
+                                        <p class="mb-0">Enter your Client ID and Client Secret, then click "Authorize with Shopify" to complete OAuth flow.</p>
                                     </div>
                                 </div>
                             </div>
@@ -102,29 +120,76 @@
                                     <input type="text" 
                                            name="shopify[api_key]" 
                                            class="form-control form-control-solid @error('shopify.api_key') is-invalid @enderror" 
-                                           placeholder="Enter Client ID / API Key"
+                                           placeholder="c9e3f65c95f48321e90c08aed5a1b194"
                                            value="{{ isset($settings['shopify']['api_key']) && $settings['shopify']['api_key']->is_encrypted ? decrypt($settings['shopify']['api_key']->value) : (isset($settings['shopify']['api_key']) ? $settings['shopify']['api_key']->value : '') }}" 
                                            required />
                                     @error('shopify.api_key')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                    <div class="form-text">Shopify Client ID from Dev Dashboard → App → Client credentials (will be encrypted)</div>
+                                    <div class="form-text">Client ID from Partners Dashboard → Your App → Credentials (will be encrypted)</div>
                                 </div>
                             </div>
 
                             <div class="row mb-7">
-                                <label class="col-lg-3 col-form-label fw-semibold required">Client Secret (API Secret)</label>
+                                <label class="col-lg-3 col-form-label fw-semibold required">Client Secret</label>
                                 <div class="col-lg-9">
                                     <input type="text" 
                                            name="shopify[api_secret]" 
                                            class="form-control form-control-solid @error('shopify.api_secret') is-invalid @enderror" 
-                                           placeholder="Enter Client Secret / API Secret"
+                                           placeholder="shpss_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
                                            value="{{ isset($settings['shopify']['api_secret']) && $settings['shopify']['api_secret']->is_encrypted ? decrypt($settings['shopify']['api_secret']->value) : (isset($settings['shopify']['api_secret']) ? $settings['shopify']['api_secret']->value : '') }}" 
                                            required />
                                     @error('shopify.api_secret')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                    <div class="form-text">Shopify Client Secret from Dev Dashboard → App → Client credentials (will be encrypted)</div>
+                                    <div class="form-text">Client Secret from Partners Dashboard → Your App → Credentials (will be encrypted)</div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-7">
+                                <label class="col-lg-3 col-form-label fw-semibold">Authorization</label>
+                                <div class="col-lg-9">
+                                    @php
+                                        $hasAccessToken = isset($settings['shopify']['access_token']) && !empty($settings['shopify']['access_token']->value);
+                                        $hasClientId = isset($settings['shopify']['api_key']) && !empty($settings['shopify']['api_key']->value);
+                                        $hasClientSecret = isset($settings['shopify']['api_secret']) && !empty($settings['shopify']['api_secret']->value);
+                                    @endphp
+                                    @if($hasAccessToken)
+                                        <div class="alert alert-success d-flex align-items-center p-4">
+                                            <i class="ki-duotone ki-check-circle fs-2hx text-success me-3">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                            <div class="flex-grow-1">
+                                                <strong>Authorized!</strong> Access token is configured and ready to use.
+                                            </div>
+                                            <a href="{{ route('royal-store.shopify-oauth') }}" class="btn btn-sm btn-primary ms-3">
+                                                <i class="ki-duotone ki-arrows-circle fs-2 me-1">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                                Re-authorize
+                                            </a>
+                                        </div>
+                                    @elseif($hasClientId && $hasClientSecret)
+                                        <a href="{{ route('royal-store.shopify-oauth') }}" class="btn btn-primary">
+                                            <i class="ki-duotone ki-lock fs-2 me-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                            Authorize with Shopify
+                                        </a>
+                                        <div class="form-text mt-2">Click to authorize this application with your Shopify store. You'll be redirected to Shopify to grant permissions.</div>
+                                    @else
+                                        <div class="alert alert-warning d-flex align-items-center p-4">
+                                            <i class="ki-duotone ki-information-5 fs-2hx text-warning me-3">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                            </i>
+                                            <div>Please enter Client ID and Client Secret above, then click "Authorize with Shopify" to complete OAuth setup.</div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 

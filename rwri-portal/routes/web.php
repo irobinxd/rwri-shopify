@@ -24,6 +24,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('home');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    Route::get('/search', [\App\Http\Controllers\SearchController::class, 'search'])->name('search');
 
     Route::name('user-management.')->group(function () {
         Route::resource('/user-management/users', UserManagementController::class);
@@ -66,6 +68,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/royal-store/products', [RoyalStoreController::class, 'products'])->name('products');
         Route::post('/royal-store/products/pull-shopify', [RoyalStoreController::class, 'pullFromShopify'])->name('products.pull-shopify');
         Route::post('/royal-store/products/import-skus', [RoyalStoreController::class, 'importSkus'])->name('products.import-skus');
+        Route::get('/royal-store/shopify-oauth', [RoyalStoreController::class, 'shopifyOAuth'])->name('shopify-oauth');
+        Route::get('/royal-store/shopify-oauth-callback', [RoyalStoreController::class, 'shopifyOAuthCallback'])->name('shopify-oauth-callback');
         Route::get('/royal-store/inventory', [RoyalStoreController::class, 'inventory'])->name('inventory');
         Route::get('/royal-store/prices', [RoyalStoreController::class, 'prices'])->name('prices');
         Route::get('/royal-store/sync-history', [RoyalStoreController::class, 'syncHistory'])->name('sync-history');

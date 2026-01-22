@@ -5,16 +5,16 @@ namespace App\Http\Controllers\Apps;
 use App\DataTables\UsersAssignedRoleDataTable;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 
 class RoleManagementController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(\App\DataTables\RolesDataTable $dataTable)
     {
-        return view('pages/apps.user-management.roles.list');
+        return $dataTable->render('pages/apps.user-management.roles.list');
     }
 
     /**

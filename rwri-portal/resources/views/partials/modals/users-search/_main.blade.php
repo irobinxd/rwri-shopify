@@ -20,7 +20,7 @@
 				</div>
 				<!--end::Content-->
 				<!--begin::Search-->
-				<div id="kt_modal_users_search_handler" data-kt-search-keypress="true" data-kt-search-min-length="2" data-kt-search-enter="enter" data-kt-search-layout="inline">
+				<div id="kt_modal_users_search_handler" data-kt-search-disabled="true">
 					<!--begin::Form-->
 					<form data-kt-search-element="form" class="w-100 position-relative mb-5" autocomplete="off">
 					<!--begin::Hidden input(Added to disable form autocomplete)-->

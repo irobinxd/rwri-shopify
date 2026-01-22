@@ -6,7 +6,7 @@ use App\Models\User;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -21,6 +21,9 @@ class AddUserModal extends Component
     public $role;
     public $avatar;
     public $saved_avatar;
+    public $password;
+    public $password_confirmation;
+    public $must_change_password = false;
 
     public $edit_mode = false;
 
@@ -29,6 +32,8 @@ class AddUserModal extends Component
         'email' => 'required|email',
         'role' => 'required|string',
         'avatar' => 'nullable|sometimes|image|max:1024',
+        'password' => 'nullable|min:8|confirmed',
+        'must_change_password' => 'boolean',
     ];
 
     protected $listeners = [
@@ -62,29 +67,55 @@ class AddUserModal extends Component
         $this->validate();
 
         DB::transaction(function () {
+            // Split name into firstname, middlename, lastname
+            $nameParts = explode(' ', trim($this->name), 3);
+            $firstname = $nameParts[0] ?? '';
+            $middlename = $nameParts[1] ?? null;
+            $lastname = $nameParts[2] ?? ($nameParts[1] ?? '');
+            
             // Prepare the data for creating a new user
             $data = [
-                'name' => $this->name,
+                'firstname' => $firstname,
+                'middlename' => $middlename,
+                'lastname' => $lastname,
+                'must_change_password' => $this->must_change_password,
             ];
 
             if ($this->avatar) {
                 $data['profile_photo_path'] = $this->avatar->store('avatars', 'public');
-            } else {
+            } elseif (!$this->edit_mode) {
                 $data['profile_photo_path'] = null;
             }
 
-            if (!$this->edit_mode) {
+            // Handle password
+            if ($this->edit_mode && $this->password) {
+                // Update password if provided in edit mode
+                $data['password'] = Hash::make($this->password);
+            } elseif (!$this->edit_mode) {
+                // Set default password for new users
                 $data['password'] = Hash::make($this->email);
             }
 
             // Update or Create a new user record in the database
             $data['email'] = $this->email;
-            $user = User::find($this->user_id) ?? User::create($data);
+            $user = $this->edit_mode ? User::find($this->user_id) : User::create($data);
 
             if ($this->edit_mode) {
-                foreach ($data as $k => $v) {
-                    $user->$k = $v;
+                // Update user fields
+                $user->firstname = $firstname;
+                $user->middlename = $middlename;
+                $user->lastname = $lastname;
+                $user->email = $this->email;
+                $user->must_change_password = $this->must_change_password;
+                
+                if ($this->avatar) {
+                    $user->profile_photo_path = $data['profile_photo_path'];
                 }
+                
+                if (!empty($data['password'])) {
+                    $user->password = $data['password'];
+                }
+                
                 $user->save();
             }
 
@@ -94,6 +125,7 @@ class AddUserModal extends Component
 
                 // Emit a success event with a message
                 $this->dispatch('success', __('User updated'));
+                $this->dispatch('refresh-users-table');
             } else {
                 // Assign selected role for user
                 $user->assignRole($this->role);
@@ -133,9 +165,31 @@ class AddUserModal extends Component
 
         $this->user_id = $user->id;
         $this->saved_avatar = $user->profile_photo_url;
-        $this->name = $user->name;
+        $this->name = $user->name; // This uses the getNameAttribute accessor
         $this->email = $user->email;
         $this->role = $user->roles?->first()->name ?? '';
+        $this->must_change_password = $user->must_change_password ?? false;
+        $this->password = null;
+        $this->password_confirmation = null;
+    }
+    
+    public function mount()
+    {
+        $this->reset();
+    }
+    
+    public function reset(...$properties)
+    {
+        $this->user_id = null;
+        $this->name = null;
+        $this->email = null;
+        $this->role = null;
+        $this->avatar = null;
+        $this->saved_avatar = null;
+        $this->password = null;
+        $this->password_confirmation = null;
+        $this->must_change_password = false;
+        $this->edit_mode = false;
     }
 
     public function hydrate()

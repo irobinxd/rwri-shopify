@@ -85,7 +85,7 @@
 					@endforeach
 				@endif
 
-				@if(auth()->user()->hasRole('administrator') || auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin'))
+				@if(auth()->check())
 					<!--begin:Menu item-->
 					<div class="menu-item pt-5">
 						<!--begin:Menu content-->
@@ -127,18 +127,6 @@
 										<span class="bullet bullet-dot"></span>
 									</span>
 									<span class="menu-title">Roles</span>
-								</a>
-								<!--end:Menu link-->
-							</div>
-							<!--end:Menu item-->
-							<!--begin:Menu item-->
-							<div class="menu-item">
-								<!--begin:Menu link-->
-								<a class="menu-link {{ request()->routeIs('user-management.permissions.*') ? 'active' : '' }}" href="{{ route('user-management.permissions.index') }}">
-									<span class="menu-bullet">
-										<span class="bullet bullet-dot"></span>
-									</span>
-									<span class="menu-title">Permissions</span>
 								</a>
 								<!--end:Menu link-->
 							</div>

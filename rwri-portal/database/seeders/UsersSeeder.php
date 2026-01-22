@@ -16,18 +16,6 @@ class UsersSeeder extends Seeder
      */
     public function run(Generator $faker)
     {
-        // Create demo user if it doesn't exist
-        $demoUser = User::firstOrCreate(
-            ['email' => 'demo@demo.com'],
-            [
-                'firstname'         => 'Demo',
-                'lastname'          => 'User',
-                'password'          => Hash::make('demo'),
-                'email_verified_at' => now(),
-                'is_active'         => true,
-            ]
-        );
-
         // Create admin user if it doesn't exist
         $demoUser2 = User::firstOrCreate(
             ['email' => 'admin@royalstores.com'],
@@ -37,7 +25,14 @@ class UsersSeeder extends Seeder
                 'password'          => Hash::make('admin123'),
                 'email_verified_at' => now(),
                 'is_active'         => true,
+                'is_super_admin'    => true, // Super admin has access to all without restrictions
             ]
         );
+        
+        // Update existing admin user to be super admin if it already exists
+        if ($demoUser2->wasRecentlyCreated === false) {
+            $demoUser2->is_super_admin = true;
+            $demoUser2->save();
+        }
     }
 }

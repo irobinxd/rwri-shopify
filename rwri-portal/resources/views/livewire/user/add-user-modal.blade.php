@@ -6,7 +6,7 @@
             <!--begin::Modal header-->
             <div class="modal-header" id="kt_modal_add_user_header">
                 <!--begin::Modal title-->
-                <h2 class="fw-bold">Add User</h2>
+                <h2 class="fw-bold">{{ $edit_mode ? 'Edit User' : 'Add User' }}</h2>
                 <!--end::Modal title-->
                 <!--begin::Close-->
                 <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal" aria-label="Close">
@@ -113,7 +113,7 @@
                                     <!--begin::Radio-->
                                     <div class="form-check form-check-custom form-check-solid">
                                         <!--begin::Input-->
-                                        <input class="form-check-input me-3" id="kt_modal_update_role_option_{{ $role->id }}" wire:model.live="role" name="role" type="radio" value="{{ $role->name }}" checked="checked"/>
+                                        <input class="form-check-input me-3" id="kt_modal_update_role_option_{{ $role->id }}" wire:model.live="role" name="role" type="radio" value="{{ $role->name }}"/>
                                         <!--end::Input-->
                                         <!--begin::Label-->
                                         <label class="form-check-label" for="kt_modal_update_role_option_{{ $role->id }}">
@@ -134,6 +134,46 @@
                                 @endif
                             @endforeach
                             <!--end::Roles-->
+                        </div>
+                        <!--end::Input group-->
+                        @if($edit_mode)
+                        <!--begin::Input group - Password (Edit Mode Only)-->
+                        <div class="fv-row mb-7">
+                            <!--begin::Label-->
+                            <label class="fw-semibold fs-6 mb-2">New Password</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <input type="password" wire:model.live="password" name="password" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Leave blank to keep current password"/>
+                            <!--end::Input-->
+                            @error('password')
+                            <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group - Password Confirmation-->
+                        <div class="fv-row mb-7">
+                            <!--begin::Label-->
+                            <label class="fw-semibold fs-6 mb-2">Confirm New Password</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <input type="password" wire:model.live="password_confirmation" name="password_confirmation" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Confirm new password"/>
+                            <!--end::Input-->
+                        </div>
+                        <!--end::Input group-->
+                        @endif
+                        <!--begin::Input group - Must Change Password Switch-->
+                        <div class="fv-row mb-7">
+                            <!--begin::Label-->
+                            <label class="fw-semibold fs-6 mb-2">Password Settings</label>
+                            <!--end::Label-->
+                            <!--begin::Switch-->
+                            <div class="form-check form-switch form-check-custom form-check-solid">
+                                <input class="form-check-input" type="checkbox" wire:model.live="must_change_password" id="must_change_password" />
+                                <label class="form-check-label" for="must_change_password">
+                                    <span class="fw-semibold">User must change password on next login</span>
+                                    <span class="form-text text-muted">If enabled, user will be required to change their password when they log in. If disabled, the password set by admin will be used.</span>
+                                </label>
+                            </div>
+                            <!--end::Switch-->
                         </div>
                         <!--end::Input group-->
                     </div>

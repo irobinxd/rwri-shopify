@@ -125,7 +125,10 @@ class RoyalStoreController extends Controller
         // Only validate and save settings from the active tab
         if ($activeTab === 'shopify') {
             $validated = $request->validate([
-                'shopify.*' => 'nullable|string',
+                'shopify.store' => 'required|string',
+                'shopify.api_key' => 'required|string',
+                'shopify.api_secret' => 'required|string', // Client Secret
+                'shopify.api_version' => 'nullable|string|regex:/^\d{4}-\d{2}$/',
             ]);
 
             // If API version is empty, don't save it (use auto-detect)
@@ -1031,6 +1034,152 @@ class RoyalStoreController extends Controller
     }
 
     /**
+     * Initiate Shopify OAuth flow
+     */
+    public function shopifyOAuth(Request $request)
+    {
+        $module = Module::where('slug', 'royal-store')->first();
+        if (!$module) {
+            return redirect()->route('royal-store.settings')->with('error', 'Royal Store module not found');
+        }
+
+        $clientId = $module->getSetting('shopify.api_key'); // Client ID
+        $store = $module->getSetting('shopify.store');
+        
+        if (!$clientId || !$store) {
+            return redirect()->route('royal-store.settings')->with('error', 'Shopify Client ID and Store must be configured first');
+        }
+
+        // Normalize store URL
+        $store = $this->normalizeShopifyStoreUrl($store);
+
+        // Generate state for security (CSRF protection)
+        $state = bin2hex(random_bytes(16));
+        session(['shopify_oauth_state' => $state]);
+
+        // Required Admin API scopes
+        $scopes = 'read_products,write_products,read_inventory,write_inventory';
+        
+        // OAuth redirect URL (must match the one configured in Partners Dashboard)
+        $redirectUri = route('royal-store.shopify-oauth-callback');
+        
+        // Build authorization URL
+        $authUrl = "https://{$store}/admin/oauth/authorize?" . http_build_query([
+            'client_id' => $clientId,
+            'scope' => $scopes,
+            'redirect_uri' => $redirectUri,
+            'state' => $state,
+        ]);
+
+        return redirect($authUrl);
+    }
+
+    /**
+     * Handle Shopify OAuth callback - exchange code for access token
+     */
+    public function shopifyOAuthCallback(Request $request)
+    {
+        $module = Module::where('slug', 'royal-store')->first();
+        if (!$module) {
+            return redirect()->route('royal-store.settings')->with('error', 'Royal Store module not found');
+        }
+
+        // Verify state (CSRF protection)
+        $state = $request->get('state');
+        $sessionState = session('shopify_oauth_state');
+        
+        if (!$state || !$sessionState || $state !== $sessionState) {
+            return redirect()->route('royal-store.settings')->with('error', 'Invalid OAuth state. Please try again.');
+        }
+
+        // Check for OAuth errors
+        if ($request->has('error')) {
+            $error = $request->get('error');
+            $errorDescription = $request->get('error_description', 'Unknown error');
+            return redirect()->route('royal-store.settings')->with('error', 'OAuth authorization failed: ' . $errorDescription);
+        }
+
+        $code = $request->get('code');
+        if (!$code) {
+            return redirect()->route('royal-store.settings')->with('error', 'No authorization code received from Shopify');
+        }
+
+        // Get credentials
+        $clientId = $module->getSetting('shopify.api_key');
+        $clientSecret = $module->getSetting('shopify.api_secret');
+        $store = $module->getSetting('shopify.store');
+        $store = $this->normalizeShopifyStoreUrl($store);
+        
+        if (!$clientId || !$clientSecret || !$store) {
+            return redirect()->route('royal-store.settings')->with('error', 'Shopify credentials not configured');
+        }
+
+        // Exchange authorization code for access token
+        $tokenUrl = "https://{$store}/admin/oauth/access_token";
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $tokenUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+            'client_id' => $clientId,
+            'client_secret' => $clientSecret,
+            'code' => $code,
+        ]));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/x-www-form-urlencoded'
+        ]);
+
+        $response = curl_exec($ch);
+        $curlError = curl_error($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        // Check for curl errors
+        if ($response === false || !empty($curlError)) {
+            return redirect()->route('royal-store.settings')->with('error', 'Failed to connect to Shopify: ' . ($curlError ?: 'Unknown error'));
+        }
+
+        // Check HTTP code
+        if ($httpCode !== 200) {
+            $errorData = json_decode($response, true);
+            $errorMessage = 'Failed to exchange code for access token';
+            if (isset($errorData['error_description'])) {
+                $errorMessage = $errorData['error_description'];
+            } elseif (isset($errorData['error'])) {
+                $errorMessage = $errorData['error'];
+            }
+            return redirect()->route('royal-store.settings')->with('error', $errorMessage);
+        }
+
+        $data = json_decode($response, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return redirect()->route('royal-store.settings')->with('error', 'Invalid JSON response from Shopify: ' . json_last_error_msg());
+        }
+
+        if (!isset($data['access_token'])) {
+            return redirect()->route('royal-store.settings')->with('error', 'Access token not found in Shopify response');
+        }
+
+        // Store the access token (encrypted)
+        $module->setSetting(
+            'shopify.access_token',
+            $data['access_token'],
+            'string',
+            true, // Encrypt it
+            'Shopify OAuth access token'
+        );
+
+        // Clear OAuth state
+        session()->forget('shopify_oauth_state');
+
+        return redirect()->route('royal-store.settings')->with('success', 'Successfully authorized with Shopify! Access token saved.');
+    }
+
+    /**
      * Pull products from Shopify API
      */
     public function pullFromShopify(Request $request)
@@ -1043,38 +1192,85 @@ class RoyalStoreController extends Controller
 
             // Get Shopify credentials
             $store = $module->getSetting('shopify.store');
-            $apiKey = $module->getSetting('shopify.api_key');
-            $apiSecret = $module->getSetting('shopify.api_secret');
+            $accessToken = $module->getSetting('shopify.access_token'); // OAuth access token
             $apiVersion = $module->getSetting('shopify.api_version') ?? '2024-01';
 
-            if (!$store || !$apiKey || !$apiSecret) {
-                return response()->json(['success' => false, 'message' => 'Shopify credentials not configured'], 400);
+            if (!$store || !$accessToken) {
+                return response()->json([
+                    'success' => false, 
+                    'message' => 'Shopify not authorized. Please go to Settings and click "Authorize with Shopify" to complete OAuth setup.'
+                ], 400);
             }
 
-            // Remove https:// and trailing slash
-            $store = preg_replace('/^https?:\/\//', '', $store);
-            $store = rtrim($store, '/');
+            // Normalize store URL
+            $store = $this->normalizeShopifyStoreUrl($store);
 
             $url = "https://{$store}/admin/api/{$apiVersion}/products.json";
             
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 30);
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                "X-Shopify-Access-Token: {$apiKey}"
+                "X-Shopify-Access-Token: {$accessToken}",
+                "Content-Type: application/json"
             ]);
 
             $response = curl_exec($ch);
+            $curlError = curl_error($ch);
             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
 
+            // Check for curl errors first
+            if ($response === false || !empty($curlError)) {
+                return response()->json([
+                    'success' => false, 
+                    'message' => 'Failed to connect to Shopify: ' . ($curlError ?: 'Unknown error. Please check your store URL and credentials.')
+                ], 500);
+            }
+
+            // Validate HTTP code
+            if ($httpCode === 0 || $httpCode < 200 || $httpCode >= 600) {
+                return response()->json([
+                    'success' => false, 
+                    'message' => 'Invalid HTTP response from Shopify. HTTP Code: ' . ($httpCode ?: 'Unknown')
+                ], 500);
+            }
+
             if ($httpCode !== 200) {
-                return response()->json(['success' => false, 'message' => 'Failed to fetch products from Shopify'], $httpCode);
+                $errorMessage = 'Failed to fetch products from Shopify';
+                if ($httpCode === 401) {
+                    $errorMessage = 'Unauthorized. Please check your Shopify API credentials.';
+                } elseif ($httpCode === 404) {
+                    $errorMessage = 'Store not found. Please check your Shopify store URL.';
+                } elseif ($httpCode === 403) {
+                    $errorMessage = 'Access forbidden. Please check your API permissions.';
+                }
+                
+                // Try to decode error response if available
+                $errorData = json_decode($response, true);
+                if (isset($errorData['errors'])) {
+                    $errorMessage .= ' Errors: ' . (is_array($errorData['errors']) ? json_encode($errorData['errors']) : $errorData['errors']);
+                }
+                
+                return response()->json(['success' => false, 'message' => $errorMessage], 400);
             }
 
             $data = json_decode($response, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return response()->json([
+                    'success' => false, 
+                    'message' => 'Invalid JSON response from Shopify: ' . json_last_error_msg()
+                ], 400);
+            }
+
             if (!isset($data['products'])) {
-                return response()->json(['success' => false, 'message' => 'Invalid response from Shopify'], 400);
+                return response()->json([
+                    'success' => false, 
+                    'message' => 'Invalid response format from Shopify. Expected products array.'
+                ], 400);
             }
 
             // Get or create shopify_store_id (assuming default store for now)
@@ -1133,16 +1329,34 @@ class RoyalStoreController extends Controller
     {
         try {
             $request->validate([
-                'file' => 'required|file|mimes:xlsx,xls|max:10240', // 10MB max
+                'file' => 'required|file|mimes:xlsx,xls,csv,txt|max:10240', // 10MB max
             ]);
 
             $file = $request->file('file');
-            $spreadsheet = IOFactory::load($file->getRealPath());
-            $sheet = $spreadsheet->getActiveSheet();
-            $rows = $sheet->toArray();
+            $extension = strtolower($file->getClientOriginalExtension());
+            $rows = [];
+
+            // Handle CSV files
+            if (in_array($extension, ['csv', 'txt'])) {
+                $handle = fopen($file->getRealPath(), 'r');
+                if ($handle === false) {
+                    return response()->json(['success' => false, 'message' => 'Failed to read CSV file'], 400);
+                }
+                
+                // Read CSV rows
+                while (($row = fgetcsv($handle)) !== false) {
+                    $rows[] = $row;
+                }
+                fclose($handle);
+            } else {
+                // Handle Excel files
+                $spreadsheet = IOFactory::load($file->getRealPath());
+                $sheet = $spreadsheet->getActiveSheet();
+                $rows = $sheet->toArray();
+            }
 
             if (count($rows) < 2) {
-                return response()->json(['success' => false, 'message' => 'Excel file is empty or has no data rows'], 400);
+                return response()->json(['success' => false, 'message' => 'File is empty or has no data rows'], 400);
             }
 
             // Get headers (first row)
@@ -1189,16 +1403,18 @@ class RoyalStoreController extends Controller
 
             $module = Module::where('slug', 'royal-store')->first();
             $store = $module->getSetting('shopify.store');
-            $apiKey = $module->getSetting('shopify.api_key');
-            $apiSecret = $module->getSetting('shopify.api_secret');
+            $accessToken = $module->getSetting('shopify.access_token'); // OAuth access token
             $apiVersion = $module->getSetting('shopify.api_version') ?? '2024-01';
 
-            if (!$store || !$apiKey || !$apiSecret) {
-                return response()->json(['success' => false, 'message' => 'Shopify credentials not configured'], 400);
+            if (!$store || !$accessToken) {
+                return response()->json([
+                    'success' => false, 
+                    'message' => 'Shopify not authorized. Please go to Settings and click "Authorize with Shopify" to complete OAuth setup.'
+                ], 400);
             }
 
-            $store = preg_replace('/^https?:\/\//', '', $store);
-            $store = rtrim($store, '/');
+            // Normalize store URL
+            $store = $this->normalizeShopifyStoreUrl($store);
 
             $imported = 0;
             $updated = 0;
@@ -1254,7 +1470,7 @@ class RoyalStoreController extends Controller
 
                 // Create/Update product in Shopify if not exists
                 try {
-                    $this->createOrUpdateShopifyProduct($store, $apiKey, $apiVersion, $skuData);
+                    $this->createOrUpdateShopifyProduct($store, $accessToken, $apiVersion, $skuData);
                 } catch (\Exception $e) {
                     $errors[] = "SKU {$skuData['sku']}: " . $e->getMessage();
                 }
@@ -1274,9 +1490,38 @@ class RoyalStoreController extends Controller
     }
 
     /**
+     * Normalize Shopify store URL
+     * Handles both store name (royalstoresph) and full domain (royalstoresph.myshopify.com)
+     */
+    private function normalizeShopifyStoreUrl($store)
+    {
+        if (empty($store)) {
+            return $store;
+        }
+
+        // Remove https:// and trailing slash
+        $store = preg_replace('/^https?:\/\//', '', $store);
+        $store = rtrim($store, '/');
+
+        // If it doesn't contain a dot, it's likely just the store name
+        // Append .myshopify.com if not already present
+        if (strpos($store, '.') === false) {
+            $store = $store . '.myshopify.com';
+        } elseif (!str_ends_with($store, '.myshopify.com') && !preg_match('/\.(com|net|org|io|co|shop)$/i', $store)) {
+            // If it has a dot but doesn't end with a known TLD, assume it needs .myshopify.com
+            // But check if it already has .myshopify.com in it
+            if (strpos($store, '.myshopify.com') === false) {
+                $store = $store . '.myshopify.com';
+            }
+        }
+
+        return $store;
+    }
+
+    /**
      * Create or update product in Shopify
      */
-    private function createOrUpdateShopifyProduct($store, $apiKey, $apiVersion, $skuData)
+    private function createOrUpdateShopifyProduct($store, $accessToken, $apiVersion, $skuData)
     {
         // Check if product already exists by SKU
         $existingVariant = DB::table('shopify_variants')
@@ -1351,22 +1596,63 @@ class RoyalStoreController extends Controller
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['product' => $productData]));
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             "Content-Type: application/json",
-            "X-Shopify-Access-Token: {$apiKey}"
+            "X-Shopify-Access-Token: {$accessToken}"
         ]);
 
         $response = curl_exec($ch);
+        $curlError = curl_error($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
+        // Check for curl errors first
+        if ($response === false || !empty($curlError)) {
+            throw new \Exception('Failed to connect to Shopify: ' . ($curlError ?: 'Unknown error'));
+        }
+
+        // Validate HTTP code
+        if ($httpCode === 0 || $httpCode < 200 || $httpCode >= 600) {
+            throw new \Exception('Invalid HTTP response from Shopify. HTTP Code: ' . ($httpCode ?: 'Unknown'));
+        }
+
         if ($httpCode !== 201) {
-            throw new \Exception("Failed to create product in Shopify: " . $response);
+            $errorMessage = 'Failed to create product in Shopify';
+            if ($httpCode === 401) {
+                $errorMessage = 'Unauthorized. Please check your Shopify API credentials.';
+            } elseif ($httpCode === 404) {
+                $errorMessage = 'Store not found. Please check your Shopify store URL.';
+            } elseif ($httpCode === 422) {
+                // Validation error - try to parse error details
+                $errorData = json_decode($response, true);
+                if (isset($errorData['errors'])) {
+                    $errorMessage = 'Validation error: ' . (is_array($errorData['errors']) ? json_encode($errorData['errors']) : $errorData['errors']);
+                } else {
+                    $errorMessage = 'Validation error: ' . $response;
+                }
+            } else {
+                $errorMessage .= ' (HTTP ' . $httpCode . ')';
+                $errorData = json_decode($response, true);
+                if (isset($errorData['errors'])) {
+                    $errorMessage .= ' - ' . (is_array($errorData['errors']) ? json_encode($errorData['errors']) : $errorData['errors']);
+                }
+            }
+            throw new \Exception($errorMessage);
         }
 
         $result = json_decode($response, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \Exception('Invalid JSON response from Shopify: ' . json_last_error_msg());
+        }
+
         $product = $result['product'] ?? null;
+        if (!$product) {
+            throw new \Exception('Product not found in Shopify response');
+        }
 
         if ($product) {
             // Update staging table with Shopify IDs

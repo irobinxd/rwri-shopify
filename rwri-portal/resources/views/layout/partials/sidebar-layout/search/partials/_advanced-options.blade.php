@@ -1,5 +1,5 @@
 <!--begin::Preferences-->
-<form data-kt-search-element="advanced-options-form" class="pt-1 d-none">
+<form id="kt_search_advanced_options" class="pt-1 d-none">
 	<!--begin::Heading-->
 	<h3 class="fw-semibold text-gray-900 mb-7">Advanced Search</h3>
 	<!--end::Heading-->
@@ -101,8 +101,8 @@
 	<!--end::Input group-->
 	<!--begin::Actions-->
 	<div class="d-flex justify-content-end">
-		<button type="reset" class="btn btn-sm btn-light fw-bold btn-active-light-primary me-2" data-kt-search-element="advanced-options-form-cancel">Cancel</button>
-		<a href="#" class="btn btn-sm fw-bold btn-primary" data-kt-search-element="advanced-options-form-search">Search</a>
+		<button type="reset" class="btn btn-sm btn-light fw-bold btn-active-light-primary me-2" id="kt_search_advanced_cancel">Cancel</button>
+		<a href="#" class="btn btn-sm fw-bold btn-primary" id="kt_search_advanced_search">Search</a>
 	</div>
 	<!--end::Actions-->
 </form>

@@ -32,4 +32,10 @@ class Menu extends Model
             ->withPivot(['department_id', 'location_id', 'group_id'])
             ->withTimestamps();
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_menu')
+            ->withTimestamps();
+    }
 }

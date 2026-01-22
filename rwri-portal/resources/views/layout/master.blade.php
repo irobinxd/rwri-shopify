@@ -39,6 +39,155 @@
     <!--end::Custom Stylesheets-->
 
     @livewireStyles
+    
+    <!--begin::Prevent KTSearch initialization error - must be in head before scripts load-->
+    <script>
+        // Prevent KTSearch initialization error - create stub before scripts.bundle.js loads
+        (function() {
+            // Create a comprehensive mock element that prevents all errors
+            function createMockElement() {
+                return {
+                    addEventListener: function() { return; },
+                    removeEventListener: function() { return; },
+                    querySelector: function() { return null; },
+                    querySelectorAll: function() { return []; },
+                    getAttribute: function() { return null; },
+                    setAttribute: function() { return; },
+                    removeAttribute: function() { return; },
+                    classList: {
+                        add: function() { return; },
+                        remove: function() { return; },
+                        toggle: function() { return; },
+                        contains: function() { return false; }
+                    },
+                    style: {},
+                    innerHTML: '',
+                    textContent: ''
+                };
+            }
+            
+            var mockElement = createMockElement();
+            
+            // Create KTSearch constructor that always returns safe object with Proxy
+            window.KTSearch = function(element, options) {
+                // Always ensure element is never null
+                var safeElement = (element && typeof element.addEventListener === 'function') ? element : mockElement;
+                
+                // Create instance object
+                var instance = {
+                    init: function() { return this; },
+                    on: function() { return this; },
+                    off: function() { return this; },
+                    trigger: function() { return this; },
+                    destroy: function() { return this; },
+                    options: options || {}
+                };
+                
+                // Use Proxy to intercept all property access and ensure element is always safe
+                return new Proxy(instance, {
+                    get: function(target, prop) {
+                        if (prop === 'element') {
+                            return safeElement;
+                        }
+                        return target[prop];
+                    },
+                    set: function(target, prop, value) {
+                        if (prop === 'element') {
+                            safeElement = (value && typeof value.addEventListener === 'function') ? value : mockElement;
+                            return true;
+                        }
+                        target[prop] = value;
+                        return true;
+                    }
+                });
+            };
+            
+            // Make KTSearch.init return null
+            window.KTSearch.init = function(element, options) {
+                return null;
+            };
+            
+            // Continuously patch KTSearch
+            function patchKTSearch() {
+                if (window.KTSearch && typeof window.KTSearch === 'function') {
+                    var currentKTSearch = window.KTSearch;
+                    
+                    // Test if it's safe
+                    var isSafe = false;
+                    try {
+                        var testInstance = new currentKTSearch(null, null);
+                        if (testInstance && testInstance.element && typeof testInstance.element.addEventListener === 'function') {
+                            isSafe = true;
+                        }
+                    } catch (e) {
+                        isSafe = false;
+                    }
+                    
+                    if (!isSafe) {
+                        window.KTSearch = function(element, options) {
+                            var safeElement = (element && typeof element.addEventListener === 'function') ? element : createMockElement();
+                            var instance = {
+                                init: function() { return this; },
+                                on: function() { return this; },
+                                off: function() { return this; },
+                                trigger: function() { return this; },
+                                destroy: function() { return this; },
+                                options: options || {}
+                            };
+                            return new Proxy(instance, {
+                                get: function(target, prop) {
+                                    if (prop === 'element') {
+                                        return safeElement;
+                                    }
+                                    return target[prop];
+                                },
+                                set: function(target, prop, value) {
+                                    if (prop === 'element') {
+                                        safeElement = (value && typeof value.addEventListener === 'function') ? value : createMockElement();
+                                        return true;
+                                    }
+                                    target[prop] = value;
+                                    return true;
+                                }
+                            });
+                        };
+                        window.KTSearch.init = function(element, options) {
+                            return null;
+                        };
+                    }
+                }
+            }
+            
+            // Patch immediately and continuously
+            patchKTSearch();
+            
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    setTimeout(patchKTSearch, 5);
+                    setTimeout(patchKTSearch, 10);
+                    setTimeout(patchKTSearch, 50);
+                    setTimeout(patchKTSearch, 100);
+                    setTimeout(patchKTSearch, 200);
+                });
+            } else {
+                setTimeout(patchKTSearch, 5);
+                setTimeout(patchKTSearch, 10);
+                setTimeout(patchKTSearch, 50);
+                setTimeout(patchKTSearch, 100);
+                setTimeout(patchKTSearch, 200);
+            }
+            
+            var patchCount = 0;
+            var patchInterval = setInterval(function() {
+                patchKTSearch();
+                patchCount++;
+                if (patchCount > 200) {
+                    clearInterval(patchInterval);
+                }
+            }, 50);
+        })();
+    </script>
+    <!--end::Prevent KTSearch initialization error-->
 </head>
 <!--end::Head-->
 
@@ -55,6 +204,7 @@
     {!! sprintf('<script src="%s"></script>', asset($path)) !!}
 @endforeach
 <!--end::Global Javascript Bundle-->
+
 
 <!--begin::Vendors Javascript(used by this page)-->
 @foreach(getVendors('js') as $path)

@@ -29,6 +29,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'location_id',
         'group_id',
         'is_active',
+        'is_super_admin',
+        'must_change_password',
         'created_by',
         'updated_by',
         'last_login_at',
@@ -55,6 +57,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'last_login_at' => 'datetime',
         'is_active' => 'boolean',
+        'is_super_admin' => 'boolean',
+        'must_change_password' => 'boolean',
     ];
 
     /**
@@ -115,9 +119,17 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Get accessible modules for this user based on their department, location, and group
+     * Super admins have access to all modules
      */
     public function getAccessibleModules()
     {
+        // Super admins have access to all active modules
+        if ($this->is_super_admin) {
+            return \App\Models\Module::where('is_active', true)
+                ->orderBy('name')
+                ->get();
+        }
+        
         return $this->modules()
             ->where('modules.is_active', true)
             ->where(function ($query) {
@@ -137,20 +149,44 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get accessible menus for this user based on their modules and scoping
+     * Get accessible menus for this user based on:
+     * 1. Super admin - all menus
+     * 2. Role-based menu access
+     * 3. Direct user-menu assignments with scoping
+     * 4. Module-based access (if no specific restrictions)
      */
     public function getAccessibleMenus()
     {
+        // Super admins have access to all menus
+        if ($this->is_super_admin) {
+            return Menu::with('module')
+                ->orderBy('module_id')
+                ->orderBy('order')
+                ->get();
+        }
+        
         $moduleIds = $this->getAccessibleModules()->pluck('id');
 
         if ($moduleIds->isEmpty()) {
             return collect();
         }
 
+        // Get menus from user's roles
+        $roleMenuIds = collect();
+        foreach ($this->roles as $role) {
+            $roleMenuIds = $roleMenuIds->merge($role->menus->pluck('id'));
+        }
+        $roleMenuIds = $roleMenuIds->unique();
+
         return Menu::whereIn('module_id', $moduleIds)
-            ->where(function ($query) use ($moduleIds) {
-                // Menus assigned directly to user with proper scoping
-                $query->whereHas('users', function ($q) {
+            ->where(function ($query) use ($moduleIds, $roleMenuIds) {
+                // Menus from user's roles
+                if ($roleMenuIds->isNotEmpty()) {
+                    $query->whereIn('id', $roleMenuIds);
+                }
+                
+                // OR menus assigned directly to user with proper scoping
+                $query->orWhereHas('users', function ($q) {
                     $q->where('menu_user.user_id', $this->id)
                         ->where(function ($subQ) {
                             $subQ->whereNull('menu_user.department_id')
@@ -164,9 +200,13 @@ class User extends Authenticatable implements MustVerifyEmail
                             $subQ->whereNull('menu_user.group_id')
                                 ->orWhere('menu_user.group_id', $this->group_id);
                         });
-                })
-                // Or menus from accessible modules (if no specific menu assignment, show all menus from accessible modules)
-                ->orWhereIn('module_id', $moduleIds);
+                });
+                
+                // OR if no role menus and no direct assignments, show all menus from accessible modules
+                // (only if user has no role-based restrictions)
+                if ($roleMenuIds->isEmpty() && !$this->menus()->exists()) {
+                    $query->orWhereIn('module_id', $moduleIds);
+                }
             })
             ->orderBy('module_id')
             ->orderBy('order')
@@ -190,5 +230,44 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getDefaultAddressAttribute()
     {
         return $this->addresses?->first();
+    }
+
+    /**
+     * Override Spatie's hasPermissionTo to allow super admins to bypass all permission checks
+     */
+    public function hasPermissionTo($permission, $guardName = null): bool
+    {
+        // Super admins have all permissions
+        if ($this->is_super_admin) {
+            return true;
+        }
+        
+        return parent::hasPermissionTo($permission, $guardName);
+    }
+
+    /**
+     * Override Spatie's hasAnyPermission to allow super admins to bypass all permission checks
+     */
+    public function hasAnyPermission(...$permissions): bool
+    {
+        // Super admins have all permissions
+        if ($this->is_super_admin) {
+            return true;
+        }
+        
+        return parent::hasAnyPermission(...$permissions);
+    }
+
+    /**
+     * Override Spatie's hasAllPermissions to allow super admins to bypass all permission checks
+     */
+    public function hasAllPermissions(...$permissions): bool
+    {
+        // Super admins have all permissions
+        if ($this->is_super_admin) {
+            return true;
+        }
+        
+        return parent::hasAllPermissions(...$permissions);
     }
 }

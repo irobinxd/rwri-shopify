@@ -4,24 +4,27 @@ namespace App\Livewire\Permission;
 
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 
 class RoleList extends Component
 {
     public array|Collection $roles;
 
-    protected $listeners = ['success' => 'updateRoleList'];
+    protected $listeners = ['success' => 'updateRoleList', 'refreshRoleList' => 'updateRoleList'];
 
     public function render()
     {
-        $this->roles = Role::with('permissions')->get();
+        // Always fetch fresh data with relationships
+        $this->roles = Role::with(['menus.module', 'users'])->get();
 
         return view('livewire.permission.role-list');
     }
 
     public function updateRoleList()
     {
-        $this->roles = Role::with('permissions')->get();
+        // Clear any cached relationships and refresh
+        $this->roles = Role::with(['menus.module', 'users'])->get();
+        $this->render(); // Force re-render
     }
 
     public function hydrate()

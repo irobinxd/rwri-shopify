@@ -157,8 +157,8 @@
                     <div class="modal-body">
                         <div class="mb-5">
                             <label class="required fw-semibold fs-6 mb-2">Excel File</label>
-                            <input type="file" class="form-control" name="file" accept=".xlsx,.xls" required>
-                            <div class="form-text">Upload Excel file (.xlsx or .xls) with SKU data. Maximum file size: 10MB</div>
+                            <input type="file" class="form-control" name="file" accept=".xlsx,.xls,.csv,.txt" required>
+                            <div class="form-text">Upload Excel file (.xlsx, .xls) or CSV file (.csv, .txt) with SKU data. Maximum file size: 10MB</div>
                         </div>
                         <div class="alert alert-info d-flex align-items-center p-5">
                             <i class="ki-duotone ki-information-5 fs-2hx text-info me-4">
