@@ -160,21 +160,25 @@ Fixed modal display issues when no single location can fulfill all cart items. S
 
 ---
 
-## January 9, 2026 - Order Attributes Fix: Pickup Date from Cart to Order & Email
-Fixed issue where pickup date and time attributes were not appearing in Shopify admin order details or customer email notifications after theme update. Restored order attributes display in customer order page by adding Liquid code to iterate through `order.note_attributes` and display pickup date/time information. Fixed cart form submission to ensure attributes are properly saved before checkout redirect. Increased delay from 200ms to 500ms before redirecting to checkout to prevent race condition. Added console logging to verify attributes are successfully saved in API response. Verified attributes appear in order confirmation emails and admin order details.
+## January 9, 2026 - Order Attributes Fix & Standard Operating Procedures Documentation
+
+**Shopify Theme - Order Attributes Fix:**
+- Fixed issue where pickup date and time attributes were not appearing in Shopify admin order details or customer email notifications after theme update
+- Restored order attributes display in customer order page by adding Liquid code to iterate through `order.note_attributes` and display pickup date/time information
+- Fixed cart form submission to ensure attributes are properly saved before checkout redirect
+- Increased delay from 200ms to 500ms before redirecting to checkout to prevent race condition
+- Added console logging to verify attributes are successfully saved in API response
+- Verified attributes appear in order confirmation emails and admin order details
+
+**Documentation - Standard Operating Procedures (SOP):**
+- Created comprehensive SOP documentation for troubleshooting common Shopify theme issues
+- Documented step-by-step procedures with checklists for: Order Attributes Not Appearing in Admin/Email, and Freebie (WellnessBoost Buy 2 Get 1) Not Working
+- Each SOP includes context, detailed troubleshooting steps, action items, and file locations for quick reference
+- Documentation serves as a maintenance guide for the support team
 
 **Files:**
 - `jp-home-current/sections/customers-order.liquid`
 - `jp-home-current/snippets/cart-form-page.liquid`
-
-**Date Completed:** January 9, 2026
-
----
-
-## January 9, 2026 - Standard Operating Procedures (SOP) Documentation
-Created comprehensive SOP documentation for troubleshooting common Shopify theme issues. Documented step-by-step procedures with checklists for: Order Attributes Not Appearing in Admin/Email, and Freebie (WellnessBoost Buy 2 Get 1) Not Working. Each SOP includes context, detailed troubleshooting steps, action items, and file locations for quick reference. Documentation serves as a maintenance guide for the support team.
-
-**Files:**
 - `SOP_TROUBLESHOOTING.md`
 
 **Date Completed:** January 9, 2026
@@ -256,36 +260,18 @@ Created comprehensive database schema and Eloquent models for the Royal Store Sh
 
 ---
 
-## January 12, 2026 - Product Icon Labels Display Fix & Configuration
-
-**Shopify Theme - Product Icon Labels Initial Fix:**
-- Investigated product icon labels not displaying on product cards despite correct asset files and metafield setup
-- Identified that theme expected metafield references in theme settings, not direct label text
-- Fixed `product-item.liquid` to correctly parse metafield references for icon labels
-- Updated `product-icon-label.liquid` to load images from Shopify's `Content > Files` with fallback to `assets` folder
-- Ensured icon labels display correctly on product cards when metafield is properly configured
-
-**Files:**
-- `jp-home/snippets/product-item.liquid`
-- `jp-home/snippets/product-icon-label.liquid`
+## January 12, 2026 - (No tasks logged)
 
 **Date Completed:** January 12, 2026
 
 ---
 
-## January 13, 2026 - RWRI Portal: Database Schema Optimization & Product Icon Labels Display Limits
+## January 13, 2026 - RWRI Portal: Database Schema Optimization
 
 **RWRI Portal - Database Schema Optimization:**
 - Reviewed and optimized database migrations for the Shopify x JDA integration
 - Added proper index naming conventions to improve query performance and database management
 - Updated foreign key constraints and unique indexes across all Shopify data pull tables
-
-**Shopify Theme - Icon Display Limits & Collection Page Integration:**
-- Implemented display limit of 3 icon labels on product cards (homepage/collection pages) while showing all 5 on product detail page
-- Added icon count logic to prevent displaying more than 3 icons per product card
-- Updated collection page template to include `icons` block in product grid
-- Updated homepage templates to include `icons` block in featured collections and shop-the-look sections
-- Fixed missing icon blocks in `collection.json` and `index.json` templates
 
 **Files:**
 - `rwri-portal/database/migrations/2026_01_11_100010_create_shopify_locations_table.php`
@@ -293,15 +279,12 @@ Created comprehensive database schema and Eloquent models for the Royal Store Sh
 - `rwri-portal/database/migrations/2026_01_11_100012_create_shopify_products_table.php`
 - `rwri-portal/database/migrations/2026_01_11_100013_create_shopify_variants_table.php`
 - `rwri-portal/database/migrations/2026_01_11_100014_create_shopify_inventory_levels_table.php`
-- `jp-home/snippets/product-item.liquid`
-- `jp-home/templates/collection.json`
-- `jp-home/templates/index.json`
 
 **Date Completed:** January 13, 2026
 
 ---
 
-## January 14, 2026 - RWRI Portal Module Access, Cart UI Improvements & Product Page Icon Labels
+## January 14, 2026 - RWRI Portal Module Access & Cart UI Improvements
 
 **RWRI Portal - Module Access Control:**
 - Updated `WebStoresModuleSeeder` to automatically assign Web Stores and Royal Store modules to all users
@@ -319,54 +302,21 @@ Created comprehensive database schema and Eloquent models for the Royal Store Sh
 - Added hover effects with transform and shadow for improved interactivity
 - Implemented consistent button styling across all cart conflict resolution modals
 
-**Shopify Theme - Product Page Icon Labels Repositioning & CSV Template:**
-- Moved icon labels list on product view page to appear below price and above quantity/add to cart button
-- Changed icon display style to icon-only with tooltips on product page (matching product cards)
-- Fixed duplicate price display issue by disabling price in `buy_buttons` block
-- Maintained original price size using `text-size--heading` class
-- Created CSV template with 5 metafield columns for product icon labels import
-
 **Files:**
 - `rwri-portal/database/seeders/WebStoresModuleSeeder.php`
 - `jp-home/sections/main-cart.liquid`
-- `jp-home/sections/main-product.liquid`
-- `jp-home/templates/product.json`
-- `jp-home/CSV template with metafields.csv`
 
 **Date Completed:** January 14, 2026
 
 ---
 
-## January 15, 2026 - Custom Icon Label Filter Initial Implementation
-
-**Shopify Theme - Custom Collection Filter Development:**
-- Created custom client-side JavaScript filter for product icon labels on collection pages
-- Built filter that scans products on page to dynamically generate filter options with product counts
-- Implemented filter UI matching Shopify's native filter styling with checkboxes and counts
-- Added filter to sidebar in `facets.liquid` snippet alongside native Shopify filters
-- Filter works independently without requiring Shopify Admin filter configuration
-
-**Files:**
-- `jp-home/snippets/custom-icon-filter.liquid`
-- `jp-home/snippets/facets.liquid`
-- `jp-home/snippets/product-item.liquid` (added `data-icon-labels` attribute)
+## January 15, 2026 - (No tasks logged)
 
 **Date Completed:** January 15, 2026
 
 ---
 
-## January 16, 2026 - Custom Filter Event Handling & State Management
-
-**Shopify Theme - Filter Functionality Improvements:**
-- Fixed custom filter checkboxes preventing Shopify's form submission by removing `name` attribute
-- Implemented event propagation blocking to prevent conflicts with Shopify's native filters
-- Added global state management (`window.customIconFilterState`) to persist filter selections across AJAX updates
-- Created MutationObserver to re-apply filters after Shopify's AJAX product grid updates
-- Fixed filter state restoration after page reloads and AJAX navigation
-
-**Files:**
-- `jp-home/snippets/custom-icon-filter.liquid`
-- `jp-home/assets/custom-icon-filter.js` (separated JavaScript logic)
+## January 16, 2026 - (No tasks logged)
 
 **Date Completed:** January 16, 2026
 
@@ -407,97 +357,6 @@ Created comprehensive database schema and Eloquent models for the Royal Store Sh
 
 **Date Completed:** January 18, 2026
 
----
-
-## January 19, 2026 - Users List View & Role Modal Improvements
-
-**RWRI Portal - User Management Module:**
-- Created Users list view with DataTable integration for displaying user information
-- Fixed sidebar visibility to show "User Management" menu item for all authenticated users
-- Removed "Permissions" menu item from sidebar navigation
-- Enhanced role selection modal in Roles page with improved layout
-- Fixed "Select all" functionality in role modal to properly check/uncheck all permissions
-- Resolved "No permissions given" display issue in role list when permissions were assigned
-- Updated role modal to display "Menu Access" instead of permissions on the front
-- Added "Administrator Access" checkbox that disables all other checkboxes and automatically checks all menus when enabled
-
-**Files:**
-- `rwri-portal/resources/views/pages/apps/user-management/users/list.blade.php`
-- `rwri-portal/resources/views/pages/apps/user-management/roles/list.blade.php`
-- `rwri-portal/resources/views/livewire/permission/role-modal.blade.php`
-- `rwri-portal/app/Livewire/Permission/RoleModal.php`
-- `rwri-portal/resources/views/layout/partials/sidebar-layout/sidebar/_menu.blade.php`
-
-**Date Completed:** January 19, 2026
-
----
-
-## January 20, 2026 - DataTable Initialization & Asset Loading Fixes
-
-**RWRI Portal - DataTable Implementation:**
-- Fixed Users DataTable not initializing by implementing native jQuery DataTable initialization
-- Resolved 404 errors for missing asset files (datatables.bundle.css, datatables.bundle.js, widgets.js, chat.js, etc.)
-- Fixed empty `datatables.bundle.js` file issue by switching to CDN-hosted DataTables
-- Implemented `waitForDataTables` function to ensure DataTables library is loaded before initialization
-- Added retry logic for table element availability before DataTable initialization
-- Fixed Roles DataTable not triggering/loading by correcting column definitions and AJAX route configuration
-- Updated `UsersDataTable.php` to filter users based on `is_super_admin` flag (only show super_admin users to super_admin users)
-- Fixed "Store Owner" role not displaying in Roles list by correcting DataTable query
-
-**Files:**
-- `rwri-portal/resources/views/pages/apps/user-management/users/list.blade.php`
-- `rwri-portal/resources/views/pages/apps/user-management/roles/list.blade.php`
-- `rwri-portal/app/DataTables/UsersDataTable.php`
-- `rwri-portal/app/DataTables/RolesDataTable.php`
-
-**Date Completed:** January 20, 2026
-
----
-
-## January 21, 2026 - KTSearch Error Fixes & DataTable CDN Implementation
-
-**RWRI Portal - JavaScript Error Resolution:**
-- Fixed `scripts.bundle.js:7903 Uncaught TypeError: searchObject.on is not a function` error
-- Fixed `scripts.bundle.js:4285 Uncaught TypeError: Cannot read properties of null (reading 'addEventListener')` error
-- Implemented JavaScript stub in `master.blade.php` to prevent KTSearch initialization errors
-- Created Proxy object to intercept KTSearch property access and prevent null reference errors
-- Removed all `data-kt-search-*` attributes from search-related partials to prevent conflicts
-- Resolved Git worktree editing confusion by ensuring edits target correct working directory
-- Finalized DataTables CDN implementation for both Users and Roles pages
-
-**Files:**
-- `rwri-portal/resources/views/layout/master.blade.php`
-- `rwri-portal/resources/views/pages/apps/user-management/users/list.blade.php`
-- `rwri-portal/resources/views/pages/apps/user-management/roles/list.blade.php`
-
-**Date Completed:** January 21, 2026
-
----
-
-## January 22, 2026 - User Edit Functionality & Password Management
-
-**RWRI Portal - User Management Enhancements:**
-- Implemented user edit functionality with edit button in users list actions menu
-- Added password change capability in edit user modal (optional - leave blank to keep current password)
-- Created migration to add `must_change_password` boolean field to users table
-- Added "User must change password on next login" switch toggle in user edit modal
-- Fixed name field handling to properly split full name into firstname, middlename, lastname
-- Implemented Livewire event handling for edit button clicks with proper loading sequence
-- Fixed Livewire "not defined" error by implementing wait functions for Livewire availability
-- Added DataTable refresh functionality after user updates
-- Updated `AddUserModal` component to support both create and edit modes
-- Enhanced user edit modal to display "Edit User" title when in edit mode
-
-**Files:**
-- `rwri-portal/database/migrations/2026_01_22_052904_add_must_change_password_to_users_table.php`
-- `rwri-portal/app/Models/User.php`
-- `rwri-portal/app/Livewire/User/AddUserModal.php`
-- `rwri-portal/resources/views/livewire/user/add-user-modal.blade.php`
-- `rwri-portal/resources/views/pages/apps/user-management/users/list.blade.php`
-- `rwri-portal/resources/views/pages/apps/user-management/users/columns/_actions.blade.php`
-- `rwri-portal/app/DataTables/UsersDataTable.php`
-
-**Date Completed:** January 22, 2026
 
 ---
 
