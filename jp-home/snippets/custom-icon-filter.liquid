@@ -8,16 +8,16 @@
   {% render 'custom-icon-filter', filters_default_status: section.settings.expand_filters_bydefault %}
 {%- endcomment -%}
 
-<div id="custom-icon-filter-container" data-default-open="{{ filters_default_status }}"></div>
+<div id="custom-icon-filter-container{% if id %}-{{ id }}{% endif %}" class="custom-icon-filter-container" data-default-open="{{ filters_default_status }}"></div>
 
 <style>
   /* Custom icon filter styles */
-  #custom-icon-filter-container .facets__list {
+  .custom-icon-filter-container .facets__list {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
   }
-  #custom-icon-filter-container .facets__item {
+  .custom-icon-filter-container .facets__item {
     margin: 0 !important;
     padding: 0 !important;
   }

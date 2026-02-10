@@ -145,9 +145,8 @@
       "blocks": {
         "slide_image_PKr6b4": {
           "type": "_slide-image",
+          "disabled": true,
           "settings": {
-            "image": "shopify://shop_images/joels-place-rockwell-grocery-lifestyle.jpg",
-            "mobile_image": "shopify://shop_images/joels-place-rockwell-grocery-lifestyle.jpg",
             "link": "",
             "open_in_new_window": false,
             "color_background_main": "rgba(0,0,0,0)",

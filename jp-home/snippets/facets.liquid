@@ -61,7 +61,7 @@
           {%- endunless -%}
 
           {%- comment -%} Custom Icon Label Filter {%- endcomment -%}
-          {%- render 'custom-icon-filter', filters_default_status: filters_default_status -%}
+          {%- render 'custom-icon-filter', filters_default_status: filters_default_status, id: id -%}
 
           {%- for filter in results.filters -%}
 

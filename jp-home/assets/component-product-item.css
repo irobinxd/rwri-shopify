@@ -220,7 +220,26 @@ html[dir=ltr] .product-item__badges {
 .product-item__icons {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.625rem 0;
+  gap: 0.25rem 0;
+  justify-content: flex-start;
+  position: relative;
+  top:-13px;
+  left: 5px;
+}
+/* Icons below cart button - outside the text flex container */
+.product-item__icons--below-cart {
+  padding: 0.375rem var(--gutter-regular, 0.75rem) 0;
+  flex-shrink: 0;
+  min-height: 1.9375rem; /* 25px icons + 6px top padding - ensures consistent height even when empty */
+}
+.product-item__icons .text-with-icon--tooltip {
+  width: 1.5625rem;
+  height: 1.5625rem;
+  margin-inline-end: 0.375rem;
+}
+.product-item__icons .text-with-icon__icon img {
+  width: 20px;
+  height: 20px;
 }
 
 .star-rating {

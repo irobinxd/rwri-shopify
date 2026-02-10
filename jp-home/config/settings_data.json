@@ -451,36 +451,10 @@
     },
     "content_for_index": [],
     "blocks": {
-      "1513253815146976218": {
-        "type": "shopify://apps/omnisend-email-marketing-sms/blocks/app-embed/44704aa2-794f-4c5d-8c8e-039c841158e9",
-        "disabled": false,
-        "settings": {}
-      },
       "14876220180117712452": {
         "type": "shopify://apps/sea-customer-survey/blocks/app-embed/c7c6d466-0f8e-412d-b0b9-db9b3387aa92",
         "disabled": false,
         "settings": {}
-      },
-      "8776485610325655785": {
-        "type": "shopify://apps/hiko-social-login/blocks/hiko-auth/3832d7e1-5bcd-4b72-91da-236b57feef8f",
-        "disabled": false,
-        "settings": {
-          "social_font": "enable"
-        }
-      },
-      "15683396631634586217": {
-        "type": "shopify://apps/inbox/blocks/chat/841fc607-4181-4ad1-842d-e24d7f8bad6b",
-        "disabled": false,
-        "settings": {
-          "button_color": "#000000",
-          "secondary_color": "#FFFFFF",
-          "ternary_color": "#6A6A6A",
-          "button_icon": "chat_bubble",
-          "button_text": "chat_with_us",
-          "button_horizontal_position": "bottom_right",
-          "button_vertical_position": "lowest",
-          "greeting_message": ""
-        }
       },
       "7079518687644006178": {
         "type": "shopify://apps/checkout-blocks/blocks/app-embed/b0024ca5-9de8-4bf0-a92f-cd0783877ae2",
@@ -493,11 +467,6 @@
           "utm_term": true,
           "ref": true
         }
-      },
-      "6569434243247677665": {
-        "type": "shopify://apps/stockiq-out-of-stock-manager/blocks/test/8d873c7c-f119-4584-8618-caba287d162c",
-        "disabled": false,
-        "settings": {}
       }
     }
   },

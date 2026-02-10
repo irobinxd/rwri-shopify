@@ -12,109 +12,32 @@
     "1653646142d6a7c886": {
       "type": "flex-slideshow",
       "blocks": {
-        "slide-2": {
-          "type": "_slide-image",
-          "settings": {
-            "image": "shopify://shop_images/Wellness-boost-homepage-hero.jpg",
-            "mobile_image": "shopify://shop_images/Wellness-boost-mobile-hero.jpg",
-            "link": "shopify://collections/wellness-boost",
-            "open_in_new_window": false,
-            "color_background_main": "#3b3b3b",
-            "color_text_main": "#1d1d1b"
-          },
-          "blocks": {
-            "slide-2-caption-1": {
-              "type": "caption",
-              "settings": {
-                "caption": "Online exclusive",
-                "text_size": "large",
-                "text_background_color": "rgba(0,0,0,0)",
-                "text_color": "#ffffff"
-              },
-              "blocks": {}
-            },
-            "slide-2-heading-1": {
-              "type": "heading",
-              "settings": {
-                "heading": "Order Two Wellness Boost Bowls, Get a Free Powershot",
-                "title_size": "h2",
-                "line_height": "default",
-                "text_color": "#ffffff",
-                "seo_h_tag": "h3"
-              },
-              "blocks": {}
-            },
-            "slide-2-content-group-1": {
-              "type": "content-group",
-              "settings": {
-                "spacing": "small"
-              },
-              "blocks": {
-                "slide-2-button-1": {
-                  "type": "button",
-                  "settings": {
-                    "button_label": "Shop Now",
-                    "link": "shopify://collections/wellness-boost",
-                    "open_in_new_window": false,
-                    "button_size": "regular",
-                    "button_style": "solid",
-                    "color_text_buttons": "#ffffff",
-                    "color_accent_buttons": "rgba(0,0,0,0)"
-                  },
-                  "blocks": {}
-                },
-                "button_NmFicY": {
-                  "type": "button",
-                  "name": "t:sections.rich-text.blocks.button.name",
-                  "settings": {
-                    "button_label": "Promo Mechanics",
-                    "link": "https://joelsplace.com/blogs/in-store-now/wellness-boost-at-joelsplace-com",
-                    "open_in_new_window": false,
-                    "button_size": "regular",
-                    "button_style": "outline",
-                    "color_text_buttons": "#ffffff",
-                    "color_accent_buttons": "rgba(0,0,0,0)"
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "slide-2-button-1",
-                "button_NmFicY"
-              ]
-            }
-          },
-          "block_order": [
-            "slide-2-caption-1",
-            "slide-2-heading-1",
-            "slide-2-content-group-1"
-          ]
-        },
-        "slide_image_KPfirg": {
+        "slide_image_hAHWbY": {
           "type": "_slide-image",
           "name": "t:sections.local-extra-words.sections.slideshow.block.name",
           "settings": {
-            "image": "shopify://shop_images/Homepage-FeaturedCollection_BreakfastOnTheGo.jpg",
+            "image": "shopify://shop_images/lunch-sets-blog-cover.jpg",
+            "mobile_image": "shopify://shop_images/lunch-sets-blog-cover.jpg",
             "link": "",
             "open_in_new_window": false,
             "color_background_main": "#3b3b3b",
             "color_text_main": "rgba(0,0,0,0)"
           },
           "blocks": {
-            "caption_jE37TF": {
+            "caption_LzPdki": {
               "type": "caption",
               "settings": {
-                "caption": "Shop Click and Collect or visit our bakery windows",
+                "caption": "Two of Joel's Place meal sets are now available online—with more to come!",
                 "text_size": "regular",
                 "text_background_color": "rgba(0,0,0,0)",
                 "text_color": "#ffffff"
               },
               "blocks": {}
             },
-            "heading_YFpQrM": {
+            "heading_eEY98m": {
               "type": "heading",
               "settings": {
-                "heading": "Breakfast on the Go",
+                "heading": "New Online: All-in-One Meal Sets",
                 "title_size": "h2",
                 "line_height": "default",
                 "text_color": "#ffffff",
@@ -122,17 +45,17 @@
               },
               "blocks": {}
             },
-            "content_group_J8wiaA": {
+            "content_group_KkHnCD": {
               "type": "content-group",
               "settings": {
                 "spacing": "small"
               },
               "blocks": {
-                "button_ttGGLL": {
+                "button_j4ikJk": {
                   "type": "button",
                   "settings": {
                     "button_label": "Shop Now",
-                    "link": "shopify://collections/breakfast-on-the-go-1",
+                    "link": "shopify://collections/hearty-meal-sets",
                     "open_in_new_window": false,
                     "button_size": "regular",
                     "button_style": "solid",
@@ -141,11 +64,11 @@
                   },
                   "blocks": {}
                 },
-                "button_PEYBWD": {
+                "button_T8BEmT": {
                   "type": "button",
                   "settings": {
-                    "button_label": "Bakery Window",
-                    "link": "shopify://blogs/in-store-now/in-store-now-bakery-window-at-joels-place",
+                    "button_label": "Learn More",
+                    "link": "shopify://blogs/online-offers/meal-sets-now-available-at-joels-place",
                     "open_in_new_window": false,
                     "button_size": "regular",
                     "button_style": "outline",
@@ -156,15 +79,93 @@
                 }
               },
               "block_order": [
-                "button_ttGGLL",
-                "button_PEYBWD"
+                "button_j4ikJk",
+                "button_T8BEmT"
               ]
             }
           },
           "block_order": [
-            "caption_jE37TF",
-            "heading_YFpQrM",
-            "content_group_J8wiaA"
+            "caption_LzPdki",
+            "heading_eEY98m",
+            "content_group_KkHnCD"
+          ]
+        },
+        "slide_image_QmaCck": {
+          "type": "_slide-image",
+          "name": "t:sections.local-extra-words.sections.slideshow.block.name",
+          "settings": {
+            "image": "shopify://shop_images/protein-pit-stop-guide-homepage-card-desktop-banner.jpg",
+            "mobile_image": "shopify://shop_images/protein-pit-stop-guide-mobile-banner.jpg",
+            "link": "",
+            "open_in_new_window": false,
+            "color_background_main": "#3b3b3b",
+            "color_text_main": "#ffffff"
+          },
+          "blocks": {
+            "caption_GUUzYz": {
+              "type": "caption",
+              "settings": {
+                "caption": "Protein-forward meals to power up your day",
+                "text_size": "regular",
+                "text_background_color": "rgba(0,0,0,0)",
+                "text_color": "rgba(0,0,0,0)"
+              },
+              "blocks": {}
+            },
+            "heading_cpKxa9": {
+              "type": "heading",
+              "settings": {
+                "heading": "Fuel Your Well-Being",
+                "title_size": "h2",
+                "line_height": "default",
+                "text_color": "rgba(0,0,0,0)",
+                "seo_h_tag": "h3"
+              },
+              "blocks": {}
+            },
+            "content_group_AyjnA7": {
+              "type": "content-group",
+              "settings": {
+                "spacing": "small"
+              },
+              "blocks": {
+                "button_zMrywK": {
+                  "type": "button",
+                  "settings": {
+                    "button_label": "Shop Now",
+                    "link": "shopify://collections/protein-picks",
+                    "open_in_new_window": false,
+                    "button_size": "regular",
+                    "button_style": "solid",
+                    "color_text_buttons": "rgba(0,0,0,0)",
+                    "color_accent_buttons": "rgba(0,0,0,0)"
+                  },
+                  "blocks": {}
+                },
+                "button_EyFAVi": {
+                  "type": "button",
+                  "settings": {
+                    "button_label": "Protein 101",
+                    "link": "https://joelsplace.com/blogs/guides/what-is-protein-and-how-does-it-fuel-your-well-being",
+                    "open_in_new_window": false,
+                    "button_size": "regular",
+                    "button_style": "outline",
+                    "color_text_buttons": "rgba(0,0,0,0)",
+                    "color_accent_buttons": "rgba(0,0,0,0)"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "button_zMrywK",
+                "button_EyFAVi"
+              ]
+            }
+          },
+          "block_order": [
+            "caption_GUUzYz",
+            "heading_cpKxa9",
+            "content_group_AyjnA7"
           ]
         },
         "slide_image_gb6fPh": {
@@ -308,6 +309,84 @@
             "content_group_Bb8pbB"
           ]
         },
+        "slide_image_KPfirg": {
+          "type": "_slide-image",
+          "name": "t:sections.local-extra-words.sections.slideshow.block.name",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/Homepage-FeaturedCollection_BreakfastOnTheGo.jpg",
+            "link": "",
+            "open_in_new_window": false,
+            "color_background_main": "#3b3b3b",
+            "color_text_main": "rgba(0,0,0,0)"
+          },
+          "blocks": {
+            "caption_jE37TF": {
+              "type": "caption",
+              "settings": {
+                "caption": "Shop Click and Collect or visit our bakery windows",
+                "text_size": "regular",
+                "text_background_color": "rgba(0,0,0,0)",
+                "text_color": "#ffffff"
+              },
+              "blocks": {}
+            },
+            "heading_YFpQrM": {
+              "type": "heading",
+              "settings": {
+                "heading": "Breakfast on the Go",
+                "title_size": "h2",
+                "line_height": "default",
+                "text_color": "#ffffff",
+                "seo_h_tag": "h3"
+              },
+              "blocks": {}
+            },
+            "content_group_J8wiaA": {
+              "type": "content-group",
+              "settings": {
+                "spacing": "small"
+              },
+              "blocks": {
+                "button_ttGGLL": {
+                  "type": "button",
+                  "settings": {
+                    "button_label": "Shop Now",
+                    "link": "shopify://collections/breakfast-on-the-go-1",
+                    "open_in_new_window": false,
+                    "button_size": "regular",
+                    "button_style": "solid",
+                    "color_text_buttons": "#ffffff",
+                    "color_accent_buttons": "rgba(0,0,0,0)"
+                  },
+                  "blocks": {}
+                },
+                "button_PEYBWD": {
+                  "type": "button",
+                  "settings": {
+                    "button_label": "Bakery Window",
+                    "link": "shopify://blogs/in-store-now/in-store-now-bakery-window-at-joels-place",
+                    "open_in_new_window": false,
+                    "button_size": "regular",
+                    "button_style": "outline",
+                    "color_text_buttons": "#ffffff",
+                    "color_accent_buttons": "rgba(0,0,0,0)"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "button_ttGGLL",
+                "button_PEYBWD"
+              ]
+            }
+          },
+          "block_order": [
+            "caption_jE37TF",
+            "heading_YFpQrM",
+            "content_group_J8wiaA"
+          ]
+        },
         "slide-1": {
           "type": "_slide-image",
           "disabled": true,
@@ -389,17 +468,18 @@
         }
       },
       "block_order": [
-        "slide-2",
-        "slide_image_KPfirg",
+        "slide_image_hAHWbY",
+        "slide_image_QmaCck",
         "slide_image_gb6fPh",
         "slide_image_pDaktm",
+        "slide_image_KPfirg",
         "slide-1"
       ],
       "settings": {
         "desktop_height": "50vh",
         "mobile_height": "60vh",
         "is_auto_height": false,
-        "autorotate_enable": true,
+        "autorotate_enable": false,
         "autorotate_interval": 5,
         "alignment": "horizontal-center align-content--vertical-middle",
         "width": "100",
@@ -563,17 +643,13 @@
         ".button--solid {background-color: #70a062; border-color: #70a062 !important;}"
       ],
       "settings": {
-        "heading": "NEW YEAR POWER-UP",
-        "subheading": "Fill Up on Our Healthy Bowls and Enjoy a Free Powershot Juice",
+        "heading": "NEW ONLINE: ALL-IN-ONE MEAL SETS",
+        "subheading": "A Main Dish, Veggies on the Side, and a Hearty Serving of Garlic Rice",
         "section_heading_layout": "section-heading--left",
-        "image": "shopify://shop_images/Wellness-boost-landing-page-shop-guides-card.jpg",
+        "image": "shopify://shop_images/lunch-meals-updated-featured-collection.jpg",
         "product_list": [
-          "caesar-salad",
-          "joels-place-falafel-grain-bowl",
-          "cobb-salad",
-          "adlai-seafood-paella",
-          "lemongrass-chicken-grain-bowl",
-          "salad-nicoise"
+          "pork-sisig-meal-set",
+          "bistek-meal-set"
         ],
         "color_background_main": "rgba(0,0,0,0)",
         "color_borders_main": "rgba(0,0,0,0)",
@@ -605,15 +681,15 @@
       ],
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
-        "heading": "ONLINE EXCLUSIVE DEAL",
-        "subheading": "Order Two Wellness Boost Bowls, Get a FREE Powershot Juice",
+        "heading": "PROTEIN PICKS",
+        "subheading": "Filling and Protein-Packed Meals ",
         "show_view_all": true,
         "section_heading_layout": "section-heading--left",
         "style": "slider",
         "layout_desktop": "four-columns",
         "layout_mobile": "grid-palm-2",
         "products_number": 11,
-        "collection": "wellness-boost",
+        "collection": "protein-picks",
         "collection_1": "",
         "collection_2": "",
         "collection_3": "",
@@ -634,8 +710,66 @@
     "blog_promotion_cards_YHWhNr": {
       "type": "blog-promotion-cards",
       "blocks": {
+        "card_TQ6bGa": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/protein-pit-stop-guide-homepage-card.jpg",
+            "caption": "SHOPPING GUIDE",
+            "title": "How Does Protein Fuel You?",
+            "subtitle": "Learn how protein fuels your health at every life stage with delicious options from Joel’s Place Deli and Rice Bowls!",
+            "link": "https://joelsplace.com/blogs/guides/what-is-protein-and-how-does-it-fuel-your-well-being",
+            "button_label": "Read Now",
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)",
+            "color_accent_main": "rgba(0,0,0,0)",
+            "color_borders_main": "rgba(0,0,0,0)",
+            "color_shadow_main": "rgba(0,0,0,0)",
+            "color_hide_borders": false,
+            "color_hide_shadow": false,
+            "seo_h_tag": "h3"
+          }
+        },
+        "card_m6RFKg": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/lunch-sets-shop-guide.jpg",
+            "caption": "NEW ONLINE",
+            "title": "Hearty Meal Sets",
+            "subtitle": "Packed with a main dish, veggies on the side, and a hearty serving of garlic rice, Joel’s Place meal sets are now available online via Click and Collect.",
+            "link": "shopify://blogs/online-offers/meal-sets-now-available-at-joels-place",
+            "button_label": "Read Now",
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)",
+            "color_accent_main": "rgba(0,0,0,0)",
+            "color_borders_main": "rgba(0,0,0,0)",
+            "color_shadow_main": "rgba(0,0,0,0)",
+            "color_hide_borders": false,
+            "color_hide_shadow": false,
+            "seo_h_tag": "h3"
+          }
+        },
+        "card_UJC9jU": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/benefits-of-juicing-cover.jpg",
+            "caption": "SHOPPING GUIDE",
+            "title": "The Benefits of Juicing",
+            "subtitle": "Step up your wellness journey with juicing. Learn about popular juicing ingredients, key nutrients, and how they benefit your body.",
+            "link": "https://joelsplace.com/blogs/guides/benefits-of-juicing-a-fresh-way-to-support-your-health",
+            "button_label": "Read Now",
+            "color_background_main": "rgba(0,0,0,0)",
+            "color_text_main": "rgba(0,0,0,0)",
+            "color_accent_main": "rgba(0,0,0,0)",
+            "color_borders_main": "rgba(0,0,0,0)",
+            "color_shadow_main": "rgba(0,0,0,0)",
+            "color_hide_borders": false,
+            "color_hide_shadow": false,
+            "seo_h_tag": "h3"
+          }
+        },
         "card_Gc4nwJ": {
           "type": "card",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/healthy-bowls-cover.jpg",
             "caption": "SHOPPING GUIDE",
@@ -655,6 +789,7 @@
         },
         "card_U7aMiE": {
           "type": "card",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/Wellness-boost-mobile-hero.jpg",
             "caption": "SHOP ONLINE",
@@ -694,6 +829,7 @@
         },
         "card_HrxxHW": {
           "type": "card",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/a-snackers-guide-to-movie-nights-at-home-cover.jpg",
             "caption": "SHOPPING GUIDE",
@@ -720,26 +856,6 @@
             "title": "Entertaining with Cheese",
             "subtitle": "Your quick guide to types of cheese, best food pairings, and serving with cheese knives, perfect for entertaining guests this holiday season.",
             "link": "https://joelsplace.com/blogs/guides/entertaining-with-cheese-this-holiday",
-            "button_label": "Read Now",
-            "color_background_main": "rgba(0,0,0,0)",
-            "color_text_main": "rgba(0,0,0,0)",
-            "color_accent_main": "rgba(0,0,0,0)",
-            "color_borders_main": "rgba(0,0,0,0)",
-            "color_shadow_main": "rgba(0,0,0,0)",
-            "color_hide_borders": false,
-            "color_hide_shadow": false,
-            "seo_h_tag": "h3"
-          }
-        },
-        "card_TQ6bGa": {
-          "type": "card",
-          "disabled": true,
-          "settings": {
-            "image": "shopify://shop_images/shopping-for-wine-holiday-primer-guide-joels-place-sparkling-wine-in-article.jpg",
-            "caption": "SHOPPING GUIDE",
-            "title": "Shopping for Wine This Holiday",
-            "subtitle": "We cover the basics so you can choose the perfect reds, whites, rosés, and sparkling wines with confidence.",
-            "link": "https://joelsplace.com/blogs/guides/shopping-for-wine-a-holiday-primer-with-joel-s-place",
             "button_label": "Read Now",
             "color_background_main": "rgba(0,0,0,0)",
             "color_text_main": "rgba(0,0,0,0)",
@@ -780,26 +896,6 @@
             "title": "AOP, DOP, and IGP Certified Products",
             "subtitle": "These labels ensure your ingredients are authentic and sourced straight from their local country.",
             "link": "shopify://blogs/guides/what-are-aop-dop-and-igp-certified-products",
-            "button_label": "Read Now",
-            "color_background_main": "rgba(0,0,0,0)",
-            "color_text_main": "rgba(0,0,0,0)",
-            "color_accent_main": "rgba(0,0,0,0)",
-            "color_borders_main": "rgba(0,0,0,0)",
-            "color_shadow_main": "rgba(0,0,0,0)",
-            "color_hide_borders": false,
-            "color_hide_shadow": false,
-            "seo_h_tag": "h3"
-          }
-        },
-        "card_UJC9jU": {
-          "type": "card",
-          "disabled": true,
-          "settings": {
-            "image": "shopify://shop_images/low-effort-snacks-cookie-sandwich.jpg",
-            "caption": "SHOPPING GUIDE",
-            "title": "Easy Snacks to Put Together at Home",
-            "subtitle": "A slow day at home means quick and easy homemade snacks you can easily pull off without any cooking required. ",
-            "link": "https://joelsplace.com/blogs/guides/easy-snacks-to-put-together-at-home",
             "button_label": "Read Now",
             "color_background_main": "rgba(0,0,0,0)",
             "color_text_main": "rgba(0,0,0,0)",
@@ -853,15 +949,16 @@
         }
       },
       "block_order": [
+        "card_TQ6bGa",
+        "card_m6RFKg",
+        "card_UJC9jU",
         "card_Gc4nwJ",
         "card_U7aMiE",
         "card_DEXJ3q",
         "card_HrxxHW",
         "card_6neAf8",
-        "card_TQ6bGa",
         "card_xeNHiC",
         "card_qa7F8C",
-        "card_UJC9jU",
         "card_h94kmY",
         "card_bjxUU4"
       ],
@@ -888,26 +985,6 @@
     "165406738229739f4d": {
       "type": "promotion-cards",
       "blocks": {
-        "card_RcNRD3": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/Click-and-collect-mobile-banner.jpg",
-            "caption": "IN-STORE SERVICE",
-            "title": "Glorietta 4 Click and Collect",
-            "subtitle": "We’re bringing all your ready-to-eat favorites online with Click and Collect! Pick up your order in-store or curbside at Glorietta 4.",
-            "link": "https://joelsplace.com/blogs/in-store-now/click-and-collect-now-online",
-            "open_in_new_window": false,
-            "button_label": "Learn More",
-            "color_background_main": "#65a898",
-            "color_text_main": "#ffffff",
-            "color_accent_main": "rgba(0,0,0,0)",
-            "color_borders_main": "rgba(0,0,0,0)",
-            "color_shadow_main": "rgba(0,0,0,0)",
-            "color_hide_borders": false,
-            "color_hide_shadow": false,
-            "seo_h_tag": "h3"
-          }
-        },
         "16540673826052f668-0": {
           "type": "card",
           "settings": {
@@ -928,17 +1005,17 @@
             "seo_h_tag": "h3"
           }
         },
-        "card_HVDJjW": {
+        "card_RcNRD3": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/joels-place-is-now-on-grab-cover.jpg",
-            "caption": "NEW IN-STORE",
-            "title": "Glorietta 4 Is Now on Grab",
-            "subtitle": "Your ready-to-eat favorites are now on GrabFood! Order today and have your top menu picks delivered straight to your door.",
-            "link": "https://joelsplace.com/blogs/in-store-now/joels-place-is-now-available-on-grabfood",
+            "image": "shopify://shop_images/Click-and-collect-mobile-banner.jpg",
+            "caption": "IN-STORE SERVICE",
+            "title": "Glorietta 4 Click and Collect",
+            "subtitle": "We’re bringing all your ready-to-eat favorites online with Click and Collect! Pick up your order in-store or curbside at Glorietta 4.",
+            "link": "https://joelsplace.com/blogs/in-store-now/click-and-collect-now-online",
             "open_in_new_window": false,
             "button_label": "Learn More",
-            "color_background_main": "#70a062",
+            "color_background_main": "#65a898",
             "color_text_main": "#ffffff",
             "color_accent_main": "rgba(0,0,0,0)",
             "color_borders_main": "rgba(0,0,0,0)",
@@ -959,6 +1036,26 @@
             "open_in_new_window": false,
             "button_label": "Learn More",
             "color_background_main": "#a08362",
+            "color_text_main": "#ffffff",
+            "color_accent_main": "rgba(0,0,0,0)",
+            "color_borders_main": "rgba(0,0,0,0)",
+            "color_shadow_main": "rgba(0,0,0,0)",
+            "color_hide_borders": false,
+            "color_hide_shadow": false,
+            "seo_h_tag": "h3"
+          }
+        },
+        "card_HVDJjW": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/joels-place-is-now-on-grab-cover.jpg",
+            "caption": "NEW IN-STORE",
+            "title": "Glorietta 4 Is Now on Grab",
+            "subtitle": "Your ready-to-eat favorites are now on GrabFood! Order today and have your top menu picks delivered straight to your door.",
+            "link": "https://joelsplace.com/blogs/in-store-now/joels-place-is-now-available-on-grabfood",
+            "open_in_new_window": false,
+            "button_label": "Learn More",
+            "color_background_main": "#70a062",
             "color_text_main": "#ffffff",
             "color_accent_main": "rgba(0,0,0,0)",
             "color_borders_main": "rgba(0,0,0,0)",
@@ -1012,10 +1109,10 @@
         }
       },
       "block_order": [
-        "card_RcNRD3",
         "16540673826052f668-0",
-        "card_HVDJjW",
+        "card_RcNRD3",
         "card_atmyV3",
+        "card_HVDJjW",
         "16540673826052f668-2",
         "16540673826052f668-1"
       ],
@@ -1043,15 +1140,15 @@
     "16551074833cdf378e": {
       "type": "media-with-text-overlay",
       "blocks": {
-        "16551074836af554cd-0": {
+        "16551074836af554cd-1": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/the-city-wakes-up-illustration-cover.jpg",
+            "image": "shopify://shop_images/taste-the-world-cover.jpg",
             "caption": "ESSAY",
-            "title": "The City Wakes Up",
-            "subtitle": "We rarely see the bakers, cooks, and taho vendors  preparing under the pre-dawn sky. But their echoing calls remind everyone that breakfast—and a new day—is here.",
-            "link": "shopify://blogs/joels-journal/the-city-wakes-up",
-            "open_in_new_window": false,
+            "title": "Taste the World",
+            "subtitle": "From tapas hunting in Madrid to hawker hopping in Singapore, immersing oneself in a city’s food culture is a good—and delicious—way to explore and get to know a place and its people.",
+            "link": "shopify://blogs/joels-journal/taste-the-world",
+            "open_in_new_window": true,
             "button_label": "",
             "color_background_main": "#3d3d3d",
             "color_text_main": "#ffffff",
@@ -1060,15 +1157,15 @@
             "seo_h_tag": "h3"
           }
         },
-        "16551074836af554cd-1": {
+        "16551074836af554cd-0": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/from-the-table-of-the-gods-honey-honeycomb-cover.jpg",
+            "image": "shopify://shop_images/hello-do-you-have-baon.jpg",
             "caption": "ESSAY",
-            "title": "From the Table of the Gods",
-            "subtitle": "Once, honey was called ambrosia, the mythical food of the gods that granted immortality. Now we call it a superfood for the same healing qualities that made it precious and divine to our ancestors. ",
-            "link": "shopify://blogs/joels-journal/from-the-table-of-the-gods",
-            "open_in_new_window": true,
+            "title": "Hello, Do You Have Baon?",
+            "subtitle": "At lunch over my packed food, I get a glimpse of the values that shaped me, the culture I grew up with, and the nostalgia of my childhood in one tiny container.",
+            "link": "shopify://blogs/joels-journal/hello-do-you-have-baon",
+            "open_in_new_window": false,
             "button_label": "",
             "color_background_main": "#3d3d3d",
             "color_text_main": "#ffffff",
@@ -1079,8 +1176,8 @@
         }
       },
       "block_order": [
-        "16551074836af554cd-0",
-        "16551074836af554cd-1"
+        "16551074836af554cd-1",
+        "16551074836af554cd-0"
       ],
       "name": "LONG READS Essays",
       "settings": {

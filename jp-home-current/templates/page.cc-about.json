@@ -94,6 +94,7 @@
         "text_zEqUBj",
         "button_AzP4YY"
       ],
+      "disabled": true,
       "name": "t:sections.rich-text.name",
       "settings": {
         "height": "large",
@@ -115,6 +116,25 @@
         "color_shadow_main": "rgba(0,0,0,0)",
         "color_hide_borders": false,
         "color_hide_shadow": false
+      }
+    },
+    "video_xzBe9N": {
+      "type": "video",
+      "name": "t:sections.local-extra-words.sections.video.name",
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "section_heading_layout": "section-heading--left",
+        "video": "https://www.youtube.com/watch?v=zSx-tWupY84",
+        "image": "shopify://shop_images/how-to-order-via-click-and-collect-at-joels-place-a-quick-guide-cover.jpg",
+        "autoplay": false,
+        "loop": false,
+        "is_fullwidth": false,
+        "section_background_color": "rgba(0,0,0,0)",
+        "section_background_gradient": "",
+        "section_heading_color": "rgba(0,0,0,0)",
+        "remove_margin": false,
+        "seo_h_tag": "h2"
       }
     },
     "text_columns_images_qYyxzF": {
@@ -338,6 +358,7 @@
     "media_with_text_overlay_PtDytU",
     "main",
     "rich_text_4VqQMY",
+    "video_xzBe9N",
     "text_columns_images_qYyxzF",
     "content_toggles_cPy6dX"
   ]

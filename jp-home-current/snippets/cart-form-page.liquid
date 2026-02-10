@@ -78,7 +78,7 @@
 							"dateOverrides": {
 								"2025-12-25": { "startHour": 12, "endHour": 20 },
 								"2025-12-31": { "startHour": 10, "endHour": 17 },
-								"2026-01-01": { "startHour": 12, "endHour": 20 }
+								"2026-01-19": { "startHour": 10, "endHour": 14 }
 							}
 						}
 						{%- endcapture -%}
@@ -144,7 +144,7 @@
 							"dateOverrides": {
 								"2025-12-25": { "startHour": 12, "endHour": 20 },
 								"2025-12-31": { "startHour": 10, "endHour": 17 },
-								"2026-01-01": { "startHour": 12, "endHour": 20 }
+								"2026-01-19": { "startHour": 10, "endHour": 14 }
 							}
 						}
 						{%- endcapture -%}
@@ -242,6 +242,7 @@
 
 	{%- comment -%} WellnessBoost Buy 2 Get 1 Free Promotion - Freebie Selection Section {%- endcomment -%}
 	{%- liquid
+		assign show_freebie_promotion = false
 		assign wellness_boost_count = 0
 		assign has_wellness_boost_freebie = false
 		assign non_freebie_item_count = 0
@@ -313,7 +314,7 @@
 	  - There are at least 2 non-freebie items AND
 	  - Customer has NOT already selected a freebie
 	{%- endcomment -%}
-	{%- if wellness_boost_count >= 2 and non_freebie_item_count >= 2 and has_wellness_boost_freebie == false -%}
+	{%- if show_freebie_promotion and wellness_boost_count >= 2 and non_freebie_item_count >= 2 and has_wellness_boost_freebie == false -%}
 			<div class="cart-freebie-section cart-block element--has-border--body element--border-radius element--no-border-on-small margin-bottom--regular" data-wellness-boost-count="{{ wellness_boost_count }}">
 			<div class="cart-items-group">
 				<div class="cart-items-group__header">
@@ -412,7 +413,7 @@
 	// 2. Choose "Automatic discount"
 	// 3. Set it to "100% off" for items with property "_freebie" equals "wellness-boost"
 	// OR create a discount code that does the same and replace 'WELLNESSBOOSTFREE' below
-	const FREEBIE_DISCOUNT_CODE = 'WELLNESSBOOSTFREE'; // Change this to your discount code, or leave empty to use automatic discount
+	const FREEBIE_DISCOUNT_CODE = ' '; // Change this to your discount code, or leave empty to use automatic discount
 	
 	function applyFreebieDiscount() {
 		// Check if cart has freebie items

@@ -49,14 +49,13 @@
 
     {%- if icon_source != blank -%}
       <span class="text-with-icon__icon" aria-hidden="true">
-        <img src="{{ icon_source | image_url: width: 32, height: 32, crop: 'center' }}"
+        <img src="{{ icon_source | image_url: width: 25, height: 25, crop: 'center' }}"
           srcset="
-            {{ icon_source | image_url: width: 32, height: 32, crop: 'center' }} 32w,
-            {{ icon_source | image_url: width: 64, height: 64, crop: 'center' }} 64w,
-            {{ icon_source | image_url: width: 96, height: 96, crop: 'center' }} 96w,
-            {{ icon_source | image_url: width: 144, height: 144, crop: 'center' }} 144w
+            {{ icon_source | image_url: width: 25, height: 25, crop: 'center' }} 25w,
+            {{ icon_source | image_url: width: 50, height: 50, crop: 'center' }} 50w,
+            {{ icon_source | image_url: width: 75, height: 75, crop: 'center' }} 75w
           "
-          sizes="{%- if labels_style == 'grid' -%} 48px {%- else -%} 32px {%- endif -%}" width="32" height="32"
+          sizes="25px" width="25" height="25"
           loading="lazy"
           alt="{{ label | escape }}"
         />
@@ -64,7 +63,7 @@
     {%- elsif icon_from_assets != blank -%}
       <span class="text-with-icon__icon" aria-hidden="true">
         <img src="{{ icon_from_assets }}"
-          width="32" height="32"
+          width="25" height="25"
           loading="lazy"
           alt="{{ label | escape }}"
           onerror="this.parentElement.style.display='none'"

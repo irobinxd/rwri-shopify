@@ -3,6 +3,7 @@
  * 
  * This script creates a client-side filter for product icon labels.
  * It survives Shopify's AJAX filter updates and shows selected labels as tags.
+ * Supports multiple filter containers (sidebar + mobile drawer).
  */
 
 (function() {
@@ -18,29 +19,36 @@
 
   const state = window.customIconFilterState;
 
+  // Get ALL filter containers (sidebar + drawer)
+  function getAllContainers() {
+    return document.querySelectorAll('.custom-icon-filter-container');
+  }
+
   // Main initialization function
   function init() {
-    const container = document.getElementById('custom-icon-filter-container');
-    if (!container) return;
+    const containers = getAllContainers();
+    if (containers.length === 0) return;
 
-    // Check if filter already exists and is functional
-    const existingFilter = container.querySelector('#Filter-icon-labels');
-    if (existingFilter && existingFilter.querySelector('[data-icon-filter-checkbox]')) {
-      // Filter exists, just re-apply state
-      restoreFilterState();
-      return;
-    }
+    containers.forEach(container => {
+      // Check if filter already exists and is functional
+      const existingFilter = container.querySelector('.js-custom-icon-filter');
+      if (existingFilter && existingFilter.querySelector('[data-icon-filter-checkbox]')) {
+        // Filter exists, just re-apply state
+        restoreFilterState(container);
+        return;
+      }
 
-    // Build the filter HTML
-    buildFilterHTML(container);
-    
-    // Set up event listeners
-    setupEventListeners(container);
-    
-    // Restore any previously selected filters
-    restoreFilterState();
-    
-    // Apply filters to products
+      // Build the filter HTML
+      buildFilterHTML(container);
+      
+      // Set up event listeners
+      setupEventListeners(container);
+      
+      // Restore any previously selected filters
+      restoreFilterState(container);
+    });
+
+    // Apply filters to products (only needs to happen once)
     applyFilters();
     
     // Update active tags display
@@ -60,9 +68,12 @@
       return;
     }
 
+    // Use container id for unique checkbox IDs
+    const containerId = container.id || 'default';
+
     let checkboxesHTML = labels.map((label, index) => {
       const safeValue = escapeHTML(label);
-      const checkboxId = `icon-filter-cb-${index}`;
+      const checkboxId = `icon-filter-cb-${containerId}-${index}`;
       const isChecked = state.selectedLabels.includes(label) ? 'checked' : '';
       return `
         <li class="facets__item">
@@ -75,7 +86,7 @@
     }).join('');
 
     container.innerHTML = `
-      <details id="Filter-icon-labels" 
+      <details 
         class="disclosure-has-popup facets__disclosure js-filter js-custom-icon-filter" 
         data-index="custom-icon"
         ${defaultOpen ? 'open' : ''}
@@ -85,12 +96,12 @@
         </summary>
         <div class="facets__display body-text-sm">
           <div class="facets__header">
-            <span class="facets__selected no-js-hidden" id="icon-filter-selected-count">
+            <span class="facets__selected no-js-hidden icon-filter-selected-count">
               ${state.selectedLabels.length > 0 ? state.selectedLabels.length + ' selected' : '0 selected'}
             </span>
-            <button type="button" class="facets__reset link underlined-link" id="icon-filter-reset">Reset</button>
+            <button type="button" class="facets__reset link underlined-link icon-filter-reset">Reset</button>
           </div>
-          <ul class="facets__list list-unstyled no-js-hidden" role="list" id="icon-filter-list">
+          <ul class="facets__list list-unstyled no-js-hidden" role="list">
             ${checkboxesHTML}
           </ul>
         </div>
@@ -118,7 +129,7 @@
     return labelCounts;
   }
 
-  // Set up event listeners
+  // Set up event listeners for a specific container
   function setupEventListeners(container) {
     // Checkbox change events
     container.querySelectorAll('[data-icon-filter-checkbox]').forEach(checkbox => {
@@ -132,7 +143,7 @@
     });
 
     // Reset button
-    const resetBtn = container.querySelector('#icon-filter-reset');
+    const resetBtn = container.querySelector('.icon-filter-reset');
     if (resetBtn) {
       resetBtn.addEventListener('click', handleReset);
     }
@@ -158,9 +169,21 @@
       state.selectedLabels = state.selectedLabels.filter(l => l !== value);
     }
 
+    // Sync checkbox state across ALL containers
+    syncCheckboxState();
+
     applyFilters();
     updateActiveTags();
     updateSelectedCount();
+  }
+
+  // Sync checkbox state across all containers
+  function syncCheckboxState() {
+    getAllContainers().forEach(container => {
+      container.querySelectorAll('[data-icon-filter-checkbox]').forEach(cb => {
+        cb.checked = state.selectedLabels.includes(cb.value);
+      });
+    });
   }
 
   // Handle label click - toggle checkbox
@@ -187,12 +210,12 @@
 
     state.selectedLabels = [];
 
-    const container = document.getElementById('custom-icon-filter-container');
-    if (container) {
+    // Reset ALL containers
+    getAllContainers().forEach(container => {
       container.querySelectorAll('[data-icon-filter-checkbox]').forEach(cb => {
         cb.checked = false;
       });
-    }
+    });
 
     applyFilters();
     updateActiveTags();
@@ -225,37 +248,37 @@
     updateFilterCounts();
   }
 
-  // Update counts on filter checkboxes
+  // Update counts on filter checkboxes (in ALL containers)
   function updateFilterCounts() {
-    const container = document.getElementById('custom-icon-filter-container');
-    if (!container) return;
-
     const labelCounts = collectIconLabels();
 
-    container.querySelectorAll('.icon-filter-checkbox').forEach(labelEl => {
-      const checkbox = labelEl.querySelector('[data-icon-filter-checkbox]');
-      const countEl = labelEl.querySelector('.icon-filter-count');
-      if (checkbox && countEl) {
-        const count = labelCounts[checkbox.value] || 0;
-        countEl.textContent = `(${count})`;
+    getAllContainers().forEach(container => {
+      container.querySelectorAll('.icon-filter-checkbox').forEach(labelEl => {
+        const checkbox = labelEl.querySelector('[data-icon-filter-checkbox]');
+        const countEl = labelEl.querySelector('.icon-filter-count');
+        if (checkbox && countEl) {
+          const count = labelCounts[checkbox.value] || 0;
+          countEl.textContent = `(${count})`;
 
-        if (count === 0 && !checkbox.checked) {
-          labelEl.classList.add('disabled');
-        } else {
-          labelEl.classList.remove('disabled');
+          if (count === 0 && !checkbox.checked) {
+            labelEl.classList.add('disabled');
+          } else {
+            labelEl.classList.remove('disabled');
+          }
         }
-      }
+      });
     });
   }
 
-  // Update selected count display
+  // Update selected count display (in ALL containers)
   function updateSelectedCount() {
-    const countEl = document.getElementById('icon-filter-selected-count');
-    if (countEl) {
-      countEl.textContent = state.selectedLabels.length > 0 
-        ? `${state.selectedLabels.length} selected`
-        : '0 selected';
-    }
+    const text = state.selectedLabels.length > 0 
+      ? `${state.selectedLabels.length} selected`
+      : '0 selected';
+
+    document.querySelectorAll('.icon-filter-selected-count').forEach(countEl => {
+      countEl.textContent = text;
+    });
   }
 
   // Update active tags display (shown next to "Clear all")
@@ -341,23 +364,16 @@
   function removeLabel(label) {
     state.selectedLabels = state.selectedLabels.filter(l => l !== label);
 
-    const container = document.getElementById('custom-icon-filter-container');
-    if (container) {
-      container.querySelectorAll('[data-icon-filter-checkbox]').forEach(cb => {
-        if (cb.value === label) {
-          cb.checked = false;
-        }
-      });
-    }
+    // Sync across ALL containers
+    syncCheckboxState();
 
     applyFilters();
     updateActiveTags();
     updateSelectedCount();
   }
 
-  // Restore filter state from global state
-  function restoreFilterState() {
-    const container = document.getElementById('custom-icon-filter-container');
+  // Restore filter state from global state for a specific container
+  function restoreFilterState(container) {
     if (!container) return;
 
     container.querySelectorAll('[data-icon-filter-checkbox]').forEach(cb => {
@@ -380,7 +396,6 @@
   function setupObservers() {
     // Observe the main collection grid for AJAX updates
     const productGrid = document.getElementById('main-collection-product-grid');
-    const collectionGrid = document.getElementById('CollectionProductGrid');
 
     const gridObserver = new MutationObserver(debounce((mutations) => {
       // Ignore changes in active-facets containers (to prevent blinking from our own tag updates)
@@ -407,26 +422,19 @@
       if (hasProductChange) {
         // Re-apply filters after grid update (only if not updating tags ourselves)
         applyFilters();
-        // Don't call updateActiveTags here - it will be called only when labels change
       }
     }, 300));
 
-    // Observe the actual product grid (main-collection-product-grid), not CollectionProductGrid
-    // This way we avoid catching active-facets changes
     if (productGrid) {
       gridObserver.observe(productGrid, { childList: true, subtree: true });
     }
-    // Don't observe collectionGrid as it contains active-facets
 
-    // Observe the filter wrapper for AJAX updates (but ignore our own tag changes)
-    const filterWrapper = document.querySelector('.facets__wrapper, #FacetFiltersForm, #FacetFiltersFormMobile');
-    if (filterWrapper) {
+    // Observe filter wrappers for AJAX updates (but ignore our own tag changes)
+    document.querySelectorAll('.facets__wrapper, #FacetFiltersForm, #FacetFiltersFormMobile').forEach(filterWrapper => {
       const filterObserver = new MutationObserver(debounce((mutations) => {
-        // Ignore changes in active-facets containers
         const hasFilterChange = mutations.some(mutation => {
           const target = mutation.target;
           if (!target || !target.classList) return true;
-          // Ignore if change is in active-facets containers or our custom tags
           if (target.closest('.active-facets-desktop, .active-facets-mobile, .active-facets')) {
             return false;
           }
@@ -441,18 +449,30 @@
         }
       }, 200));
       filterObserver.observe(filterWrapper, { childList: true, subtree: true });
+    });
+
+    // Also observe the sidebar-drawer for when it becomes visible (mobile)
+    const sidebarDrawer = document.getElementById('site-filters-sidebar');
+    if (sidebarDrawer) {
+      const drawerObserver = new MutationObserver(() => {
+        // When sidebar drawer becomes visible, re-init to ensure the drawer filter is built
+        if (sidebarDrawer.style.display !== 'none') {
+          init();
+        }
+      });
+      drawerObserver.observe(sidebarDrawer, { attributes: true, attributeFilter: ['style', 'aria-hidden'] });
     }
 
-    // Also periodically check if our filter needs to be re-initialized
-    // This catches cases where the observer misses updates
+    // Periodically check if any filter containers need to be re-initialized
     if (state.checkInterval) {
       clearInterval(state.checkInterval);
     }
     state.checkInterval = setInterval(() => {
-      const container = document.getElementById('custom-icon-filter-container');
-      if (container && !container.querySelector('#Filter-icon-labels')) {
-        init();
-      }
+      getAllContainers().forEach(container => {
+        if (!container.querySelector('.js-custom-icon-filter')) {
+          init();
+        }
+      });
     }, 1000);
   }
 
